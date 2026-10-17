@@ -251,6 +251,7 @@ npx.cmd -y wrangler deploy
 | :--- | :--- | :--- |
 | Windows error: `cannot be loaded because running scripts is disabled` (`npx.ps1`) | PowerShell blocks `.ps1` scripts by default | Always use `npx.cmd -y wrangler ...` instead of `npx`. |
 | Deploy fails asking to verify email | Cloudflare signup email not verified yet | Ask the student to check their email inbox/spam and click the Cloudflare verification link. |
-| Deploy asks to register a `workers.dev` subdomain | Brand-new Cloudflare account | Have the student open Cloudflare Dashboard ➔ `Workers & Pages` to pick a subdomain name once. |
+| Deploy asks to register a `workers.dev` subdomain | Brand-new Cloudflare account | Have the student open Cloudflare Dashboard ➔ `Workers & Pages` to pick a subdomain name once (modern Wrangler also auto-registers it). |
+| `https://` shows SSL error (`ERR_SSL_VERSION_OR_CIPHER_MISMATCH`) right after first deploy | Cloudflare takes 2–3 minutes to issue the wildcard SSL certificate for a brand-new `*.<subdomain>.workers.dev` | Provide `http://<worker>.<subdomain>.workers.dev` for instant testing; `https://` will work automatically after 2–3 minutes. |
 | API returns `no such table` | Forgot Step 5 or omitted `--remote` | Run `npx.cmd -y wrangler d1 migrations apply <db-name> --remote --yes`. |
 | API returns `DB binding not found` | Missing `d1_databases` in `wrangler.jsonc` | Run `npx.cmd -y wrangler d1 list`, add the `d1_databases` block to `wrangler.jsonc`, and re-run `npx.cmd -y wrangler deploy`. |

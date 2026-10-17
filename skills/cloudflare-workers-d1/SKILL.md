@@ -249,6 +249,7 @@ npx.cmd -y wrangler deploy
 | :--- | :--- | :--- |
 | Windows 報 `無法載入 npx.ps1` (`PSSecurityException`) | PowerShell 預設阻擋 `.ps1` 腳本 | 改用 `npx.cmd -y wrangler ...` 即可 100% 繞過。 |
 | 部署提示需驗證 Email | 註冊 Cloudflare 後尚未點信箱驗證信 | 請學生檢查收件匣與垃圾郵件，點擊驗證連結後重跑 `deploy`。 |
-| 部署提示需設定 `workers.dev` 子網域 | 新 Cloudflare 帳號首次使用 Workers | 請學生到 Cloudflare 後台左側 `Workers & Pages` 設定子網域名稱。 |
+| 部署提示需設定 `workers.dev` 子網域 | 新 Cloudflare 帳號首次使用 Workers | 請學生到 Cloudflare 後台左側 `Workers & Pages` 設定子網域名稱（新版 Wrangler 亦會自動註冊）。 |
+| 新帳號首次部署後點開 `https://` 顯示 SSL 錯誤 (`ERR_SSL_VERSION_OR_CIPHER_MISMATCH`) | 新註冊的 `*.<子網域>.workers.dev` 萬用字元 SSL 憑證需要 2～3 分鐘簽發 | 先給學生 `http://<網站名>.<子網域>.workers.dev`（可立即秒開測試），過 2～3 分鐘憑證簽發完畢後 `https://` 即可正常開啟。 |
 | 網頁 API 報 `no such table` | 第 5 步忘記跑 migrations 或漏加 `--remote` | 補跑 `npx.cmd -y wrangler d1 migrations apply <資料庫名> --remote --yes`（不必重新 deploy）。 |
 | 網頁 API 報 `找不到資料庫綁定 DB` | `wrangler.jsonc` 缺少 `d1_databases` 區段 | 執行 `npx.cmd -y wrangler d1 list` 取得 UUID，補進 `wrangler.jsonc` 後重新 `wrangler deploy`。 |

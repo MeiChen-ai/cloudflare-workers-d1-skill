@@ -51,7 +51,7 @@ Week10_App/          👈 在這個資料夾打開 OpenCode
 | | `AGENTS.md`（放進資料夾） | Prompt（貼進對話框） |
 | :--- | :--- | :--- |
 | 角色 | 每次都要遵守的**規則** | 這一次的**內容** |
-| 第 10 週 | 分級規則、click 1 規則、語音、理解題形式、D1 資料表與部署 | 暱稱、文章、5 個關鍵字、2 題理解題 |
+| 第 10 週 | 分級規則、first-click clue（點第 1 下的提示）、語音、理解題形式、D1 資料表與部署 | 暱稱、文章、5 個關鍵字、2 題理解題 |
 | 第 11 週 | 3 關結構、禮貌度量表、選錯時的提示與重選、D1 資料表與部署 | 暱稱、情境主題 |
 | 想修改時 | 改「怎麼教」 | 改「教什麼」 |
 
@@ -176,7 +176,7 @@ Then launch **OpenCode** inside that folder and paste the prompt from **Part B**
 | | `AGENTS.md` (in your folder) | Prompt (pasted into OpenCode) |
 | :--- | :--- | :--- |
 | Job | the **rules**, followed every time | this app's **content** |
-| Week 10 | level rules, click 1 rule, audio, question format, D1 tables & deployment | nickname, article, 5 key words, 2 check questions |
+| Week 10 | level rules, first-click clue, audio, question format, D1 tables & deployment | nickname, article, 5 key words, 2 check questions |
 | Week 11 | 3-turn structure, politeness meter, clue-and-retry branch, D1 tables & deployment | nickname, scenario topic |
 | To change | *how* it teaches | *what* it teaches |
 

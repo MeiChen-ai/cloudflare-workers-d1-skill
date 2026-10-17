@@ -176,18 +176,3 @@ Pedagogical & Database Requirements (Auto-create all tables and seed data—do n
 3. **🎉 [Peer Test & Inspect Cloud D1 Logs!]**:
    * OpenCode will automatically create your D1 database, seed your content, deploy your site, verify the API, and hand you your live `https://xxx.workers.dev` URL ready for Peer Testing!
 
----
-
-## 💻 進階：終端機一鍵安裝腳本 / Advanced: CLI One-Click Install
-
-**Windows (PowerShell):**
-```powershell
-git clone https://github.com/MeiChen-ai/cloudflare-workers-d1-skill.git
-.\cloudflare-workers-d1-skill\scripts\install.ps1
-```
-
-**macOS / Linux:**
-```bash
-git clone https://github.com/MeiChen-ai/cloudflare-workers-d1-skill.git
-bash ./cloudflare-workers-d1-skill/scripts/install.sh
-```

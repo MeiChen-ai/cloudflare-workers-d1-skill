@@ -1,23 +1,23 @@
 ---
 name: cloudflare-workers-d1
-description: OpenCode 專用：Cloudflare Workers（前端網站＋後端 API）＋ Cloudflare D1（SQLite 雲端資料庫）免金鑰、免 MCP 零複製全自動閉環部署指南。支援讀取專案根目錄 AGENTS.md，內建第 10 週「A2/B1/B2 分級閱讀與聽力鷹架網」與第 11 週「跨文化語用禮貌度情境分支卡」標準範本。當使用者在 OpenCode 提到「連接 Cloudflare」「設定 Cloudflare」「用 Cloudflare 部署」「Cloudflare D1」「Wrangler 登入」「照 AGENTS.md 部署到 Cloudflare」時自動啟用。
+description: OpenCode 專用：Cloudflare Workers（前端網站＋後端 API）＋ Cloudflare D1（SQLite 雲端資料庫）免金鑰、免 MCP 零複製全自動閉環部署指南。支援「專案根目錄 AGENTS.md（教學規則）＋學生貼上的 Prompt（教材內容）」雙層指令，內建第 10 週「A2/B1/B2 分級閱讀與聽力鷹架網」與第 11 週「跨文化語用禮貌度情境分支卡」標準範本。當使用者在 OpenCode 提到「連接 Cloudflare」「設定 Cloudflare」「用 Cloudflare 部署」「Cloudflare D1」「Wrangler 登入」「照 AGENTS.md 部署到 Cloudflare」時自動啟用。
 ---
 
 # OpenCode × Cloudflare Workers + D1 零金鑰全自動閉環系統（教學與自動化實作指南）
 
 > 來源改編：[agent-connect-lazy-pack](https://github.com/mathruffian-dot/agent-connect-lazy-pack)  
-> 適用環境：**OpenCode**（自動讀取專案根目錄 `AGENTS.md`，亦相容各類 AI Coding Agent）  
-> 核心精神：**「免裝 MCP、免複製任何 API Key 或 Token！OpenCode 直接讀取資料夾最外層的 `AGENTS.md`，將前端網站（Workers Static Assets）＋ 後端 API（Worker）＋ 雲端資料庫（D1 SQLite）同源合一部署，學生只需在瀏覽器按一次 Allow。」**
+> 適用環境：**OpenCode**（自動讀取專案根目錄 `AGENTS.md` 的規則，再依學生貼上的 Prompt 取得內容；亦相容各類 AI Coding Agent）  
+> 核心精神：**「免裝 MCP、免複製任何 API Key 或 Token！OpenCode 先讀資料夾最外層的 `AGENTS.md`（規則），再依學生貼上的 Prompt（內容），將前端網站（Workers Static Assets）＋ 後端 API（Worker）＋ 雲端資料庫（D1 SQLite）同源合一部署，學生只需在瀏覽器按一次 Allow。」**
 
 ---
 
 ## 🎯 你（OpenCode Agent）的角色與分工原則（必守）
 
-你面對的使用者是**英文系學生或老師（預設無工程背景）**，在 **OpenCode** 中透過專案根目錄的 `AGENTS.md` 或簡短對話指令與你互動，請全程使用**清楚、友善的繁體中文**引導：
+你面對的使用者是**英文系學生或老師（預設無工程背景）**，在 **OpenCode** 中透過兩層指令與你互動：專案根目錄的 `AGENTS.md`（每次都要遵守的教學規則）＋貼進對話框的 Prompt（這次的教材內容），請全程使用**清楚、友善的繁體中文**引導：
 
 | 學生/使用者只負責（3 件事） | OpenCode Agent 全自動包辦 |
 | :--- | :--- |
-| ① 沒帳號時註冊 Cloudflare（輸入 Email＋密碼並去信箱點驗證信）<br>② 瀏覽器跳出 Wrangler 授權頁時按 **Allow**<br>③ 首次部署若提示設定 `workers.dev` 子網域時，在後台取一個英文名稱 | 自動讀取根目錄 `AGENTS.md`、環境檢查、安裝 Node.js、執行 `npx.cmd -y wrangler` 所有指令、建立專案結構、自動建立 D1 資料庫與資料表、撰寫並套用 SQL migrations（含預塞教材題庫）、部署網站、端到端 API 驗收、輸出完成卡 |
+| ① 沒帳號時註冊 Cloudflare（輸入 Email＋密碼並去信箱點驗證信）<br>② 瀏覽器跳出 Wrangler 授權頁時按 **Allow**<br>③ 首次部署若提示設定 `workers.dev` 子網域時，在後台取一個英文名稱 | 自動讀取根目錄 `AGENTS.md` 規則與學生 Prompt 內容、環境檢查、安裝 Node.js、執行 `npx.cmd -y wrangler` 所有指令、建立專案結構、自動建立 D1 資料庫與資料表、撰寫並套用 SQL migrations（含預塞教材題庫）、部署網站、端到端 API 驗收、輸出完成卡 |
 
 1. **禁止叫學生自己開終端機打指令或手動建資料庫／資料表**：所有 CLI 指令、SQL 建表、預塞題庫與檔案修改一律由 OpenCode 自動執行。
 2. **一次只請學生做一件事**：需要學生點擊授權、收驗證信或設子網域時，**停下來用一句話講清楚要點哪裡，等學生回覆「好了」再繼續**。
@@ -41,9 +41,13 @@ description: OpenCode 專用：Cloudflare Workers（前端網站＋後端 API）
 
 本流程具備**可續跑性（Idempotent）**：每一步開始前先檢查狀態，已完成的步驟自動跳過。
 
-### 第 0 步：讀取根目錄 `AGENTS.md` 與確認英文暱稱
-1. 先檢查當前專案資料夾最外層（根目錄）是否有 `AGENTS.md`，若有則讀取其中的課程週次（Week 10 閱讀/聽力 或 Week 11 語用情境卡）與教材內容設定。
-2. 若學生尚未提供英文暱稱，先問一句：
+### 第 0 步：讀取 `AGENTS.md`（規則）＋學生 Prompt（內容）與確認英文暱稱
+1. 先檢查當前專案資料夾最外層（根目錄）是否有 `AGENTS.md`，若有則讀取其中的**教學規則**（課程週次、分級／提示／禮貌度等規則、資料表與部署要求）。
+   - **教材內容來自學生貼上的 Prompt**：第 10 週為暱稱、文章、5 個關鍵字、2 題理解題；第 11 週為暱稱與情境主題。
+   - **兩層分工**：`AGENTS.md` 管「怎麼教」，Prompt 管「教什麼」。若 Prompt 與 `AGENTS.md` 的規則衝突，**以 `AGENTS.md` 為準**，並用一句話告訴學生哪裡不一致。
+   - 若只有 Prompt、沒有 `AGENTS.md`：提醒學生先從 Cockpit 設計卡下載 `AGENTS.md` 放進資料夾最外層；學生堅持不放時，才改用 Prompt 內容與本技能的預設規則繼續。
+   - 若只有 `AGENTS.md`、還沒有內容：請學生貼上設計卡產生的 Prompt，不要自行編造文章或情境。
+2. 若 Prompt 裡沒有英文暱稱，先問一句：
    > 「請告訴我你的**英文小寫暱稱**（例如 `alice` 或 `sean01`，只用小寫英文與數字），我會用它在 OpenCode 幫你建立專屬的 Cloudflare 網站與 D1 雲端資料庫！」
    *(若學生給大寫，自動幫他轉小寫)*。
 3. 決定命名：
@@ -85,13 +89,13 @@ description: OpenCode 專用：Cloudflare Workers（前端網站＋後端 API）
 
 ---
 
-### 第 4 步：依 `AGENTS.md` 建立專案結構與 D1 資料庫（Week 10 閱讀聽力 ／ Week 11 語用情境卡）
+### 第 4 步：依 `AGENTS.md` 規則與 Prompt 內容建立專案結構與 D1 資料庫（Week 10 閱讀聽力 ／ Week 11 語用情境卡）
 
 在學生啟動 OpenCode 的專案資料夾內，建立以下同源全端結構（`AGENTS.md` 位於專案最外層根目錄）：
 
 ```text
 <專案資料夾>/
-├── AGENTS.md                      ← 【OpenCode 自動讀取】Cockpit 設計卡下載的教學與部署守則
+├── AGENTS.md                      ← 【OpenCode 自動讀取】Cockpit 設計卡 Part A 產生的教學與部署規則（內容在學生的 Prompt）
 ├── wrangler.jsonc                 ← Cloudflare Workers + D1 + 靜態資源設定
 ├── worker.js                      ← 後端 API 路由（/api/* 讀寫 env.DB，並提供 /Logs 檢視或 JSON 讀取）
 ├── migrations/
@@ -126,7 +130,7 @@ npx.cmd -y wrangler d1 create <小寫暱稱>-<專案名>-db --binding DB --updat
 ---
 
 #### 3A. 【第 10 週範例】A2/B1/B2 分級閱讀與聽力鷹架網（`migrations/0001_init.sql` 範本）
-OpenCode 讀取 `AGENTS.md` 的短文後，自動產生 A2、B1、B2 三種難度課文、兩段式單字註解（`glosses_json`：點第 1 下給語境線索 `clue`、點第 2 下才給定義 `definition`）與讀後測驗題（`questions_json`），並建立 `reading_logs` 作答紀錄表：
+OpenCode 依 `AGENTS.md` 的分級與提示規則，處理學生 Prompt 裡的短文、5 個關鍵字與 2 題理解題，自動產生 A2、B1、B2 三種難度課文、兩段式單字註解（`glosses_json`：點第 1 下給語境線索 `clue`、點第 2 下才給定義 `definition`）與讀後測驗題（`questions_json`），並建立 `reading_logs` 作答紀錄表：
 
 ```sql
 CREATE TABLE IF NOT EXISTS passages (
@@ -153,7 +157,7 @@ CREATE TABLE IF NOT EXISTS reading_logs (
 ---
 
 #### 3B. 【第 11 週範例】跨文化語用禮貌度情境分支卡（`migrations/0001_init.sql` 範本）
-OpenCode 讀取 `AGENTS.md` 的語用情境設定後，自動建立 3 關情境對話節點表 `scenario_nodes`（含不禮貌選項的語用提示與修復分支）以及記錄學習者決策路徑的 `pragmatics_logs` 表：
+OpenCode 依 `AGENTS.md` 的關卡、禮貌度與修復分支規則，處理學生 Prompt 裡的情境主題，自動建立 3 關情境對話節點表 `scenario_nodes`（含不禮貌選項的語用提示與修復分支）以及記錄學習者決策路徑的 `pragmatics_logs` 表：
 
 ```sql
 CREATE TABLE IF NOT EXISTS scenario_nodes (
@@ -278,7 +282,7 @@ npx.cmd -y wrangler deploy
    🎉 **OpenCode × Cloudflare 全端教學網站＋D1 資料庫部署完成卡**
    - 🌐 **你的公開網站網址**：https://<網站名>.<子網域>.workers.dev
    - 🗄️ **雲端 D1 資料庫**：`<資料庫名>`（已自動建表、寫入教材並開啟網頁下方即時紀錄看板 ✅）
-   - 📄 **規則來源**：已完整套用專案根目錄 `AGENTS.md` 教學守則
+   - 📄 **規則與內容**：已套用專案根目錄 `AGENTS.md` 的教學規則，以及你 Prompt 裡的教材內容
    - 🔒 **安全狀態**：零金鑰外洩、前後端同源免 CORS，同學直接點開網址就能進行 Peer Testing！
    ```
 

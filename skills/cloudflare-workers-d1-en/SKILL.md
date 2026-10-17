@@ -1,23 +1,23 @@
 ---
 name: cloudflare-workers-d1-en
-description: OpenCode Edition: Automated Cloudflare Workers (frontend + backend API) + Cloudflare D1 (SQLite cloud database) zero-key, zero-MCP closed-loop web system guide. Designed for OpenCode reading a project-root AGENTS.md file, featuring built-in schemas for Week 10 (A2/B1/B2 Scaffolded Reading & Listening Web App) and Week 11 (L2 Pragmatics Politeness Branching Scenario Cards). Activate automatically in OpenCode when the user says "connect Cloudflare", "setup Cloudflare", "deploy to Cloudflare", "Cloudflare D1", "wrangler login", or "follow AGENTS.md to deploy to Cloudflare".
+description: OpenCode Edition: Automated Cloudflare Workers (frontend + backend API) + Cloudflare D1 (SQLite cloud database) zero-key, zero-MCP closed-loop web system guide. Designed for OpenCode with two layers of instructions: a project-root AGENTS.md (teaching rules) plus the prompt the student pastes (learning content), featuring built-in schemas for Week 10 (A2/B1/B2 Scaffolded Reading & Listening Web App) and Week 11 (L2 Pragmatics Politeness Branching Scenario Cards). Activate automatically in OpenCode when the user says "connect Cloudflare", "setup Cloudflare", "deploy to Cloudflare", "Cloudflare D1", "wrangler login", or "follow AGENTS.md to deploy to Cloudflare".
 ---
 
 # OpenCode × Cloudflare Workers + D1 Zero-Key Closed-Loop System (English Student Edition)
 
 > Adapted from [agent-connect-lazy-pack](https://github.com/mathruffian-dot/agent-connect-lazy-pack)  
-> Target Environment: **OpenCode** (automatically reads `AGENTS.md` from the project root; also compatible with other AI coding agents)  
-> Core Philosophy: **"Zero MCP setup, zero API keys or tokens to copy-paste! OpenCode reads `AGENTS.md` in the root folder and deploys Frontend static site (Workers Assets) + Backend API (Worker) + Cloud SQL Database (D1) under one Cloudflare account. The student only clicks 'Allow' once in the browser."**
+> Target Environment: **OpenCode** (reads the rules in the project-root `AGENTS.md`, then takes the content from the student's pasted prompt; also compatible with other AI coding agents)  
+> Core Philosophy: **"Zero MCP setup, zero API keys or tokens to copy-paste! OpenCode reads the rules in `AGENTS.md` (root folder) and the content in the student's prompt, then deploys Frontend static site (Workers Assets) + Backend API (Worker) + Cloud SQL Database (D1) under one Cloudflare account. The student only clicks 'Allow' once in the browser."**
 
 ---
 
 ## 🎯 Your Role as the OpenCode Agent & Division of Labor (Mandatory)
 
-Your user is an **English-major student or educator without a backend engineering background**, working inside **OpenCode** via a project-root `AGENTS.md` file:
+Your user is an **English-major student or educator without a backend engineering background**, working inside **OpenCode** with two layers of instructions: a project-root `AGENTS.md` (teaching rules to follow every time) plus a pasted prompt (this app's content):
 
 | The Student Only Does (3 Simple Actions) | The OpenCode Agent Handles Everything Else |
 | :--- | :--- |
-| ① Sign up for Cloudflare if needed (enter Email + password and click the verification link in their inbox)<br>② Click **Allow** on the Cloudflare OAuth screen in the browser<br>③ Pick a `workers.dev` subdomain in the Cloudflare dashboard if prompted on first deploy | Automatically reading root `AGENTS.md`, environment checks, installing Node.js if missing, running all `npx.cmd -y wrangler` CLI commands, scaffolding frontend & backend files, auto-creating the D1 database & tables, writing and applying SQL migrations (with pre-seeded learning content), deploying the Worker, verifying the live API, and printing the Completion Card |
+| ① Sign up for Cloudflare if needed (enter Email + password and click the verification link in their inbox)<br>② Click **Allow** on the Cloudflare OAuth screen in the browser<br>③ Pick a `workers.dev` subdomain in the Cloudflare dashboard if prompted on first deploy | Automatically reading the rules in root `AGENTS.md` and the content in the student's prompt, environment checks, installing Node.js if missing, running all `npx.cmd -y wrangler` CLI commands, scaffolding frontend & backend files, auto-creating the D1 database & tables, writing and applying SQL migrations (with pre-seeded learning content), deploying the Worker, verifying the live API, and printing the Completion Card |
 
 1. **Pure English & Zero Manual Database Setup**:
    - Communicate 100% in clear, encouraging, jargon-free **English**.
@@ -44,9 +44,13 @@ Your user is an **English-major student or educator without a backend engineerin
 
 This workflow is **idempotent (resumable)**: always check current state first and skip any steps that are already completed.
 
-### Step 0: Read Root `AGENTS.md` & Ask for an English Nickname
-1. First, check the current project root folder for `AGENTS.md` and read the target week/task specification (**Week 10: A2/B1/B2 Scaffolded Reading & Listening Web App** or **Week 11: L2 Pragmatics Politeness Branching Scenario Cards**).
-2. If the student hasn't given a nickname yet, ask:
+### Step 0: Read `AGENTS.md` (Rules) + the Student's Prompt (Content) & Confirm the Nickname
+1. First, check the current project root folder for `AGENTS.md` and read its **teaching rules**: the target week (**Week 10: A2/B1/B2 Scaffolded Reading & Listening Web App** or **Week 11: L2 Pragmatics Politeness Branching Scenario Cards**), the level/clue/politeness rules, and the database and deployment requirements.
+   - **The learning content comes from the student's pasted prompt**: Week 10 = nickname, article, 5 key words, 2 check questions; Week 11 = nickname and scenario topic.
+   - **Two layers**: `AGENTS.md` says *how* to teach; the prompt says *what* to teach. If the prompt conflicts with a rule in `AGENTS.md`, **follow `AGENTS.md`** and tell the student in one sentence what did not match.
+   - Prompt but no `AGENTS.md`: remind the student to download `AGENTS.md` from the Cockpit design card and put it in the project root. Only if they decline, continue with the prompt content and this skill's default rules.
+   - `AGENTS.md` but no content yet: ask the student to paste the prompt from the design card. Do not invent an article or scenario.
+2. If the prompt has no nickname, ask:
    > "Please give me a short **English nickname** (lowercase letters and numbers only, e.g., `alice` or `sean01`) so I can name your live Cloudflare website and D1 cloud database in OpenCode!"
    *(Automatically convert any uppercase letters to lowercase).*
 3. Determine resource names:
@@ -88,13 +92,13 @@ Ask the student: *"Do you already have a Cloudflare account (with your email ver
 
 ---
 
-### Step 4: Create Project Structure & D1 Cloud Database from `AGENTS.md` (Week 10 Reading/Listening or Week 11 Pragmatics Cards)
+### Step 4: Create Project Structure & D1 Cloud Database from the `AGENTS.md` Rules and the Prompt Content (Week 10 Reading/Listening or Week 11 Pragmatics Cards)
 
 In the project folder where the student launched OpenCode, create the unified full-stack directory structure (`AGENTS.md` sits in the root folder):
 
 ```text
 <project-folder>/
-├── AGENTS.md                      ← [Read by OpenCode] Pedagogical & deployment rules from Cockpit Design Card
+├── AGENTS.md                      ← [Read by OpenCode] Teaching & deployment rules from Part A of the Cockpit design card (content is in the prompt)
 ├── wrangler.jsonc                 ← Cloudflare Workers + D1 + Static Assets config
 ├── worker.js                      ← Backend API router (/api/* queries env.DB)
 ├── migrations/
@@ -129,7 +133,7 @@ npx.cmd -y wrangler d1 create <nickname>-<project>-db --binding DB --update-conf
 ---
 
 #### 3A. [Week 10 Example] A2/B1/B2 Scaffolded Reading & Listening Web App (`migrations/0001_init.sql` Template)
-OpenCode reads the source article and rules from `AGENTS.md`, automatically adapts the passage into CEFR `A2`, `B1`, and `B2` versions, generates two-click vocabulary glosses (`glosses_json`: 1st click = context clue; 2nd click = English definition), creates comprehension questions (`questions_json`), and sets up the `reading_logs` table:
+Following the level and clue rules in `AGENTS.md`, OpenCode takes the article, 5 key words and 2 questions from the student's prompt, automatically adapts the passage into CEFR `A2`, `B1`, and `B2` versions, generates two-click vocabulary glosses (`glosses_json`: 1st click = context clue; 2nd click = English definition), creates comprehension questions (`questions_json`), and sets up the `reading_logs` table:
 
 ```sql
 CREATE TABLE IF NOT EXISTS passages (
@@ -156,7 +160,7 @@ CREATE TABLE IF NOT EXISTS reading_logs (
 ---
 
 #### 3B. [Week 11 Example] L2 Pragmatics Politeness Branching Scenario Cards (`migrations/0001_init.sql` Template)
-OpenCode reads the pragmatics scenario specification from `AGENTS.md`, automatically creates the 3-turn branching scenario table `scenario_nodes` (including pragmatic clues and repair branches for overly blunt/vague choices), and sets up the `pragmatics_logs` table to record peer testers' decision paths:
+Following the turn, politeness and repair-branch rules in `AGENTS.md`, OpenCode takes the scenario topic from the student's prompt, automatically creates the 3-turn branching scenario table `scenario_nodes` (including pragmatic clues and repair branches for overly blunt/vague choices), and sets up the `pragmatics_logs` table to record peer testers' decision paths:
 
 ```sql
 CREATE TABLE IF NOT EXISTS scenario_nodes (
@@ -280,7 +284,7 @@ npx.cmd -y wrangler deploy
    🎉 **OpenCode × Cloudflare Full-Stack Web App + D1 Database Deployed!**
    - 🌐 **Live Public Website**: https://<worker-name>.<subdomain>.workers.dev
    - 🗄️ **Cloud D1 Database**: `<db-name>` (Tables initialized, content seeded & live log viewer active ✅)
-   - 📄 **Pedagogical Rules**: Built from root `AGENTS.md` specification
+   - 📄 **Rules & Content**: Built from the root `AGENTS.md` teaching rules and the content in your prompt
    - 🔒 **Security & Compatibility**: Zero API keys exposed, same-origin API (no CORS issues, ready for Peer Testing on desktop or mobile!)
    ```
 

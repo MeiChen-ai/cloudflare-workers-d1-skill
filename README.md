@@ -8,11 +8,11 @@
 ## 🇹🇼 第一部分：中文版學生實作講義 (Traditional Chinese)
 
 ### 一、 這套方法有什麼超強優點？
-在 **OpenCode** 中搭配 **`cloudflare-workers-d1`** 技能與專案根目錄的 **`AGENTS.md`**，你的 AI Agent 會幫你把「**前端互動網頁＋後端 API＋D1 雲端資料庫**」一次部署在同一個 **Cloudflare** 帳號裡：
-* **兩層指令：`AGENTS.md` 管規則、Prompt 管內容**：Cockpit 設計卡的 Part A 產生 `AGENTS.md`（每次都要遵守的教學規則），放在專案資料夾**最外層（根目錄）**；Part B 產生 Prompt（這次的文章、單字、題目或情境），貼進 OpenCode 對話框。想改「怎麼教」就改 `AGENTS.md`，想改「教什麼」就改 Prompt！
+在 **OpenCode** 中搭配 **`cloudflare-workers-d1`** 技能與專案資料夾裡的 **`AGENTS.md`**，你的 AI Agent 會幫你把「**前端互動網頁＋後端 API＋D1 雲端資料庫**」一次部署在同一個 **Cloudflare** 帳號裡：
+* **兩層指令：`AGENTS.md` 管規則、Prompt 管內容**：Cockpit 設計卡的 Part A 產生 `AGENTS.md`（每次都要遵守的教學規則），**直接放進你的專案資料夾**（不要放進裡面的其他資料夾）；Part B 產生 Prompt（這次的文章、單字、題目或情境），貼進 OpenCode 對話框。想改「怎麼教」就改 `AGENTS.md`，想改「教什麼」就改 Prompt！
 * **完全免裝 MCP、免複製任何 API Key 或 Token**：你不需要貼任何密碼或權杖給 AI！
 * **前後端同源（零跨域問題）＋ 雲端資料庫全自動建立**：D1 資料表與初始教材皆由 OpenCode 自動建好並寫入，網頁最下方還會內建「**📊 Cloud D1 Peer-Test Logs（雲端同儕測試紀錄即時看板）**」，任何電腦或手機點開網址就能直接測試！
-* **你的任務**：寫程式、寫 SQL 與打指令全部交給 OpenCode AI，你只需要做 **「1 句安裝技能指令 ＋ 把 `AGENTS.md` 放進資料夾最外層 ＋ 貼上 Prompt ＋ 在瀏覽器按一次 Allow」**！
+* **你的任務**：寫程式、寫 SQL 與打指令全部交給 OpenCode AI，你只需要做 **「1 句安裝技能指令 ＋ 把 `AGENTS.md` 直接放進專案資料夾 ＋ 貼上 Prompt ＋ 在瀏覽器按一次 Allow」**！
 
 ---
 
@@ -39,7 +39,7 @@
 
 ### 四、 Step 3：放好 `AGENTS.md`（規則），再貼上 Prompt（內容）
 
-在桌面上建立你的專案資料夾（例如第 10 週 `Week10_App` 或第 11 週 `Week11_App`），把從課堂 Cockpit 設計卡 **Part A** 下載的 **`AGENTS.md`** 放進該資料夾的**最外層（根目錄）**：
+在桌面上建立你的專案資料夾（例如第 10 週 `Week10_App` 或第 11 週 `Week11_App`），把從課堂 Cockpit 設計卡 **Part A** 下載的 **`AGENTS.md`** **直接放進這個資料夾**，不要放進裡面的其他資料夾：
 
 ```text
 Week10_App/          👈 在這個資料夾打開 OpenCode
@@ -133,11 +133,11 @@ Week10_App/          👈 在這個資料夾打開 OpenCode
 ## 🌍 Part 2: English Student Handout (For Non-Chinese Environments)
 
 ### 1. Why Use This Workflow in OpenCode?
-With the **`cloudflare-workers-d1-en`** skill and a project-root **`AGENTS.md`** file in **OpenCode**, your AI Agent deploys your **Frontend Web App + Backend API + Cloud SQL Database (D1)** all together under a single **Cloudflare** account:
-* **Two Layers: `AGENTS.md` for Rules, a Prompt for Content**: Part A of the Cockpit design card gives you `AGENTS.md` (the teaching rules OpenCode follows every time), which goes in the **top level (root) of your project folder**. Part B gives you a prompt (this app's article, words, questions or scenario), which you paste into OpenCode. Change *how* it teaches in `AGENTS.md`; change *what* it teaches in the prompt!
+With the **`cloudflare-workers-d1-en`** skill and an **`AGENTS.md`** file in your project folder in **OpenCode**, your AI Agent deploys your **Frontend Web App + Backend API + Cloud SQL Database (D1)** all together under a single **Cloudflare** account:
+* **Two Layers: `AGENTS.md` for Rules, a Prompt for Content**: Part A of the Cockpit design card gives you `AGENTS.md` (the teaching rules OpenCode follows every time), which goes **straight into your project folder**, not into a folder inside it. Part B gives you a prompt (this app's article, words, questions or scenario), which you paste into OpenCode. Change *how* it teaches in `AGENTS.md`; change *what* it teaches in the prompt!
 * **Zero MCP Setup, Zero API Keys or Tokens**: You never have to copy or paste any secret tokens!
 * **Auto-Created Cloud Database + Live Log Viewer**: OpenCode automatically creates the D1 SQLite tables, seeds your reading passages or pragmatics scenarios, and adds a collapsible **"📊 Cloud D1 Peer-Test Logs"** viewer at the bottom of your webpage!
-* **Your Job**: Let the OpenCode AI run all commands, write all SQL, and build all code—you only need **1 install prompt + placing `AGENTS.md` in your project root + pasting your prompt + 1 click on "Allow" in your browser**!
+* **Your Job**: Let the OpenCode AI run all commands, write all SQL, and build all code—you only need **1 install prompt + putting `AGENTS.md` straight into your project folder + pasting your prompt + 1 click on "Allow" in your browser**!
 
 ---
 
@@ -164,7 +164,7 @@ Please download the skill file from https://raw.githubusercontent.com/MeiChen-ai
 
 ### 4. Step 3: Place `AGENTS.md` (Rules), Then Paste Your Prompt (Content)
 
-Create your weekly project folder on your Desktop (e.g., `Week10_App` or `Week11_App`) and place the **`AGENTS.md`** file from **Part A** of your course Cockpit design card directly in the **top-level root directory**:
+Create your weekly project folder on your Desktop (e.g., `Week10_App` or `Week11_App`) and place the **`AGENTS.md`** file from **Part A** of your course Cockpit design card **straight into that folder**, not into a folder inside it:
 
 ```text
 Week10_App/          👈 Open OpenCode in this folder

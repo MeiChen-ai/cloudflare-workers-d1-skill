@@ -1,24 +1,25 @@
 ---
 name: cloudflare-workers-d1
-description: Cloudflare Workers（前端網站＋後端 API）＋ Cloudflare D1（SQLite 雲端資料庫）免金鑰、免 MCP 零複製全自動閉環部署指南。當使用者提到「連接 Cloudflare」「設定 Cloudflare」「用 Cloudflare 部署」「Cloudflare D1」「Wrangler 登入」「用 Cloudflare 做網頁遊戲或資料庫」「照 AGENTS.md 連接 Cloudflare」時自動啟用。
+description: OpenCode 專用：Cloudflare Workers（前端網站＋後端 API）＋ Cloudflare D1（SQLite 雲端資料庫）免金鑰、免 MCP 零複製全自動閉環部署指南。支援讀取專案根目錄 AGENTS.md，內建第 10 週「A2/B1/B2 分級閱讀與聽力鷹架網」與第 11 週「跨文化語用禮貌度情境分支卡」標準範本。當使用者在 OpenCode 提到「連接 Cloudflare」「設定 Cloudflare」「用 Cloudflare 部署」「Cloudflare D1」「Wrangler 登入」「照 AGENTS.md 部署到 Cloudflare」時自動啟用。
 ---
 
-# Cloudflare Workers + D1 零金鑰全自動閉環系統（教學與自動化實作指南）
+# OpenCode × Cloudflare Workers + D1 零金鑰全自動閉環系統（教學與自動化實作指南）
 
 > 來源改編：[agent-connect-lazy-pack](https://github.com/mathruffian-dot/agent-connect-lazy-pack)  
-> 核心精神：**「免裝 MCP、免複製任何 API Key 或 Token！前端網站（Workers Static Assets）＋ 後端 API（Worker）＋ 雲端資料庫（D1 SQLite）同源合一，學生只需在瀏覽器按一次 Allow。」**
+> 適用環境：**OpenCode**（自動讀取專案根目錄 `AGENTS.md`，亦相容各類 AI Coding Agent）  
+> 核心精神：**「免裝 MCP、免複製任何 API Key 或 Token！OpenCode 直接讀取資料夾最外層的 `AGENTS.md`，將前端網站（Workers Static Assets）＋ 後端 API（Worker）＋ 雲端資料庫（D1 SQLite）同源合一部署，學生只需在瀏覽器按一次 Allow。」**
 
 ---
 
-## 🎯 你的角色與分工原則（必守）
+## 🎯 你（OpenCode Agent）的角色與分工原則（必守）
 
-你面對的使用者是**學生或老師（預設無工程背景）**，全程使用**清楚、友善的繁體中文**引導：
+你面對的使用者是**英文系學生或老師（預設無工程背景）**，在 **OpenCode** 中透過專案根目錄的 `AGENTS.md` 或簡短對話指令與你互動，請全程使用**清楚、友善的繁體中文**引導：
 
-| 學生/使用者只負責（3 件事） | Agent 全自動包辦 |
+| 學生/使用者只負責（3 件事） | OpenCode Agent 全自動包辦 |
 | :--- | :--- |
-| ① 沒帳號時註冊 Cloudflare（輸入 Email＋密碼並去信箱點驗證信）<br>② 瀏覽器跳出 Wrangler 授權頁時按 **Allow**<br>③ 首次部署若提示設定 `workers.dev` 子網域時，在後台取一個英文名稱 | 環境檢查、安裝 Node.js、執行 `npx.cmd -y wrangler` 所有指令、建立專案結構、建立 D1 資料庫、撰寫並執行 SQL migrations、部署網站、端到端 API 驗收、輸出完成卡 |
+| ① 沒帳號時註冊 Cloudflare（輸入 Email＋密碼並去信箱點驗證信）<br>② 瀏覽器跳出 Wrangler 授權頁時按 **Allow**<br>③ 首次部署若提示設定 `workers.dev` 子網域時，在後台取一個英文名稱 | 自動讀取根目錄 `AGENTS.md`、環境檢查、安裝 Node.js、執行 `npx.cmd -y wrangler` 所有指令、建立專案結構、自動建立 D1 資料庫與資料表、撰寫並套用 SQL migrations（含預塞教材題庫）、部署網站、端到端 API 驗收、輸出完成卡 |
 
-1. **禁止叫學生自己開終端機打指令或改設定檔**：所有 CLI 指令與檔案修改一律由你執行。
+1. **禁止叫學生自己開終端機打指令或手動建資料庫／資料表**：所有 CLI 指令、SQL 建表、預塞題庫與檔案修改一律由 OpenCode 自動執行。
 2. **一次只請學生做一件事**：需要學生點擊授權、收驗證信或設子網域時，**停下來用一句話講清楚要點哪裡，等學生回覆「好了」再繼續**。
 3. **Windows PowerShell 相容性（極重要）**：
    - 在 Windows PowerShell 中，請一律使用 **`npx.cmd -y wrangler ...`**（避免直接打 `npx` 觸發 `npx.ps1` 執行原則阻擋 `PSSecurityException`）。
@@ -29,24 +30,25 @@ description: Cloudflare Workers（前端網站＋後端 API）＋ Cloudflare D1�
 ## 🔒 五條安全與避坑紅線
 
 1. **絕不索取或印出任何密碼與金鑰**：本流程 100% 透過 `npx.cmd -y wrangler login` 瀏覽器 OAuth 完成，**嚴禁**要求學生貼上 API Token、密碼，也不可讀取 `~/.wrangler/` 憑證檔內容。
-2. **學生隱私去識別化**：D1 資料庫的資料表（如排行榜、測驗紀錄）**只記錄「班級代號 (`class_code`)、座號 (`seat_no`)、分數 (`score`)」**，嚴禁收集真實姓名、身分證字號、電話或住址。
-3. **名稱必須全小寫英數連字號**：`wrangler.jsonc` 的 `"name"` 與 D1 資料庫名稱**只能使用小寫英文 `a-z`、數字 `0-9` 與連字號 `-`**（且開頭必為英文字母，例如 `wang-vocab-game`）。若含大寫字母，Wrangler 會直接報錯拒絕。
-4. **Migrations 必加 `--remote`**：套用資料庫結構時，必須執行 `npx.cmd -y wrangler d1 migrations apply <資料庫名> --remote`。若漏掉 `--remote` 只會改到本機暫存檔，線上網站會報 `no such table` 錯誤。
+2. **學生隱私去識別化**：D1 資料庫的學習紀錄表**只記錄「測試者暱稱 (`nickname`)、班級/組別代號 (`class_code`)、互動歷程與得分」**，嚴禁收集真實全名、身分證字號、電話或住址。
+3. **名稱必須全小寫英數連字號**：`wrangler.jsonc` 的 `"name"` 與 D1 資料庫名稱**只能使用小寫英文 `a-z`、數字 `0-9` 與連字號 `-`**（且開頭必為英文字母，例如 `alice-w10-reading` 或 `alice-w11-pragmatics`）。若含大寫字母，Wrangler 會直接報錯拒絕。
+4. **Migrations 必加 `--remote`**：套用資料庫結構時，必須執行 `npx.cmd -y wrangler d1 migrations apply <資料庫名> --remote --yes`。若漏掉 `--remote` 只會改到本機暫存檔，線上網站會報 `no such table` 錯誤。
 5. **使用 Workers Static Assets（勿用舊版 `wrangler pages`）**：Cloudflare Pages 已併入 Workers，一律透過 `wrangler.jsonc` 的 `"assets": { "directory": "./public", "run_worker_first": ["/api/*"] }` 搭配 `npx.cmd -y wrangler deploy` 部署。
 
 ---
 
-## 🧭 完整 7 步自動化連接與部署流程
+## 🧭 完整 7 步自動化連接與部署流程（OpenCode 專用）
 
 本流程具備**可續跑性（Idempotent）**：每一步開始前先檢查狀態，已完成的步驟自動跳過。
 
-### 第 0 步：詢問英文暱稱與確認目標
-1. 若學生尚未提供英文暱稱，先問一句：
-   > 「請告訴我一個簡單的**英文暱稱**（例如 `wang` 或 `chen01`，只用小寫英文與數字），我會用它幫你建立專屬網站與雲端資料庫！」
+### 第 0 步：讀取根目錄 `AGENTS.md` 與確認英文暱稱
+1. 先檢查當前專案資料夾最外層（根目錄）是否有 `AGENTS.md`，若有則讀取其中的課程週次（Week 10 閱讀/聽力 或 Week 11 語用情境卡）與教材內容設定。
+2. 若學生尚未提供英文暱稱，先問一句：
+   > 「請告訴我你的**英文小寫暱稱**（例如 `alice` 或 `sean01`，只用小寫英文與數字），我會用它在 OpenCode 幫你建立專屬的 Cloudflare 網站與 D1 雲端資料庫！」
    *(若學生給大寫，自動幫他轉小寫)*。
-2. 決定命名：
-   - 若學生只是要「測試連接 Cloudflare」：網站名為 `<暱稱>-hello`，資料庫名為 `<暱稱>-hello-db`。
-   - 若學生指定要做特定作品（如單字遊戲）：網站名為 `<暱稱>-<專案簡稱>`（如 `wang-vocab-maze`），資料庫名為 `<暱稱>-<專案簡稱>-db`。
+3. 決定命名：
+   - **第 10 週（分級閱讀與聽力鷹架網）**：網站名為 `<暱稱>-w10-reading`，資料庫名為 `<暱稱>-w10-reading-db`。
+   - **第 11 週（語用禮貌度情境分支卡）**：網站名為 `<暱稱>-w11-pragmatics`，資料庫名為 `<暱稱>-w11-pragmatics-db`。
 
 ---
 
@@ -60,8 +62,8 @@ description: Cloudflare Workers（前端網站＋後端 API）＋ Cloudflare D1�
    ```powershell
    npx.cmd -y wrangler whoami
    ```
-   - 若輸出中已顯示使用者的 Email，且**沒有**出現 `WARNING: Wrangler is missing some expected Oauth scopes`（特別是需確認具備 `workers:write` 與 `d1:write`），**直接跳過第 2、3 步，進入第 4 步**！
-   - ⚠️ **避坑關鍵**：若舊憑證只有 `d1 (write)` 而缺少 `workers:write`，後續 `wrangler deploy` 會報 `No access to the specified resource`。此時仍須執行第 3 步 `npx.cmd -y wrangler login` 請使用者按一次 Allow 更新憑證！
+   - 若輸出中已顯示使用者的 Email，且**沒有**出現 `WARNING: Wrangler is missing some expected Oauth scopes`（需確認具備 `workers:write` 與 `d1:write`），**直接跳過第 2、3 步，進入第 4 步**！（例如第 10 週已登入過，第 11 週即可 0 秒直接跳第 4 步！）
+   - ⚠️ **避坑關鍵**：若舊憑證缺少 `workers:write`，後續 `wrangler deploy` 會報 `No access to the specified resource`。此時仍須執行第 3 步 `npx.cmd -y wrangler login` 請使用者按一次 Allow 更新憑證！
 
 ---
 
@@ -72,7 +74,7 @@ description: Cloudflare Workers（前端網站＋後端 API）＋ Cloudflare D1�
 ---
 
 ### 第 3 步：🔑【學生關鍵動作】Wrangler 瀏覽器一鍵授權
-1. 在背景啟動登入指令（逾時設長或放入背景任務）：
+1. 執行登入指令：
    ```powershell
    npx.cmd -y wrangler login
    ```
@@ -83,16 +85,17 @@ description: Cloudflare Workers（前端網站＋後端 API）＋ Cloudflare D1�
 
 ---
 
-### 第 4 步：建立標準專案結構與 D1 資料庫
+### 第 4 步：依 `AGENTS.md` 建立專案結構與 D1 資料庫（Week 10 閱讀聽力 ／ Week 11 語用情境卡）
 
-在專案資料夾（例如 `C:\Users\hp\.gemini\antigravity\scratch\<專案名>`）建立以下同源全端結構：
+在學生啟動 OpenCode 的專案資料夾內，建立以下同源全端結構（`AGENTS.md` 位於專案最外層根目錄）：
 
 ```text
 <專案資料夾>/
+├── AGENTS.md                      ← 【OpenCode 自動讀取】Cockpit 設計卡下載的教學與部署守則
 ├── wrangler.jsonc                 ← Cloudflare Workers + D1 + 靜態資源設定
-├── worker.js                      ← 後端 API 路由（/api/* 讀寫 env.DB）
+├── worker.js                      ← 後端 API 路由（/api/* 讀寫 env.DB，並提供 /Logs 檢視或 JSON 讀取）
 ├── migrations/
-│   └── 0001_init.sql              ← D1 SQLite 資料表結構與初始題庫資料
+│   └── 0001_init.sql              ← D1 SQLite 資料表結構與自動預塞的教材內容
 └── public/                        ← 前端靜態網頁（同源免 CORS！）
     ├── index.html
     ├── style.css
@@ -102,7 +105,7 @@ description: Cloudflare Workers（前端網站＋後端 API）＋ Cloudflare D1�
 #### 1. `wrangler.jsonc` 標準範本（注意 `name` 必為全小寫）
 ```jsonc
 {
-  "name": "<小寫暱稱>-<專案名>",
+  "name": "<小寫暱稱>-<w10-reading或w11-pragmatics>",
   "main": "worker.js",
   "compatibility_date": "2026-10-01",
   "assets": {
@@ -118,32 +121,63 @@ description: Cloudflare Workers（前端網站＋後端 API）＋ Cloudflare D1�
 npx.cmd -y wrangler d1 create <小寫暱稱>-<專案名>-db --binding DB --update-config
 ```
 - 成功後，`wrangler.jsonc` 會自動寫入 `"d1_databases": [{ "binding": "DB", "database_name": "...", "database_id": "..." }]`。
-- 若提示未自動寫入設定檔，執行 `npx.cmd -y wrangler d1 list` 查出 `uuid`，手動將 `d1_databases` 區塊補進 `wrangler.jsonc`。
-- 若提示資料庫已存在（`already exists`），直接透過 `d1 list` 查出該 `uuid` 填入 `wrangler.jsonc` 沿用即可。
+- 若提示未自動寫入或資料庫已存在（`already exists`），執行 `npx.cmd -y wrangler d1 list` 查出 `uuid`，補進 `wrangler.jsonc`。
 
-#### 3. `migrations/0001_init.sql` 標準範本（以單字練習＋排行榜為例）
+---
+
+#### 3A. 【第 10 週範例】A2/B1/B2 分級閱讀與聽力鷹架網（`migrations/0001_init.sql` 範本）
+OpenCode 讀取 `AGENTS.md` 的短文後，自動產生 A2、B1、B2 三種難度課文、兩段式單字註解（`glosses_json`：點第 1 下給語境線索 `clue`、點第 2 下才給定義 `definition`）與讀後測驗題（`questions_json`），並建立 `reading_logs` 作答紀錄表：
+
 ```sql
-CREATE TABLE IF NOT EXISTS vocab (
+CREATE TABLE IF NOT EXISTS passages (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
-  word TEXT NOT NULL,
-  meaning TEXT NOT NULL,
-  example TEXT DEFAULT '',
-  level TEXT DEFAULT 'B1'
+  level TEXT NOT NULL,           -- 'A2', 'B1', or 'B2'
+  title TEXT NOT NULL,
+  content TEXT NOT NULL,
+  glosses_json TEXT NOT NULL,    -- JSON: [{"word":"procrastinate","clue":"Look at 'delay homework'—does it mean finish early or put off?","definition":"To delay doing something that must be done."}]
+  questions_json TEXT NOT NULL   -- JSON: [{"q":"What is the main reason people procrastinate?","options":["Fear of failure","Too much sleep","Lack of paper"],"answer":0}]
 );
 
-CREATE TABLE IF NOT EXISTS leaderboard (
+CREATE TABLE IF NOT EXISTS reading_logs (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
-  class_code TEXT NOT NULL,
-  seat_no TEXT NOT NULL,
-  score INTEGER NOT NULL DEFAULT 0,
-  stage INTEGER NOT NULL DEFAULT 1,
-  correct_count INTEGER NOT NULL DEFAULT 0,
+  nickname TEXT NOT NULL,
+  selected_level TEXT NOT NULL,
+  audio_speed TEXT DEFAULT '1.0x',
+  words_clicked TEXT DEFAULT '',
+  quiz_score INTEGER NOT NULL DEFAULT 0,
   created_at TEXT DEFAULT CURRENT_TIMESTAMP
 );
 ```
-*(可在 SQL 檔尾直接用 `INSERT INTO vocab (word, meaning, example, level) VALUES ...` 預先塞入 12 筆 CEFR B1/B2 單字題庫！)*
+*(OpenCode 必須在 `0001_init.sql` 檔尾直接用 `INSERT INTO passages ...` 把改寫好的 A2、B1、B2 三筆課文與單字提示自動塞入資料庫，學生完全免手動輸入資料庫！)*
 
-#### 4. `worker.js` 標準範本（同源 `/api/*` + 靜態網頁）
+---
+
+#### 3B. 【第 11 週範例】跨文化語用禮貌度情境分支卡（`migrations/0001_init.sql` 範本）
+OpenCode 讀取 `AGENTS.md` 的語用情境設定後，自動建立 3 關情境對話節點表 `scenario_nodes`（含不禮貌選項的語用提示與修復分支）以及記錄學習者決策路徑的 `pragmatics_logs` 表：
+
+```sql
+CREATE TABLE IF NOT EXISTS scenario_nodes (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  step_no INTEGER NOT NULL,          -- 1, 2, or 3
+  speaker_line TEXT NOT NULL,        -- 對方（教授/主管/客戶）說的話
+  options_json TEXT NOT NULL         -- JSON: [{"label":"A","text":"I need an extension.","politeness":"Too Blunt","clue":"Using 'I need' sounds demanding to a professor. Try a modal verb + apology.","is_best":false}, ...]
+);
+
+CREATE TABLE IF NOT EXISTS pragmatics_logs (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  nickname TEXT NOT NULL,
+  scenario_topic TEXT NOT NULL,
+  choice_path TEXT NOT NULL,         -- 例如 'Step1:B(Repair)->Step1:C->Step2:A->Step3:B'
+  repairs_triggered INTEGER NOT NULL DEFAULT 0,
+  final_reflection TEXT DEFAULT '',
+  created_at TEXT DEFAULT CURRENT_TIMESTAMP
+);
+```
+*(同樣由 OpenCode 在 `0001_init.sql` 檔尾直接 `INSERT INTO scenario_nodes ...` 預塞 3 關情境卡資料！若學生在第 11 週選做「Track B 寫作螢光筆自檢台」，則將表結構改為記錄 `red_words_before`, `red_words_after`, `original_draft`, `revised_draft` 即可。)*
+
+---
+
+#### 4. `worker.js` 標準範本（支援同源 `/api/data` 讀取題庫與紀錄、`POST /api/log` 寫入同儕測試紀錄）
 ```javascript
 const JSON_HEADERS = {
   "content-type": "application/json; charset=utf-8",
@@ -158,47 +192,52 @@ export default {
   async fetch(request, env) {
     const url = new URL(request.url);
 
+    // 讀取題庫（課文或語用情境）與最新 25 筆同儕測試紀錄（供網頁下方「📊 Teacher / Designer Cloud Log Drawer」即時檢視）
     if (url.pathname === "/api/data" && request.method === "GET") {
       try {
-        const { results: vocab } = await env.DB.prepare("SELECT * FROM vocab ORDER BY id ASC").all();
-        const { results: leaderboard } = await env.DB.prepare(
-          "SELECT class_code, seat_no, score, stage, correct_count, created_at FROM leaderboard ORDER BY score DESC LIMIT 15"
-        ).all();
-        return json({ ok: true, vocab, leaderboard });
+        // 依專案表名自動查詢（Week 10 為 passages + reading_logs；Week 11 為 scenario_nodes + pragmatics_logs）
+        const tables = await env.DB.prepare("SELECT name FROM sqlite_master WHERE type='table'").all();
+        const tableNames = tables.results.map(r => r.name);
+
+        if (tableNames.includes("passages")) {
+          const { results: passages } = await env.DB.prepare("SELECT * FROM passages ORDER BY id ASC").all();
+          const { results: logs } = await env.DB.prepare("SELECT * FROM reading_logs ORDER BY id DESC LIMIT 25").all();
+          return json({ ok: true, mode: "week10_reading", passages, logs });
+        } else {
+          const { results: nodes } = await env.DB.prepare("SELECT * FROM scenario_nodes ORDER BY step_no ASC").all();
+          const { results: logs } = await env.DB.prepare("SELECT * FROM pragmatics_logs ORDER BY id DESC LIMIT 25").all();
+          return json({ ok: true, mode: "week11_pragmatics", nodes, logs });
+        }
       } catch (err) {
         return json({ ok: false, error: String(err.message || err) }, 500);
       }
     }
 
-    if (url.pathname === "/api/score" && request.method === "POST") {
+    // 寫入同儕測試學習紀錄
+    if (url.pathname === "/api/log" && request.method === "POST") {
       try {
         const body = await request.json();
-        await env.DB.prepare(
-          "INSERT INTO leaderboard (class_code, seat_no, score, stage, correct_count) VALUES (?, ?, ?, ?, ?)"
-        ).bind(
-          String(body.classCode || "101").trim(),
-          String(body.seatNo || "01").trim(),
-          Number(body.score || 0),
-          Number(body.stage || 1),
-          Number(body.correctCount || 0)
-        ).run();
-        return json({ ok: true });
-      } catch (err) {
-        return json({ ok: false, error: String(err.message || err) }, 500);
-      }
-    }
-
-    if (url.pathname === "/api/vocab" && request.method === "POST") {
-      try {
-        const body = await request.json();
-        await env.DB.prepare(
-          "INSERT INTO vocab (word, meaning, example, level) VALUES (?, ?, ?, ?)"
-        ).bind(
-          String(body.word || "").trim(),
-          String(body.meaning || "").trim(),
-          String(body.example || "").trim(),
-          String(body.level || "B1").trim()
-        ).run();
+        if (body.mode === "week10_reading") {
+          await env.DB.prepare(
+            "INSERT INTO reading_logs (nickname, selected_level, audio_speed, words_clicked, quiz_score) VALUES (?, ?, ?, ?, ?)"
+          ).bind(
+            String(body.nickname || "Anonymous").trim(),
+            String(body.selectedLevel || "B1").trim(),
+            String(body.audioSpeed || "1.0x").trim(),
+            String(body.wordsClicked || "").trim(),
+            Number(body.quizScore || 0)
+          ).run();
+        } else {
+          await env.DB.prepare(
+            "INSERT INTO pragmatics_logs (nickname, scenario_topic, choice_path, repairs_triggered, final_reflection) VALUES (?, ?, ?, ?, ?)"
+          ).bind(
+            String(body.nickname || "Anonymous").trim(),
+            String(body.scenarioTopic || "Pragmatics Task").trim(),
+            String(body.choicePath || "").trim(),
+            Number(body.repairsTriggered || 0),
+            String(body.finalReflection || "").trim()
+          ).run();
+        }
         return json({ ok: true });
       } catch (err) {
         return json({ ok: false, error: String(err.message || err) }, 500);
@@ -209,10 +248,11 @@ export default {
   }
 };
 ```
+> 💡 **教學貼心設計**：前端 `public/index.html` 最下方請務必內建一個可展開的 **「📊 Cloud D1 Learner Logs（雲端測試紀錄即時看板）」** 區塊（直接顯示 `/api/data` 回傳的 `logs` 表格），讓學生與同儕互測完，不用進 Cloudflare 後台就能直接在網頁上看到誰選了哪個等級、點了哪些單字、或走了哪條語用分支路徑！
 
 ---
 
-### 第 5 步：套用雲端資料表結構（Migrations Apply）
+### 第 5 步：套用雲端資料表結構與初始題庫（Migrations Apply）
 在專案資料夾內執行（**務必加上 `--remote` 與 `--yes`**）：
 ```powershell
 npx.cmd -y wrangler d1 migrations apply <資料庫名> --remote --yes
@@ -231,14 +271,15 @@ npx.cmd -y wrangler deploy
 
 ---
 
-### 第 7 步：端到端自動驗收與輸出「🎉 連接完成卡」
-1. 部署成功後，Agent 先自行呼叫一次 API（例如讀取 `/api/data` 或發送測試請求至 `/api/check` / `/api/score`），確認回傳 `{"ok":true,...}`，代表前端、Worker 與 D1 資料庫 100% 連通！
+### 第 7 步：端到端自動驗收與輸出「🎉 OpenCode × Cloudflare 連接完成卡」
+1. 部署成功後，OpenCode 先自行呼叫一次 API（例如讀取 `/api/data`），確認回傳 `{"ok":true,...}`，代表前端、Worker 與 D1 資料庫 100% 連通！
 2. 向學生輸出完成卡：
    ```markdown
-   🎉 **Cloudflare 全端網站＋D1 資料庫部署完成卡**
+   🎉 **OpenCode × Cloudflare 全端教學網站＋D1 資料庫部署完成卡**
    - 🌐 **你的公開網站網址**：https://<網站名>.<子網域>.workers.dev
-   - 🗄️ **雲端 D1 資料庫**：`<資料庫名>`（已建立資料表並完成讀寫驗證 ✅）
-   - 🔒 **安全狀態**：零金鑰外洩、前後端同源免無痕視窗，任何瀏覽器與手機點開都能直接玩！
+   - 🗄️ **雲端 D1 資料庫**：`<資料庫名>`（已自動建表、寫入教材並開啟網頁下方即時紀錄看板 ✅）
+   - 📄 **規則來源**：已完整套用專案根目錄 `AGENTS.md` 教學守則
+   - 🔒 **安全狀態**：零金鑰外洩、前後端同源免 CORS，同學直接點開網址就能進行 Peer Testing！
    ```
 
 ---
@@ -249,7 +290,7 @@ npx.cmd -y wrangler deploy
 | :--- | :--- | :--- |
 | Windows 報 `無法載入 npx.ps1` (`PSSecurityException`) | PowerShell 預設阻擋 `.ps1` 腳本 | 改用 `npx.cmd -y wrangler ...` 即可 100% 繞過。 |
 | 部署提示需驗證 Email | 註冊 Cloudflare 後尚未點信箱驗證信 | 請學生檢查收件匣與垃圾郵件，點擊驗證連結後重跑 `deploy`。 |
-| 部署提示需設定 `workers.dev` 子網域 | 新 Cloudflare 帳號首次使用 Workers | 請學生到 Cloudflare 後台左側 `Workers & Pages` 設定子網域名稱（新版 Wrangler 亦會自動註冊）。 |
+| 部署提示需設定 `workers.dev` 子網域 | 新 Cloudflare 帳號首次使用 Workers | 請學生到 Cloudflare 後台左側 `Workers & Pages` 設定子網域名稱。 |
 | 新帳號首次部署後點開 `https://` 顯示 SSL 錯誤 (`ERR_SSL_VERSION_OR_CIPHER_MISMATCH`) | 新註冊的 `*.<子網域>.workers.dev` 萬用字元 SSL 憑證需要 2～3 分鐘簽發 | 先給學生 `http://<網站名>.<子網域>.workers.dev`（可立即秒開測試），過 2～3 分鐘憑證簽發完畢後 `https://` 即可正常開啟。 |
 | 網頁 API 報 `no such table` | 第 5 步忘記跑 migrations 或漏加 `--remote` | 補跑 `npx.cmd -y wrangler d1 migrations apply <資料庫名> --remote --yes`（不必重新 deploy）。 |
 | 網頁 API 報 `找不到資料庫綁定 DB` | `wrangler.jsonc` 缺少 `d1_databases` 區段 | 執行 `npx.cmd -y wrangler d1 list` 取得 UUID，補進 `wrangler.jsonc` 後重新 `wrangler deploy`。 |

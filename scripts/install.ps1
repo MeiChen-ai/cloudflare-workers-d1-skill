@@ -2,8 +2,9 @@ $ErrorActionPreference = "Stop"
 $RepoRoot = Split-Path -Parent $PSScriptRoot
 
 $Targets = @(
-  "$env:USERPROFILE\.gemini\config\skills",
+  "$env:USERPROFILE\.config\opencode\skills",
   "$env:USERPROFILE\.agents\skills",
+  "$env:USERPROFILE\.gemini\config\skills",
   "$env:USERPROFILE\.claude\skills"
 )
 
@@ -16,4 +17,4 @@ foreach ($Target in $Targets) {
   Write-Host "✅ Installed Cloudflare skills to: $Target" -ForegroundColor Green
 }
 
-Write-Host "`n🎉 Installation complete! Open a new chat to use /cloudflare-workers-d1 or /cloudflare-workers-d1-en." -ForegroundColor Cyan
+Write-Host "`n🎉 Installation complete! Launch OpenCode (with AGENTS.md in your project root) to use cloudflare-workers-d1 or cloudflare-workers-d1-en." -ForegroundColor Cyan

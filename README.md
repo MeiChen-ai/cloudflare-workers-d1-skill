@@ -1,5 +1,5 @@
-# ⚡ AntiGravity 零金鑰全端網站＋Cloudflare D1 雲端資料庫實作講義
-# ⚡ AntiGravity Zero-Key Web App + Cloudflare D1 Database Classroom Handout
+# ⚡ OpenCode 零金鑰全端網站＋Cloudflare D1 雲端資料庫實作講義（Weeks 10–11 專用）
+# ⚡ OpenCode Zero-Key Web App + Cloudflare D1 Database Classroom Handout (Weeks 10–11 Edition)
 
 > 🌐 **[中文版課堂講義請往下捲動](#-第一部分中文版學生實作講義-traditional-chinese)** ｜ **[Click Here for English Classroom Handout](#-part-2-english-student-handout-for-non-chinese-environments)**
 
@@ -8,23 +8,24 @@
 ## 🇹🇼 第一部分：中文版學生實作講義 (Traditional Chinese)
 
 ### 一、 這套方法有什麼超強優點？
-透過 **`/cloudflare-workers-d1`** 技能，你的 AI Agent 會幫你把「**前端互動網頁＋後端 API＋D1 雲端資料庫**」一次部署在同一個 **Cloudflare** 帳號裡：
+在 **OpenCode** 中搭配 **`cloudflare-workers-d1`** 技能與專案根目錄的 **`AGENTS.md`**，你的 AI Agent 會幫你把「**前端互動網頁＋後端 API＋D1 雲端資料庫**」一次部署在同一個 **Cloudflare** 帳號裡：
+* **用 `AGENTS.md` 管理教學規則**：只要把從課程 Cockpit 設計卡下載的 `AGENTS.md` 放在你的專案資料夾**最外層（根目錄）**，OpenCode 一啟動就會自動讀取並遵守！
 * **完全免裝 MCP、免複製任何 API Key 或 Token**：你不需要貼任何密碼或權杖給 AI！
-* **前後端同源（零跨域問題）**：不用開無痕視窗，不管是學校電腦、手機、平板或任何瀏覽器點開都能直接連線！
-* **你的任務**：寫程式與打指令全部交給 AntiGravity AI，你只需要做 **「1 句安裝指令 ＋ 1 句許願提示詞 ＋ 在瀏覽器按一次 Allow」**！
+* **前後端同源（零跨域問題）＋ 雲端資料庫全自動建立**：D1 資料表與初始教材皆由 OpenCode 自動建好並寫入，網頁最下方還會內建「**📊 Cloud D1 Peer-Test Logs（雲端同儕測試紀錄即時看板）**」，任何電腦或手機點開網址就能直接測試！
+* **你的任務**：寫程式、寫 SQL 與打指令全部交給 OpenCode AI，你只需要做 **「1 句安裝技能指令 ＋ 把 `AGENTS.md` 放進資料夾最外層 ＋ 在瀏覽器按一次 Allow」**！
 
 ---
 
-### 二、 Step 1：把技能安裝進你的 AntiGravity（只需做一次）
+### 二、 Step 1：把技能安裝進你的 OpenCode（只需做一次）
 
-打開 **AntiGravity**，直接複製以下**整段話**貼進對話框送出（AI 會自動幫你建立資料夾並下載技能，完全不用自己去檔案總管找路徑）：
+打開 **OpenCode**，直接複製以下**整段話**貼進對話框送出（OpenCode 會自動幫你建立全域技能資料夾並下載技能，完全不用自己去檔案總管找路徑）：
 
-#### 💬 複製貼給 AntiGravity 的安裝指令（中文版）：
+#### 💬 複製貼給 OpenCode 的安裝指令（中文版）：
 ```text
-請幫我從 https://raw.githubusercontent.com/MeiChen-ai/cloudflare-workers-d1-skill/main/skills/cloudflare-workers-d1/SKILL.md 下載技能檔，並儲存到我的 ~/.gemini/config/skills/cloudflare-workers-d1/SKILL.md（若資料夾不存在請自動建立）。
+請幫我從 https://raw.githubusercontent.com/MeiChen-ai/cloudflare-workers-d1-skill/main/skills/cloudflare-workers-d1/SKILL.md 下載技能檔，並同時儲存到我的 ~/.config/opencode/skills/cloudflare-workers-d1/SKILL.md 與 ~/.agents/skills/cloudflare-workers-d1/SKILL.md（若資料夾不存在請自動建立）。
 ```
 
-*(💡 裝完後，請開一個新的對話視窗，輸入 `/` 就能看到 `/cloudflare-workers-d1` 技能！建議同時將右上角模型切換為 **Gemini Flash**，速度最快且最省免費版額度。)*
+*(💡 裝完後，之後在任何專案資料夾打開 OpenCode，它都能自動啟用 `cloudflare-workers-d1` 技能！)*
 
 ---
 
@@ -36,64 +37,82 @@
 
 ---
 
-### 四、 Step 3：填空式「一桿進洞」許願 Prompt（CEFR B1 / B2 單字練習專用）
+### 四、 Step 3：把 `AGENTS.md` 放進專案資料夾最外層（或直接貼上許願指令）
 
-直接挑選一個範本，修改 `【...】` 括號內的內容後貼給 AntiGravity：
+在桌面上建立你的專案資料夾（例如第 10 週 `Week10_App` 或第 11 週 `Week11_App`），把從課堂 Cockpit 設計卡下載的 **`AGENTS.md`** 放進該資料夾的**最外層（根目錄）**：
 
-#### 🎮 範本 A：做「B1 / B2 單字闖關小遊戲＋雲端英雄榜」
 ```text
-/cloudflare-workers-d1 我的英文暱稱是【填入小寫英文暱稱，例如：chen01】。
-請幫我做一個練習 CEFR 【選填：B1 或 B2】 英語單字的【選一種遊戲類型：迷宮追逐遊戲 / 打地鼠遊戲 / 太空射擊問答 / 翻牌配對遊戲 / 炸彈拆解拼字遊戲】。
-需求：
-1. 題目玩法為【選一種：看中文解釋找英文單字 / 看英文例句克漏字選正確單字 / 看英文定義找同義字】，畫面要有計分、生命值與關卡顯示，支援鍵盤與手機觸控按鈕。
-2. 用 Cloudflare D1 當資料庫，建立 `vocab` 資料表（預先塞入 12 個 CEFR B1/B2 常用單字、解釋與例句，並可從網頁新增單字）與 `leaderboard` 資料表（只記錄班級代號、座號、總分、答對題數，不收真實姓名）。
-3. 請自動幫我建立 D1 資料庫、套用遠端 migrations 並部署到 Cloudflare Workers！
+Week10_App/          👈 在這個資料夾打開 OpenCode
+└── AGENTS.md        👈 把下載的 AGENTS.md 直接放在這裡（全大寫加 S）！
 ```
 
-#### 📚 範本 B：做「B1 / B2 智慧單字卡與限時測驗系統＋雲端紀錄榜」
+接著在該資料夾打開 **OpenCode**，直接輸入一句話：
+> **`請讀取資料夾裡的 AGENTS.md，幫我建立網站與 Cloudflare D1 資料庫並部署上線！`**
+
+*(如果你沒有用 Cockpit 下載 `AGENTS.md`，也可以直接複製下方第 10 週或第 11 週範本貼給 OpenCode：)*
+
+#### 📖 第 10 週範本：做「A2 / B1 / B2 分級閱讀與聽力鷹架網＋雲端測試紀錄表」
 ```text
-/cloudflare-workers-d1 我的英文暱稱是【填入小寫英文暱稱，例如：chen01】。
-請幫我做一個 CEFR 【選填：B1 或 B2】 英語單字的「互動單字卡 (Flashcards) ＋ 限時四選一測驗」網頁系統。
-需求：
-1. 包含「學習模式（可翻面看單字、詞性、中英解釋與例句）」與「挑戰測驗模式（限時作答計分）」。
-2. 用 Cloudflare D1 當資料庫，建立 `vocab` 資料表（預先塞入 12 個 B1/B2 單字）與 `leaderboard` 資料表（只記錄班級代號、座號、測驗分數，不收真實姓名）。
-3. 請自動幫我建立 D1 資料庫、套用遠端 migrations 並部署到 Cloudflare Workers！
+請使用 cloudflare-workers-d1 技能，我的英文小寫暱稱是【填入小寫英文暱稱，例如：alice】。
+請根據以下英文短文，幫我建立並部署一個「CEFR A2 / B1 / B2 分級閱讀與聽力鷹架微學習網頁」：
+【在此貼上一篇 150–200 字的英文短文】
+
+教學與資料庫需求（請全部自動建立，不要叫我手動建表）：
+1. A2 / B1 / B2 即時難度切換：將短文改寫為 A2（短句、基礎字彙）、B1（中長句、標註 5 個重點單字）、B2（保留原文複雜度）三個分頁。
+2. 聽力朗讀控制列：內建瀏覽器語音朗讀（Play/Pause 與 1.0x / 0.85x 慢速切換）。
+3. 兩段式點擊單字提示（Two-Click Gloss）：點底線單字第 1 下只顯示「語境推敲線索問句（不可直接顯示定義）」，點第 2 下才顯示英英釋義與例句。
+4. 讀後 2 題四選一理解小考，並在網頁最下方內建可展開的「📊 Cloud D1 Peer-Test Logs」即時看板。
+5. 自動建立 Cloudflare D1 資料庫（含預塞三級課文的 `passages` 表，以及記錄測試者暱稱、所選等級、語速、點選單字與得分的 `reading_logs` 表），套用遠端 migrations 並部署到 Cloudflare Workers！
+```
+
+#### 💬 第 11 週範本：做「跨文化語用禮貌度情境分支卡＋雲端決策路徑紀錄表」
+```text
+請使用 cloudflare-workers-d1 技能，我的英文小寫暱稱是【填入小寫英文暱稱，例如：alice】。
+請幫我建立並部署一個「3 關卡跨文化英語語用禮貌度情境分支網頁 (L2 Pragmatics Branching Scenario Cards)」！
+情境主題：【填入溝通情境，例如：寫 Email 向教授申請報告遲交三天 / 職場婉拒主管臨時加派的週末工作 / 跨文化小組討論禮貌反駁隊友意見】。
+
+教學與資料庫需求（請全部自動建立，不要叫我手動建表）：
+1. 3 關卡對話情境（Turn 1 開場與來意 -> Turn 2 說明理由 -> Turn 3 提出補救與結尾）：每一關顯示對方說的話與 3 個不同禮貌程度的回應選項（Too Blunt 太直接沒禮貌 / Too Vague 太模糊 / Appropriate 恰當得體）。
+2. 禮貌度溫度計與語用修復分支（Repair Branch）：當學習者選到 Too Blunt 或 Too Vague 時，不要直接公布答案，請更新禮貌度計量條、跳出「語用提示小卡（Pragmatic Clue，例如提示改用 Could I possibly... 等緩和語氣）」並讓學習者重選修復後才能進入下一關。
+3. 網頁最下方內建可展開的「📊 Cloud D1 Peer-Test Logs」即時看板。
+4. 自動建立 Cloudflare D1 資料庫（含預塞 3 關情境題庫的 `scenario_nodes` 表，以及記錄測試者暱稱、完整決策路徑 `choice_path` 與觸發修復次數的 `pragmatics_logs` 表），套用遠端 migrations 並部署到 Cloudflare Workers！
 ```
 
 ---
 
-### 五、 Step 4：執行過程中，AI 請你配合的唯一點擊動作
+### 五、 Step 4：執行過程中，OpenCode 請你配合的唯一點擊動作
 
 1. **🔑【瀏覽器按 Allow 授權】**：
-   * 當 AI 啟動登入並跳出瀏覽器（或給你一串 `https://dash.cloudflare.com/oauth2/auth?...` 連結）時，登入你的 Cloudflare 帳號並點擊 **`Allow（允許）`**（整台電腦只需做這一次！）。
+   * 當 OpenCode 啟動登入並跳出瀏覽器（或給你一串 `https://dash.cloudflare.com/oauth2/auth?...` 連結）時，登入你的 Cloudflare 帳號並點擊 **`Allow（允許）`**（整台電腦只需在第 10 週做這一次，第 11 週免重新登入！）。
 2. **🔑【新帳號首次部署：設定子網域】**（若 AI 有提示才需做）：
    * 若是全新 Cloudflare 帳號第一次發佈，AI 會請你打開 [https://dash.cloudflare.com/](https://dash.cloudflare.com/) ➔ 點左側選單 **`Workers & Pages`** ➔ 自取一個英文子網域名稱並儲存，然後跟 AI 說「好了」。
-3. **🎉【完成驗收】**：
-   * AI 會自動幫你建好資料庫、建好表格、部署上線並完成測試，最後給你一張「**🎉 部署完成卡**」與公開網址 `https://xxx.workers.dev`，直接點開就能玩！
+3. **🎉【完成驗收與同儕互測】**：
+   * OpenCode 會自動幫你建好 D1 資料庫、寫入教材、部署上線並完成測試，最後給你一張「**🎉 部署完成卡**」與公開網址 `https://xxx.workers.dev`，直接貼上 Padlet 讓同學進行 Peer Testing！
 
 ---
 ---
 
 ## 🌍 Part 2: English Student Handout (For Non-Chinese Environments)
 
-### 1. Why Use This Workflow?
-With the **`/cloudflare-workers-d1-en`** skill, your AI Agent deploys your **Frontend Web App + Backend API + Cloud SQL Database (D1)** all together under a single **Cloudflare** account:
+### 1. Why Use This Workflow in OpenCode?
+With the **`cloudflare-workers-d1-en`** skill and a project-root **`AGENTS.md`** file in **OpenCode**, your AI Agent deploys your **Frontend Web App + Backend API + Cloud SQL Database (D1)** all together under a single **Cloudflare** account:
+* **Rule-Driven via `AGENTS.md`**: Simply drop the `AGENTS.md` file downloaded from your course Cockpit Design Card into the **top level (root) of your project folder**, and OpenCode reads and follows it automatically!
 * **Zero MCP Setup, Zero API Keys or Tokens**: You never have to copy or paste any secret tokens!
-* **Same-Origin Architecture (Zero CORS Issues)**: Works immediately in any normal browser window on desktop, tablet, or mobile—no Incognito window needed!
-* **Your Job**: Let the AntiGravity AI run all commands and write all code—you only need **1 install prompt + 1 wish prompt + 1 click on "Allow" in your browser**!
+* **Auto-Created Cloud Database + Live Log Viewer**: OpenCode automatically creates the D1 SQLite tables, seeds your reading passages or pragmatics scenarios, and adds a collapsible **"📊 Cloud D1 Peer-Test Logs"** viewer at the bottom of your webpage!
+* **Your Job**: Let the OpenCode AI run all commands, write all SQL, and build all code—you only need **1 install prompt + placing `AGENTS.md` in your project root + 1 click on "Allow" in your browser**!
 
 ---
 
-### 2. Step 1: Install the Skill into AntiGravity (One-Time Setup)
+### 2. Step 1: Install the Skill into OpenCode (One-Time Setup)
 
-Open **AntiGravity**, copy the entire block below, and paste it directly into the chat box (the AI will automatically create the folders and install the English skill for you):
+Open **OpenCode**, copy the entire block below, and paste it directly into the prompt box (the AI will automatically create the folders and install the English skill for you):
 
-#### 💬 Copy & Paste This Install Prompt into AntiGravity (English Edition):
+#### 💬 Copy & Paste This Install Prompt into OpenCode (English Edition):
 ```text
-Please download the skill file from https://raw.githubusercontent.com/MeiChen-ai/cloudflare-workers-d1-skill/main/skills/cloudflare-workers-d1-en/SKILL.md and save it as my global AntiGravity skill at ~/.gemini/config/skills/cloudflare-workers-d1-en/SKILL.md (automatically create the directories if they do not exist).
+Please download the skill file from https://raw.githubusercontent.com/MeiChen-ai/cloudflare-workers-d1-skill/main/skills/cloudflare-workers-d1-en/SKILL.md and save it to both ~/.config/opencode/skills/cloudflare-workers-d1-en/SKILL.md and ~/.agents/skills/cloudflare-workers-d1-en/SKILL.md (automatically create the directories if they do not exist).
 ```
 
-*(💡 After installation, open a new chat and type `/` to see `/cloudflare-workers-d1-en`! Also switch your model selector to **Gemini Flash** for the fastest speed and best free-tier quota efficiency.)*
+*(💡 Once installed, OpenCode will automatically recognize the `cloudflare-workers-d1-en` skill in any project folder!)*
 
 ---
 
@@ -105,28 +124,45 @@ Please download the skill file from https://raw.githubusercontent.com/MeiChen-ai
 
 ---
 
-### 4. Step 3: Fill-in-the-Blank Wish Prompts (CEFR B1 / B2 Vocabulary Practice)
+### 4. Step 3: Place `AGENTS.md` in Your Project Root (or Paste a Wish Prompt)
 
-Copy one of the templates below, customize the brackets `[...]`, and send it to AntiGravity:
+Create your weekly project folder on your Desktop (e.g., `Week10_App` or `Week11_App`) and place the **`AGENTS.md`** file downloaded from your course Cockpit Design Card directly in the **top-level root directory**:
 
-#### 🎮 Template A: CEFR B1 / B2 Vocabulary Arcade Game + Cloud Leaderboard
 ```text
-/cloudflare-workers-d1-en My English nickname is [enter lowercase nickname, e.g., alex01].
-Please build a [Choose Game Type: Maze Chase Game / Whack-a-Mole / Space Quiz Shooter / Memory Card Matching / Word Bomb Defuser] web game for practicing CEFR [Choose: B1 or B2] English vocabulary.
-Requirements:
-1. Gameplay mode: [Choose: match the English definition to the target word / fill in the blank in a context sentence / match synonyms], with live Score, Lives, and Stage display (supporting both keyboard and touch buttons).
-2. Use Cloudflare D1 as the SQLite database with two tables: a `vocab` table (pre-seeded with 12 CEFR B1/B2 words, English definitions, and example sentences—all in pure English, plus a web form to add new words) and a `leaderboard` table (recording only class_code, seat_no, score, and correct_count—no real names).
-3. Please automatically create the D1 database, apply remote migrations, and deploy the full-stack app to Cloudflare Workers!
+Week10_App/          👈 Open OpenCode in this folder
+└── AGENTS.md        👈 Place your downloaded AGENTS.md right here (ALL CAPS + S)!
 ```
 
-#### 📚 Template B: CEFR B1 / B2 Smart Flashcards & Speed Quiz + Cloud Scoreboard
+Then launch **OpenCode** inside that folder and type one short sentence:
+> **`Please read AGENTS.md in this folder, build the web app and Cloudflare D1 database, and deploy it live!`**
+
+*(Or, if you want to prompt OpenCode directly without a pre-downloaded `AGENTS.md`, copy one of the templates below:)*
+
+#### 📖 Week 10 Template: CEFR A2 / B1 / B2 Scaffolded Reading & Listening Web App + Cloud Logs
 ```text
-/cloudflare-workers-d1-en My English nickname is [enter lowercase nickname, e.g., alex01].
-Please build an interactive "CEFR [Choose: B1 or B2] Vocabulary Flashcards & Timed Speed Quiz" web application.
-Requirements:
-1. Include a "Study Mode" (flip cards showing the word, part of speech, English definition, and example sentence) and a "Timed Quiz Challenge Mode" (multiple-choice cloze questions with live scoring).
-2. Use Cloudflare D1 as the SQLite database with two tables: a `vocab` table (pre-seeded with 12 B1/B2 words in pure English) and a `leaderboard` table (recording only class_code, seat_no, and score—no real names).
-3. Please automatically create the D1 database, apply remote migrations, and deploy the full-stack app to Cloudflare Workers!
+Please use the cloudflare-workers-d1-en skill. My lowercase English nickname is [enter lowercase nickname, e.g., alice].
+Based on the source article below, please build and deploy a "CEFR A2 / B1 / B2 Scaffolded Reading & Listening Microlearning Web App":
+[Paste a 150–200 word English article here]
+
+Pedagogical & Database Requirements (Auto-create all tables and seed data—do not ask me to write SQL manually):
+1. A2 / B1 / B2 Instant Level Switcher: Adapt the source article into three selectable tabs—A2 (short sentences <=12 words, basic vocabulary), B1 (medium sentences, 5 highlighted target words), and B2 (authentic text complexity).
+2. Listening Scaffold: Add a browser TTS audio bar (window.speechSynthesis) with Play/Pause and 1.0x / 0.85x speed buttons.
+3. Two-Click Vocabulary Glosses: Highlight 5 key words in the text. 1st click shows ONLY a context-inference clue question (never reveal the definition on the 1st click); 2nd click reveals the English definition and example.
+4. Add 2 multiple-choice comprehension questions at the bottom, plus a collapsible "📊 Cloud D1 Peer-Test Logs" table showing all submitted peer-test records.
+5. Automatically create the Cloudflare D1 database (with a pre-seeded `passages` table and a `reading_logs` table recording nickname, selected_level, audio_speed, words_clicked, and quiz_score), apply remote migrations, and deploy to Cloudflare Workers!
+```
+
+#### 💬 Week 11 Template: L2 Pragmatics Politeness Branching Scenario Cards + Cloud Path Logs
+```text
+Please use the cloudflare-workers-d1-en skill. My lowercase English nickname is [enter lowercase nickname, e.g., alice].
+Please build and deploy an interactive "3-Turn L2 Pragmatics Politeness Branching Scenario Web App"!
+Scenario Topic: [Enter scenario, e.g., Emailing a professor to request a 3-day essay extension / Politely declining a coworker's last-minute weekend request / Disagreeing politely in an international team meeting].
+
+Pedagogical & Database Requirements (Auto-create all tables and seed data—do not ask me to write SQL manually):
+1. 3-Turn Scenario Cards (Turn 1 Opening Request -> Turn 2 Explaining Reasons -> Turn 3 Offering Follow-up & Closing): At each turn, display the interlocutor's line and 3 response choices (Too Blunt / Too Vague / Pragmatically Appropriate).
+2. Politeness Meter & Repair Branch: When a learner selects a Too Blunt or Too Vague option, do NOT auto-reveal the best answer—update the visual Politeness Meter, show a Pragmatic Clue (Elicitation, e.g., suggesting modal hedging like "Could I possibly..."), and let the learner retry before advancing.
+3. Include a collapsible "📊 Cloud D1 Peer-Test Logs" viewer at the bottom of the webpage.
+4. Automatically create the Cloudflare D1 database (with a pre-seeded `scenario_nodes` table and a `pragmatics_logs` table recording nickname, scenario_topic, full choice_path such as Step1:Blunt(Repair)->Step2:OK->Step3:OK, and repairs_triggered), apply remote migrations, and deploy to Cloudflare Workers!
 ```
 
 ---
@@ -134,11 +170,11 @@ Requirements:
 ### 5. Step 4: What You Click During Deployment
 
 1. **🔑 [Click "Allow" in Browser]**:
-   * When the AI runs `wrangler login` and opens your browser (or gives you a `https://dash.cloudflare.com/oauth2/auth?...` link), sign in to Cloudflare and click **`Allow`** (only needed once per computer!).
+   * When OpenCode runs `wrangler login` and opens your browser (or gives you a `https://dash.cloudflare.com/oauth2/auth?...` link), sign in to Cloudflare and click **`Allow`** (only needed once in Week 10—Week 11 skips login automatically!).
 2. **🔑 [First-Time Account Subdomain Setup]** *(only if prompted)*:
    * If this is a brand-new Cloudflare account, the AI may ask you to open [https://dash.cloudflare.com/](https://dash.cloudflare.com/) ➔ Click **`Workers & Pages`** in the left sidebar ➔ Pick a custom `workers.dev` subdomain name and save it, then reply **"Done"**.
-3. **🎉 [Play & Share!]**:
-   * The AI will automatically create your D1 database, run SQL migrations, deploy your site, verify the database connection, and hand you your live `https://xxx.workers.dev` URL!
+3. **🎉 [Peer Test & Inspect Cloud D1 Logs!]**:
+   * OpenCode will automatically create your D1 database, seed your content, deploy your site, verify the API, and hand you your live `https://xxx.workers.dev` URL ready for Peer Testing!
 
 ---
 

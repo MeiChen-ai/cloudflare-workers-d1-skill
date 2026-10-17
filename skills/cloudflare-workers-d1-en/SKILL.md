@@ -59,11 +59,12 @@ This workflow is **idempotent (resumable)**: always check current state first an
      ```powershell
      $env:Path = [Environment]::GetEnvironmentVariable('Path','Machine') + ';' + [Environment]::GetEnvironmentVariable('Path','User')
      ```
-2. Check if Wrangler is already logged in:
+2. Check if Wrangler is logged in with full OAuth scopes:
    ```powershell
    npx.cmd -y wrangler whoami
    ```
-   - If the output shows the user's logged-in email address, **skip Steps 2 and 3 and jump directly to Step 4**!
+   - If the output shows the user's logged-in email address AND does **not** warn `Wrangler is missing some expected Oauth scopes` (must have both `workers:write` and `d1:write`), **skip Steps 2 and 3 and jump directly to Step 4**!
+   - ⚠️ **Critical Pitfall**: If an older token only has `d1 (write)` and is missing `workers:write`, `wrangler deploy` will fail with `No access to the specified resource`. In that case, run Step 3 (`npx.cmd -y wrangler login`) so the student clicks **Allow** once to refresh the token scopes!
 
 ---
 

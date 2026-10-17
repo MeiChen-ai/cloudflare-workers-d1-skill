@@ -56,11 +56,12 @@ description: Cloudflare Workers（前端網站＋後端 API）＋ Cloudflare D1�
      ```powershell
      $env:Path = [Environment]::GetEnvironmentVariable('Path','Machine') + ';' + [Environment]::GetEnvironmentVariable('Path','User')
      ```
-2. 檢查是否已登入 Cloudflare：
+2. 檢查是否已登入 Cloudflare 且權限完整：
    ```powershell
    npx.cmd -y wrangler whoami
    ```
-   - 若輸出中已顯示使用者的 Email（Logged in），**直接跳過第 2、3 步，進入第 4 步**！
+   - 若輸出中已顯示使用者的 Email，且**沒有**出現 `WARNING: Wrangler is missing some expected Oauth scopes`（特別是需確認具備 `workers:write` 與 `d1:write`），**直接跳過第 2、3 步，進入第 4 步**！
+   - ⚠️ **避坑關鍵**：若舊憑證只有 `d1 (write)` 而缺少 `workers:write`，後續 `wrangler deploy` 會報 `No access to the specified resource`。此時仍須執行第 3 步 `npx.cmd -y wrangler login` 請使用者按一次 Allow 更新憑證！
 
 ---
 

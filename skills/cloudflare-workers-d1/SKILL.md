@@ -1,6 +1,6 @@
 ---
 name: cloudflare-workers-d1
-description: OpenCode 專用：Cloudflare Workers（前端網站＋後端 API）＋ Cloudflare D1（SQLite 雲端資料庫）免金鑰、免 MCP 零複製全自動閉環部署指南。支援「專案根目錄 AGENTS.md（教學規則）＋學生貼上的 Prompt（教材內容）」雙層指令，內建第 10 週「A2/B1/B2 分級閱讀與聽力鷹架網」與第 11 週「跨文化語用禮貌度情境分支卡」標準範本。當使用者在 OpenCode 提到「連接 Cloudflare」「設定 Cloudflare」「用 Cloudflare 部署」「Cloudflare D1」「Wrangler 登入」「照 AGENTS.md 部署到 Cloudflare」時自動啟用。
+description: OpenCode 專用：Cloudflare Workers（前端網站＋後端 API）＋ Cloudflare D1（SQLite 雲端資料庫）免金鑰、免 MCP 零複製全自動閉環部署指南。支援「專案根目錄 AGENTS.md（教學規則）＋學生貼上的 Prompt（教材內容）」雙層指令，內建第 10 週「A2/B1/B2 分級閱讀與聽力鷹架網」與第 11 週「我自己設計的英文 App」（5 種 App 類型）標準範本。當使用者在 OpenCode 提到「連接 Cloudflare」「設定 Cloudflare」「用 Cloudflare 部署」「Cloudflare D1」「Wrangler 登入」「照 AGENTS.md 部署到 Cloudflare」時自動啟用。
 ---
 
 # OpenCode × Cloudflare Workers + D1 零金鑰全自動閉環系統（教學與自動化實作指南）
@@ -31,7 +31,7 @@ description: OpenCode 專用：Cloudflare Workers（前端網站＋後端 API）
 
 1. **絕不索取或印出任何密碼與金鑰**：本流程 100% 透過 `npx.cmd -y wrangler login` 瀏覽器 OAuth 完成，**嚴禁**要求學生貼上 API Token、密碼，也不可讀取 `~/.wrangler/` 憑證檔內容。
 2. **學生隱私去識別化**：D1 資料庫的學習紀錄表**只記錄「測試者暱稱 (`nickname`)、班級/組別代號 (`class_code`)、互動歷程與得分」**，嚴禁收集真實全名、身分證字號、電話或住址。
-3. **名稱必須全小寫英數連字號**：`wrangler.jsonc` 的 `"name"` 與 D1 資料庫名稱**只能使用小寫英文 `a-z`、數字 `0-9` 與連字號 `-`**（且開頭必為英文字母，例如 `alice-w10-reading` 或 `alice-w11-pragmatics`）。若含大寫字母，Wrangler 會直接報錯拒絕。
+3. **名稱必須全小寫英數連字號**：`wrangler.jsonc` 的 `"name"` 與 D1 資料庫名稱**只能使用小寫英文 `a-z`、數字 `0-9` 與連字號 `-`**（且開頭必為英文字母，例如 `alice-w10-reading` 或 `alice-w11-app`）。若含大寫字母，Wrangler 會直接報錯拒絕。
 4. **Migrations 必加 `--remote`**：套用資料庫結構時，必須執行 `npx.cmd -y wrangler d1 migrations apply <資料庫名> --remote --yes`。若漏掉 `--remote` 只會改到本機暫存檔，線上網站會報 `no such table` 錯誤。
 5. **使用 Workers Static Assets（勿用舊版 `wrangler pages`）**：Cloudflare Pages 已併入 Workers，一律透過 `wrangler.jsonc` 的 `"assets": { "directory": "./public", "run_worker_first": ["/api/*"] }` 搭配 `npx.cmd -y wrangler deploy` 部署。
 
@@ -42,17 +42,17 @@ description: OpenCode 專用：Cloudflare Workers（前端網站＋後端 API）
 本流程具備**可續跑性（Idempotent）**：每一步開始前先檢查狀態，已完成的步驟自動跳過。
 
 ### 第 0 步：讀取 `AGENTS.md`（規則）＋學生 Prompt（內容）與確認英文暱稱
-1. 先檢查當前專案資料夾最外層（根目錄）是否有 `AGENTS.md`，若有則讀取其中的**教學規則**（課程週次、分級／提示／禮貌度等規則、資料表與部署要求）。
-   - **教材內容來自學生貼上的 Prompt**：第 10 週為暱稱、文章、5 個關鍵字、2 題理解題；第 11 週為暱稱與情境主題。
+1. 先檢查當前專案資料夾最外層（根目錄）是否有 `AGENTS.md`，若有則讀取其中的**教學規則**（課程週次、分級／提示規則或 App 類型與回饋規則、資料表與部署要求）。
+   - **教材內容來自學生貼上的 Prompt**：第 10 週為暱稱、文章、5 個關鍵字、2 題理解題；第 11 週為暱稱、學習者與問題、App 點子、練習題。
    - **兩層分工**：`AGENTS.md` 管「怎麼教」，Prompt 管「教什麼」。若 Prompt 與 `AGENTS.md` 的規則衝突，**以 `AGENTS.md` 為準**，並用一句話告訴學生哪裡不一致。
    - 若只有 Prompt、沒有 `AGENTS.md`：提醒學生先從 Cockpit 設計卡下載 `AGENTS.md` 放進資料夾最外層；學生堅持不放時，才改用 Prompt 內容與本技能的預設規則繼續。
-   - 若只有 `AGENTS.md`、還沒有內容：請學生貼上設計卡產生的 Prompt，不要自行編造文章或情境。
+   - 若只有 `AGENTS.md`、還沒有內容：請學生貼上設計卡產生的 Prompt，不要自行編造文章或練習題。
 2. 若 Prompt 裡沒有英文暱稱，先問一句：
    > 「請告訴我你的**英文小寫暱稱**（例如 `alice` 或 `sean01`，只用小寫英文與數字），我會用它在 OpenCode 幫你建立專屬的 Cloudflare 網站與 D1 雲端資料庫！」
    *(若學生給大寫，自動幫他轉小寫)*。
 3. 決定命名：
    - **第 10 週（分級閱讀與聽力鷹架網）**：網站名為 `<暱稱>-w10-reading`，資料庫名為 `<暱稱>-w10-reading-db`。
-   - **第 11 週（語用禮貌度情境分支卡）**：網站名為 `<暱稱>-w11-pragmatics`，資料庫名為 `<暱稱>-w11-pragmatics-db`。
+   - **第 11 週（我自己設計的英文 App）**：網站名為 `<暱稱>-w11-app`，資料庫名為 `<暱稱>-w11-app-db`。
 
 ---
 
@@ -89,7 +89,7 @@ description: OpenCode 專用：Cloudflare Workers（前端網站＋後端 API）
 
 ---
 
-### 第 4 步：依 `AGENTS.md` 規則與 Prompt 內容建立專案結構與 D1 資料庫（Week 10 閱讀聽力 ／ Week 11 語用情境卡）
+### 第 4 步：依 `AGENTS.md` 規則與 Prompt 內容建立專案結構與 D1 資料庫（Week 10 閱讀聽力 ／ Week 11 自訂英文 App）
 
 在學生啟動 OpenCode 的專案資料夾內，建立以下同源全端結構（`AGENTS.md` 位於專案最外層根目錄）：
 
@@ -109,7 +109,7 @@ description: OpenCode 專用：Cloudflare Workers（前端網站＋後端 API）
 #### 1. `wrangler.jsonc` 標準範本（注意 `name` 必為全小寫）
 ```jsonc
 {
-  "name": "<小寫暱稱>-<w10-reading或w11-pragmatics>",
+  "name": "<小寫暱稱>-<w10-reading或w11-app>",
   "main": "worker.js",
   "compatibility_date": "2026-10-01",
   "assets": {
@@ -156,28 +156,27 @@ CREATE TABLE IF NOT EXISTS reading_logs (
 
 ---
 
-#### 3B. 【第 11 週範例】跨文化語用禮貌度情境分支卡（`migrations/0001_init.sql` 範本）
-OpenCode 依 `AGENTS.md` 的關卡、禮貌度與修復分支規則，處理學生 Prompt 裡的情境主題，自動建立 3 關情境對話節點表 `scenario_nodes`（含不禮貌選項的語用提示與修復分支）以及記錄學習者決策路徑的 `pragmatics_logs` 表：
+#### 3B. 【第 11 週範例】我自己設計的英文 App（`migrations/0001_init.sql` 範本）
+學生在 Cockpit 設計卡自選 1 種 App 類型：**Branching conversation**（3 關對話，選 1 個回應）、**Put it in order**（把打亂的字排回句子）、**Listen and type**（聽句子打字）、**Sort into groups**（把字卡分組）或 **Flip and recall**（翻卡回想並自評）。OpenCode 依 `AGENTS.md` 的 App 類型、回饋規則與資料表要求，把學生 Prompt 裡的練習題（一行一題，格式依 App 類型而定）預塞進 `items`，並建立記錄每次練習的 `practice_logs` 表：
 
 ```sql
-CREATE TABLE IF NOT EXISTS scenario_nodes (
+CREATE TABLE IF NOT EXISTS items (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
-  step_no INTEGER NOT NULL,          -- 1, 2, or 3
-  speaker_line TEXT NOT NULL,        -- 對方（教授/主管/客戶）說的話
-  options_json TEXT NOT NULL         -- JSON: [{"label":"A","text":"I need an extension.","politeness":"Too Blunt","clue":"Using 'I need' sounds demanding to a professor. Try a modal verb + apology.","is_best":false}, ...]
+  position INTEGER NOT NULL,         -- 題目順序 1, 2, 3...
+  content_json TEXT NOT NULL         -- 依 App 類型而定，例如 Branching conversation：{"line":"Professor: Hi, what can I do for you?","best":"Could I possibly have three more days?","weaker":["I need three more days.","Um, something happened."]}
 );
 
-CREATE TABLE IF NOT EXISTS pragmatics_logs (
+CREATE TABLE IF NOT EXISTS practice_logs (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   nickname TEXT NOT NULL,
-  scenario_topic TEXT NOT NULL,
-  choice_path TEXT NOT NULL,         -- 例如 'Step1:B(Repair)->Step1:C->Step2:A->Step3:B'
-  repairs_triggered INTEGER NOT NULL DEFAULT 0,
-  final_reflection TEXT DEFAULT '',
+  app_type TEXT NOT NULL,            -- 例如 'Put it in order'
+  score INTEGER NOT NULL DEFAULT 0,
+  hints_used INTEGER NOT NULL DEFAULT 0,
+  details TEXT DEFAULT '',           -- 依 AGENTS.md 的規定，例如選擇路徑 'T1:weak->T1:best->T2:best->T3:best' 或重播次數
   created_at TEXT DEFAULT CURRENT_TIMESTAMP
 );
 ```
-*(同樣由 OpenCode 在 `0001_init.sql` 檔尾直接 `INSERT INTO scenario_nodes ...` 預塞 3 關情境卡資料！若學生在第 11 週選做「Track B 寫作螢光筆自檢台」，則將表結構改為記錄 `red_words_before`, `red_words_after`, `original_draft`, `revised_draft` 即可。)*
+*(同樣由 OpenCode 在 `0001_init.sql` 檔尾直接 `INSERT INTO items ...` 預塞學生 Prompt 裡的全部練習題！)*
 
 ---
 
@@ -196,10 +195,10 @@ export default {
   async fetch(request, env) {
     const url = new URL(request.url);
 
-    // 讀取題庫（課文或語用情境）與最新 25 筆同儕測試紀錄（供網頁下方「📊 Teacher / Designer Cloud Log Drawer」即時檢視）
+    // 讀取題庫（課文或練習題）與最新 25 筆同儕測試紀錄（供網頁下方「📊 Teacher / Designer Cloud Log Drawer」即時檢視）
     if (url.pathname === "/api/data" && request.method === "GET") {
       try {
-        // 依專案表名自動查詢（Week 10 為 passages + reading_logs；Week 11 為 scenario_nodes + pragmatics_logs）
+        // 依專案表名自動查詢（Week 10 為 passages + reading_logs；Week 11 為 items + practice_logs）
         const tables = await env.DB.prepare("SELECT name FROM sqlite_master WHERE type='table'").all();
         const tableNames = tables.results.map(r => r.name);
 
@@ -208,9 +207,9 @@ export default {
           const { results: logs } = await env.DB.prepare("SELECT * FROM reading_logs ORDER BY id DESC LIMIT 25").all();
           return json({ ok: true, mode: "week10_reading", passages, logs });
         } else {
-          const { results: nodes } = await env.DB.prepare("SELECT * FROM scenario_nodes ORDER BY step_no ASC").all();
-          const { results: logs } = await env.DB.prepare("SELECT * FROM pragmatics_logs ORDER BY id DESC LIMIT 25").all();
-          return json({ ok: true, mode: "week11_pragmatics", nodes, logs });
+          const { results: items } = await env.DB.prepare("SELECT * FROM items ORDER BY position ASC").all();
+          const { results: logs } = await env.DB.prepare("SELECT * FROM practice_logs ORDER BY id DESC LIMIT 25").all();
+          return json({ ok: true, mode: "week11_app", items, logs });
         }
       } catch (err) {
         return json({ ok: false, error: String(err.message || err) }, 500);
@@ -233,13 +232,13 @@ export default {
           ).run();
         } else {
           await env.DB.prepare(
-            "INSERT INTO pragmatics_logs (nickname, scenario_topic, choice_path, repairs_triggered, final_reflection) VALUES (?, ?, ?, ?, ?)"
+            "INSERT INTO practice_logs (nickname, app_type, score, hints_used, details) VALUES (?, ?, ?, ?, ?)"
           ).bind(
             String(body.nickname || "Anonymous").trim(),
-            String(body.scenarioTopic || "Pragmatics Task").trim(),
-            String(body.choicePath || "").trim(),
-            Number(body.repairsTriggered || 0),
-            String(body.finalReflection || "").trim()
+            String(body.appType || "").trim(),
+            Number(body.score || 0),
+            Number(body.hintsUsed || 0),
+            String(body.details || "").trim()
           ).run();
         }
         return json({ ok: true });
@@ -252,7 +251,7 @@ export default {
   }
 };
 ```
-> 💡 **教學貼心設計**：前端 `public/index.html` 最下方請務必內建一個可展開的 **「📊 Cloud D1 Learner Logs（雲端測試紀錄即時看板）」** 區塊（直接顯示 `/api/data` 回傳的 `logs` 表格），讓學生與同儕互測完，不用進 Cloudflare 後台就能直接在網頁上看到誰選了哪個等級、點了哪些單字、或走了哪條語用分支路徑！
+> 💡 **教學貼心設計**：前端 `public/index.html` 最下方請務必內建一個可展開的 **「📊 Cloud D1 Learner Logs（雲端測試紀錄即時看板）」** 區塊（直接顯示 `/api/data` 回傳的 `logs` 表格），讓學生與同儕互測完，不用進 Cloudflare 後台就能直接在網頁上看到誰選了哪個等級、點了哪些單字、或在自訂 App 拿了幾分、用了幾次提示！
 
 ---
 

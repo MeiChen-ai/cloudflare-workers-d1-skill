@@ -1,6 +1,6 @@
 ---
 name: cloudflare-workers-d1-en
-description: OpenCode Edition: Automated Cloudflare Workers (frontend + backend API) + Cloudflare D1 (SQLite cloud database) zero-key, zero-MCP closed-loop web system guide. Designed for OpenCode with two layers of instructions: a project-root AGENTS.md (teaching rules) plus the prompt the student pastes (learning content), featuring built-in schemas for Week 10 (A2/B1/B2 Scaffolded Reading & Listening Web App) and Week 11 (L2 Pragmatics Politeness Branching Scenario Cards). Activate automatically in OpenCode when the user says "connect Cloudflare", "setup Cloudflare", "deploy to Cloudflare", "Cloudflare D1", "wrangler login", or "follow AGENTS.md to deploy to Cloudflare".
+description: OpenCode Edition: Automated Cloudflare Workers (frontend + backend API) + Cloudflare D1 (SQLite cloud database) zero-key, zero-MCP closed-loop web system guide. Designed for OpenCode with two layers of instructions: a project-root AGENTS.md (teaching rules) plus the prompt the student pastes (learning content), featuring built-in schemas for Week 10 (A2/B1/B2 Scaffolded Reading & Listening Web App) and Week 11 (My Own English App, 5 app types). Activate automatically in OpenCode when the user says "connect Cloudflare", "setup Cloudflare", "deploy to Cloudflare", "Cloudflare D1", "wrangler login", or "follow AGENTS.md to deploy to Cloudflare".
 ---
 
 # OpenCode × Cloudflare Workers + D1 Zero-Key Closed-Loop System (English Student Edition)
@@ -33,8 +33,8 @@ Your user is an **English-major student or educator without a backend engineerin
 ## 🔒 Five Hard Safety & Pitfall Red Lines
 
 1. **Never Ask For or Print Passwords, Tokens, or Keys**: This workflow uses 100% browser OAuth via `npx.cmd -y wrangler login`. **NEVER** ask the student to paste an API token or password, and never read or print `~/.wrangler/` credential files.
-2. **Student Privacy & De-identification**: Database tables (such as reading logs or pragmatics branching logs) must **only store `nickname`, selected levels, clicked words, or branching paths**. Never collect real full names, national ID numbers, phone numbers, or addresses.
-3. **Lowercase Alphanumeric + Hyphen Names Only**: Both `"name"` in `wrangler.jsonc` and the D1 database name **must only contain lowercase letters `a-z`, digits `0-9`, and hyphens `-`** (starting with a letter, e.g., `alice-w10-reading` or `alice-w11-pragmatics`). Uppercase letters are rejected by Wrangler.
+2. **Student Privacy & De-identification**: Database tables (such as reading logs or practice logs) must **only store `nickname`, selected levels, clicked words, or practice scores**. Never collect real full names, national ID numbers, phone numbers, or addresses.
+3. **Lowercase Alphanumeric + Hyphen Names Only**: Both `"name"` in `wrangler.jsonc` and the D1 database name **must only contain lowercase letters `a-z`, digits `0-9`, and hyphens `-`** (starting with a letter, e.g., `alice-w10-reading` or `alice-w11-app`). Uppercase letters are rejected by Wrangler.
 4. **Always Pass `--remote` to Migrations**: When applying SQL migrations, always run `npx.cmd -y wrangler d1 migrations apply <db-name> --remote --yes`. Omitting `--remote` only updates a local SQLite file, causing `no such table` errors on the live site.
 5. **Use Workers Static Assets (Never Use Legacy `wrangler pages`)**: Cloudflare Pages is now unified into Workers. Always configure `"assets": { "directory": "./public", "run_worker_first": ["/api/*"] }` in `wrangler.jsonc` and deploy with `npx.cmd -y wrangler deploy`.
 
@@ -45,17 +45,17 @@ Your user is an **English-major student or educator without a backend engineerin
 This workflow is **idempotent (resumable)**: always check current state first and skip any steps that are already completed.
 
 ### Step 0: Read `AGENTS.md` (Rules) + the Student's Prompt (Content) & Confirm the Nickname
-1. First, check the current project root folder for `AGENTS.md` and read its **teaching rules**: the target week (**Week 10: A2/B1/B2 Scaffolded Reading & Listening Web App** or **Week 11: L2 Pragmatics Politeness Branching Scenario Cards**), the level/clue/politeness rules, and the database and deployment requirements.
-   - **The learning content comes from the student's pasted prompt**: Week 10 = nickname, article, 5 key words, 2 check questions; Week 11 = nickname and scenario topic.
+1. First, check the current project root folder for `AGENTS.md` and read its **teaching rules**: the target week (**Week 10: A2/B1/B2 Scaffolded Reading & Listening Web App** or **Week 11: My Own English App**), the level/clue rules or the app type and feedback rule, and the database and deployment requirements.
+   - **The learning content comes from the student's pasted prompt**: Week 10 = nickname, article, 5 key words, 2 check questions; Week 11 = nickname, learner & problem, app idea, practice items.
    - **Two layers**: `AGENTS.md` says *how* to teach; the prompt says *what* to teach. If the prompt conflicts with a rule in `AGENTS.md`, **follow `AGENTS.md`** and tell the student in one sentence what did not match.
    - Prompt but no `AGENTS.md`: remind the student to download `AGENTS.md` from the Cockpit design card and put it in the project root. Only if they decline, continue with the prompt content and this skill's default rules.
-   - `AGENTS.md` but no content yet: ask the student to paste the prompt from the design card. Do not invent an article or scenario.
+   - `AGENTS.md` but no content yet: ask the student to paste the prompt from the design card. Do not invent an article or practice items.
 2. If the prompt has no nickname, ask:
    > "Please give me a short **English nickname** (lowercase letters and numbers only, e.g., `alice` or `sean01`) so I can name your live Cloudflare website and D1 cloud database in OpenCode!"
    *(Automatically convert any uppercase letters to lowercase).*
 3. Determine resource names:
    - **Week 10 (Reading & Listening App)**: Worker name `<nickname>-w10-reading`, D1 database `<nickname>-w10-reading-db`.
-   - **Week 11 (Pragmatics Branching Cards)**: Worker name `<nickname>-w11-pragmatics`, D1 database `<nickname>-w11-pragmatics-db`.
+   - **Week 11 (My Own English App)**: Worker name `<nickname>-w11-app`, D1 database `<nickname>-w11-app-db`.
 
 ---
 
@@ -92,7 +92,7 @@ Ask the student: *"Do you already have a Cloudflare account (with your email ver
 
 ---
 
-### Step 4: Create Project Structure & D1 Cloud Database from the `AGENTS.md` Rules and the Prompt Content (Week 10 Reading/Listening or Week 11 Pragmatics Cards)
+### Step 4: Create Project Structure & D1 Cloud Database from the `AGENTS.md` Rules and the Prompt Content (Week 10 Reading/Listening or Week 11 Own English App)
 
 In the project folder where the student launched OpenCode, create the unified full-stack directory structure (`AGENTS.md` sits in the root folder):
 
@@ -112,7 +112,7 @@ In the project folder where the student launched OpenCode, create the unified fu
 #### 1. `wrangler.jsonc` Template (Lowercase `name` Required)
 ```jsonc
 {
-  "name": "<nickname>-<w10-reading-or-w11-pragmatics>",
+  "name": "<nickname>-<w10-reading-or-w11-app>",
   "main": "worker.js",
   "compatibility_date": "2026-10-01",
   "assets": {
@@ -159,28 +159,27 @@ CREATE TABLE IF NOT EXISTS reading_logs (
 
 ---
 
-#### 3B. [Week 11 Example] L2 Pragmatics Politeness Branching Scenario Cards (`migrations/0001_init.sql` Template)
-Following the turn, politeness and repair-branch rules in `AGENTS.md`, OpenCode takes the scenario topic from the student's prompt, automatically creates the 3-turn branching scenario table `scenario_nodes` (including pragmatic clues and repair branches for overly blunt/vague choices), and sets up the `pragmatics_logs` table to record peer testers' decision paths:
+#### 3B. [Week 11 Example] My Own English App (`migrations/0001_init.sql` Template)
+On the Cockpit design card, each student picks 1 app type: **Branching conversation** (3 turns, pick 1 of 3 replies), **Put it in order** (tap mixed-up words back into a sentence), **Listen and type** (hear a sentence, type it), **Sort into groups** (drag word cards into groups) or **Flip and recall** (flip a card, rate yourself). Following the app type, feedback rule and table rules in `AGENTS.md`, OpenCode pre-fills `items` with the practice items from the student's prompt (one per line, in the format for that app type) and sets up `practice_logs` to record each session:
 
 ```sql
-CREATE TABLE IF NOT EXISTS scenario_nodes (
+CREATE TABLE IF NOT EXISTS items (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
-  step_no INTEGER NOT NULL,          -- 1, 2, or 3
-  speaker_line TEXT NOT NULL,        -- Interlocutor prompt (e.g., professor, supervisor, classmate)
-  options_json TEXT NOT NULL         -- JSON: [{"label":"A","text":"I need an extension.","politeness":"Too Blunt","clue":"Using 'I need' sounds demanding to a professor. Try a modal verb + reason.","is_best":false}, ...]
+  position INTEGER NOT NULL,         -- item order 1, 2, 3...
+  content_json TEXT NOT NULL         -- depends on the app type, e.g. Branching conversation: {"line":"Professor: Hi, what can I do for you?","best":"Could I possibly have three more days?","weaker":["I need three more days.","Um, something happened."]}
 );
 
-CREATE TABLE IF NOT EXISTS pragmatics_logs (
+CREATE TABLE IF NOT EXISTS practice_logs (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   nickname TEXT NOT NULL,
-  scenario_topic TEXT NOT NULL,
-  choice_path TEXT NOT NULL,         -- e.g., 'Step1:A(Repair)->Step1:C->Step2:B->Step3:A'
-  repairs_triggered INTEGER NOT NULL DEFAULT 0,
-  final_reflection TEXT DEFAULT '',
+  app_type TEXT NOT NULL,            -- e.g. 'Put it in order'
+  score INTEGER NOT NULL DEFAULT 0,
+  hints_used INTEGER NOT NULL DEFAULT 0,
+  details TEXT DEFAULT '',           -- what AGENTS.md asks for, e.g. the path 'T1:weak->T1:best->T2:best->T3:best' or the number of replays
   created_at TEXT DEFAULT CURRENT_TIMESTAMP
 );
 ```
-*(OpenCode automatically appends `INSERT INTO scenario_nodes ...` at the bottom of `0001_init.sql` to pre-seed all 3 scenario turns!)*
+*(OpenCode automatically appends `INSERT INTO items ...` at the bottom of `0001_init.sql` to pre-seed every practice item from the student's prompt!)*
 
 ---
 
@@ -199,7 +198,7 @@ export default {
   async fetch(request, env) {
     const url = new URL(request.url);
 
-    // Load content (Week 10 passages OR Week 11 pragmatics nodes) + latest 25 peer-test logs
+    // Load content (Week 10 passages OR Week 11 practice items) + latest 25 peer-test logs
     if (url.pathname === "/api/data" && request.method === "GET") {
       try {
         const tables = await env.DB.prepare("SELECT name FROM sqlite_master WHERE type='table'").all();
@@ -210,9 +209,9 @@ export default {
           const { results: logs } = await env.DB.prepare("SELECT * FROM reading_logs ORDER BY id DESC LIMIT 25").all();
           return json({ ok: true, mode: "week10_reading", passages, logs });
         } else {
-          const { results: nodes } = await env.DB.prepare("SELECT * FROM scenario_nodes ORDER BY step_no ASC").all();
-          const { results: logs } = await env.DB.prepare("SELECT * FROM pragmatics_logs ORDER BY id DESC LIMIT 25").all();
-          return json({ ok: true, mode: "week11_pragmatics", nodes, logs });
+          const { results: items } = await env.DB.prepare("SELECT * FROM items ORDER BY position ASC").all();
+          const { results: logs } = await env.DB.prepare("SELECT * FROM practice_logs ORDER BY id DESC LIMIT 25").all();
+          return json({ ok: true, mode: "week11_app", items, logs });
         }
       } catch (err) {
         return json({ ok: false, error: String(err.message || err) }, 500);
@@ -235,13 +234,13 @@ export default {
           ).run();
         } else {
           await env.DB.prepare(
-            "INSERT INTO pragmatics_logs (nickname, scenario_topic, choice_path, repairs_triggered, final_reflection) VALUES (?, ?, ?, ?, ?)"
+            "INSERT INTO practice_logs (nickname, app_type, score, hints_used, details) VALUES (?, ?, ?, ?, ?)"
           ).bind(
             String(body.nickname || "Anonymous").trim(),
-            String(body.scenarioTopic || "Pragmatics Task").trim(),
-            String(body.choicePath || "").trim(),
-            Number(body.repairsTriggered || 0),
-            String(body.finalReflection || "").trim()
+            String(body.appType || "").trim(),
+            Number(body.score || 0),
+            Number(body.hintsUsed || 0),
+            String(body.details || "").trim()
           ).run();
         }
         return json({ ok: true });
@@ -254,7 +253,7 @@ export default {
   }
 };
 ```
-> 💡 **Pedagogical UI Requirement**: Always include a collapsible **"📊 Cloud D1 Peer-Test Logs"** section at the bottom of `public/index.html` (rendering the `logs` array returned by `/api/data`). This lets student designers and peer testers immediately see logged reading levels, clicked gloss words, or pragmatics branching paths right on the webpage without needing to open the Cloudflare console!
+> 💡 **Pedagogical UI Requirement**: Always include a collapsible **"📊 Cloud D1 Peer-Test Logs"** section at the bottom of `public/index.html` (rendering the `logs` array returned by `/api/data`). This lets student designers and peer testers immediately see logged reading levels, clicked gloss words, or Week 11 app scores and hints used right on the webpage without needing to open the Cloudflare console!
 
 ---
 

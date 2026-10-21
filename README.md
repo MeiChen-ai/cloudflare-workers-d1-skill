@@ -9,7 +9,7 @@
 
 ### 一、 這套方法有什麼超強優點？
 在 **OpenCode** 中搭配 **`cloudflare-workers-d1`** 技能與專案資料夾裡的 **`AGENTS.md`**，你的 AI Agent 會幫你把「**前端互動網頁＋後端 API＋D1 雲端資料庫**」一次部署在同一個 **Cloudflare** 帳號裡：
-* **兩層指令：`AGENTS.md` 管規則、Prompt 管內容**：Cockpit 設計卡的 Part A 產生 `AGENTS.md`（每次都要遵守的教學規則），**直接放進你的專案資料夾**（不要放進裡面的其他資料夾）；Part B 產生 Prompt（這次的文章、單字、題目或情境），貼進 OpenCode 對話框。想改「怎麼教」就改 `AGENTS.md`，想改「教什麼」就改 Prompt！
+* **兩層指令：`AGENTS.md` 管規則、Prompt 管內容**：Cockpit 設計卡的 Part A 產生 `AGENTS.md`（每次都要遵守的教學規則），**直接放進你的專案資料夾**（不要放進裡面的其他資料夾）；Part B 產生 Prompt（這次的文章、單字、題目或練習題），貼進 OpenCode 對話框。想改「怎麼教」就改 `AGENTS.md`，想改「教什麼」就改 Prompt！
 * **完全免裝 MCP、免複製任何 API Key 或 Token**：你不需要貼任何密碼或權杖給 AI！
 * **前後端同源（零跨域問題）＋ 雲端資料庫全自動建立**：D1 資料表與初始教材皆由 OpenCode 自動建好並寫入，網頁最下方還會內建「**📊 Cloud D1 Peer-Test Logs（雲端同儕測試紀錄即時看板）**」，任何電腦或手機點開網址就能直接測試！
 * **你的任務**：寫程式、寫 SQL 與打指令全部交給 OpenCode AI，你只需要做 **「1 句安裝技能指令 ＋ 把 `AGENTS.md` 直接放進專案資料夾 ＋ 貼上 Prompt ＋ 在瀏覽器按一次 Allow」**！
@@ -52,7 +52,7 @@ Week10_App/          👈 在這個資料夾打開 OpenCode
 | :--- | :--- | :--- |
 | 角色 | 每次都要遵守的**規則** | 這一次的**內容** |
 | 第 10 週 | 分級規則、first-click clue（點第 1 下的提示）、語音、理解題形式、D1 資料表與部署 | 暱稱、文章、5 個關鍵字、2 題理解題 |
-| 第 11 週 | 3 關結構、禮貌度量表、選錯時的提示與重選、D1 資料表與部署 | 暱稱、情境主題 |
+| 第 11 週 | App 類型（5 選 1）、回饋規則、開始與結束畫面、D1 資料表與部署 | 暱稱、學習者與問題、App 點子、練習題 |
 | 想修改時 | 改「怎麼教」 | 改「教什麼」 |
 
 *(沒有用 Cockpit 的話，也可以照下方範本自己建一個 `AGENTS.md`，再貼上 Prompt：)*
@@ -90,30 +90,35 @@ Week10_App/          👈 在這個資料夾打開 OpenCode
   Q2：【題目】（正確答案：【答案】）
 ```
 
-#### 💬 第 11 週範本：「跨文化語用禮貌度情境分支卡＋雲端決策路徑紀錄表」
+#### 💬 第 11 週範本：「我自己設計的英文 App＋雲端練習紀錄表」
 
 **① `AGENTS.md`（規則）**
 ```markdown
-# AGENTS.md — Week 11 L2 Pragmatics Politeness Branching Cards
+# AGENTS.md — Week 11 My Own English App (OpenCode + Cloudflare D1)
 ## 1. Tools
 - 使用 cloudflare-workers-d1 技能，部署到 Cloudflare Workers + D1。
-- 網站名 <暱稱>-w11-pragmatics，資料庫名 <暱稱>-w11-pragmatics-db（暱稱見我的 Prompt）。
+- 網站名 <暱稱>-w11-app，資料庫名 <暱稱>-w11-app-db（暱稱見我的 Prompt）。
+- 第 10 週已登入 Cloudflare：先跑 npx.cmd -y wrangler whoami，需要時才 wrangler login。
 ## 2. Teaching Rules
-1. 3 關對話（Turn 1 開場與來意 -> Turn 2 說明理由 -> Turn 3 提出補救與結尾）：每關顯示對方說的話與 3 個選項（Too Blunt / Too Vague / Appropriate）。
-2. 禮貌度溫度計與修復分支：選到 Too Blunt 或 Too Vague 時不公布答案，更新禮貌度計量條、顯示語用提示小卡（例如改用 Could I possibly...），讓學習者重選後才進下一關。
-3. 網頁最下方可展開的「📊 Cloud D1 Peer-Test Logs」看板。
+1. App 類型（5 選 1）：Branching conversation（3 關對話，選 1 個回應）／ Put it in order（把打亂的字排回句子）／ Listen and type（聽句子打字）／ Sort into groups（把字卡分組）／ Flip and recall（翻卡回想並自評）。
+2. 開始畫面：輸入暱稱（不用真名），一次練習 2–8 分鐘。
+3. 回饋規則：【例如：第 1 次答錯給提示、第 2 次答錯才顯示答案】學習者至少試過一次之前，不顯示答案。
+4. 結束：顯示簡短總結，並把這次練習存進 D1。
+5. 網頁最下方可展開的「📊 Cloud D1 Peer-Test Logs」看板。
 ## 3. D1 & Deployment
 - 不要叫我寫 SQL、建表或貼任何金鑰。
-- 建立 scenario_nodes（預塞 3 關情境）與 pragmatics_logs（nickname、scenario_topic、choice_path、repairs_triggered），套用遠端 migrations 並部署。
+- 在 migrations/0001_init.sql 建立 items（預塞我 Prompt 裡的練習題）與 practice_logs（nickname、app_type、score、hints_used、details、created_at），套用遠端 migrations 並部署。
 ## 4. Content
 - 內容來自我的 Prompt。Prompt 與本檔規則衝突時，以本檔為準並告訴我。
 ```
 
 **② Prompt（內容）**
 ```text
-請讀取資料夾裡的 AGENTS.md 並遵守所有規則，然後用 cloudflare-workers-d1 技能，依以下內容建立並部署我的第 11 週語用情境分支卡：
+請讀取資料夾裡的 AGENTS.md 並遵守所有規則，然後用 cloudflare-workers-d1 技能，依以下內容建立並部署我的第 11 週英文 App：
 - 我的暱稱：【小寫英文，例如 alice】
-- 情境主題：【例如：寫 Email 向教授申請報告遲交三天 / 職場婉拒主管臨時加派的週末工作 / 跨文化小組討論禮貌反駁隊友意見】
+- 學習者與問題：【例如：英文寫信給教授時語氣太直接的大一學生（B1）】
+- App 點子：【例如：幫學生有禮貌地向教授多要幾天時間的 App】
+- 練習題：【依 App 類型的格式，一行一題】
 ```
 
 ---
@@ -134,9 +139,9 @@ Week10_App/          👈 在這個資料夾打開 OpenCode
 
 ### 1. Why Use This Workflow in OpenCode?
 With the **`cloudflare-workers-d1-en`** skill and an **`AGENTS.md`** file in your project folder in **OpenCode**, your AI Agent deploys your **Frontend Web App + Backend API + Cloud SQL Database (D1)** all together under a single **Cloudflare** account:
-* **Two Layers: `AGENTS.md` for Rules, a Prompt for Content**: Part A of the Cockpit design card gives you `AGENTS.md` (the teaching rules OpenCode follows every time), which goes **straight into your project folder**, not into a folder inside it. Part B gives you a prompt (this app's article, words, questions or scenario), which you paste into OpenCode. Change *how* it teaches in `AGENTS.md`; change *what* it teaches in the prompt!
+* **Two Layers: `AGENTS.md` for Rules, a Prompt for Content**: Part A of the Cockpit design card gives you `AGENTS.md` (the teaching rules OpenCode follows every time), which goes **straight into your project folder**, not into a folder inside it. Part B gives you a prompt (this app's article, words, questions or practice items), which you paste into OpenCode. Change *how* it teaches in `AGENTS.md`; change *what* it teaches in the prompt!
 * **Zero MCP Setup, Zero API Keys or Tokens**: You never have to copy or paste any secret tokens!
-* **Auto-Created Cloud Database + Live Log Viewer**: OpenCode automatically creates the D1 SQLite tables, seeds your reading passages or pragmatics scenarios, and adds a collapsible **"📊 Cloud D1 Peer-Test Logs"** viewer at the bottom of your webpage!
+* **Auto-Created Cloud Database + Live Log Viewer**: OpenCode automatically creates the D1 SQLite tables, seeds your reading passages or practice items, and adds a collapsible **"📊 Cloud D1 Peer-Test Logs"** viewer at the bottom of your webpage!
 * **Your Job**: Let the OpenCode AI run all commands, write all SQL, and build all code—you only need **1 install prompt + putting `AGENTS.md` straight into your project folder + pasting your prompt + 1 click on "Allow" in your browser**!
 
 ---
@@ -177,7 +182,7 @@ Then launch **OpenCode** inside that folder and paste the prompt from **Part B**
 | :--- | :--- | :--- |
 | Job | the **rules**, followed every time | this app's **content** |
 | Week 10 | level rules, first-click clue, audio, question format, D1 tables & deployment | nickname, article, 5 key words, 2 check questions |
-| Week 11 | 3-turn structure, politeness meter, clue-and-retry branch, D1 tables & deployment | nickname, scenario topic |
+| Week 11 | app type (1 of 5), feedback rule, start & finish screens, D1 tables & deployment | nickname, learner & problem, app idea, practice items |
 | To change | *how* it teaches | *what* it teaches |
 
 *(No Cockpit? Build your own `AGENTS.md` and prompt from the templates below.)*
@@ -215,30 +220,35 @@ Please read AGENTS.md in this folder and follow all its rules. Then use the clou
   Q2: [question] (Right answer: [answer])
 ```
 
-#### 💬 Week 11 Template: L2 Pragmatics Politeness Branching Scenario Cards + Cloud Path Logs
+#### 💬 Week 11 Template: My Own English App + Cloud Practice Logs
 
 **① `AGENTS.md` (rules)**
 ```markdown
-# AGENTS.md — Week 11 L2 Pragmatics Politeness Branching Cards
+# AGENTS.md — Week 11 My Own English App (OpenCode + Cloudflare D1)
 ## 1. Tools
 - Use the cloudflare-workers-d1-en skill to deploy on Cloudflare Workers + D1.
-- Name the Worker <nickname>-w11-pragmatics and the database <nickname>-w11-pragmatics-db (nickname is in my prompt).
+- Name the Worker <nickname>-w11-app and the database <nickname>-w11-app-db (nickname is in my prompt).
+- I logged in to Cloudflare in Week 10. Check with npx.cmd -y wrangler whoami first and only run wrangler login if needed.
 ## 2. Teaching Rules
-1. 3 turns (Turn 1 Opening Request -> Turn 2 Explaining Reasons -> Turn 3 Follow-up & Closing): show the other person's line and 3 choices (Too Blunt / Too Vague / Appropriate).
-2. Politeness Meter & Repair Branch: for Too Blunt or Too Vague, do NOT reveal the best answer; update the meter, show a Pragmatic Clue (e.g., hedging with "Could I possibly..."), and let the learner retry before moving on.
-3. A collapsible "📊 Cloud D1 Peer-Test Logs" viewer at the bottom.
+1. App type (pick 1 of 5): Branching conversation (3 turns, pick 1 of 3 replies) / Put it in order (tap mixed-up words back into a sentence) / Listen and type (hear a sentence, type it) / Sort into groups (drag word cards into groups) / Flip and recall (flip a card, rate yourself).
+2. Start screen: ask for a nickname (no real names). One session should take 2-8 minutes.
+3. Feedback rule: [e.g., 1st wrong try: a hint; 2nd wrong try: show the answer] Never show the answer before the learner has tried at least once.
+4. Finish: show a short summary, then save the session to D1.
+5. A collapsible "📊 Cloud D1 Peer-Test Logs" viewer at the bottom.
 ## 3. D1 & Deployment
 - Do NOT ask me to write SQL, create tables, or copy any key or token.
-- Create scenario_nodes (pre-filled with the 3 turns) and pragmatics_logs (nickname, scenario_topic, choice_path, repairs_triggered), apply remote migrations, and deploy.
+- In migrations/0001_init.sql, create items (pre-filled with the practice items in my prompt) and practice_logs (nickname, app_type, score, hints_used, details, created_at), apply remote migrations, and deploy.
 ## 4. Content
 - The content comes from my prompt. If my prompt and these rules disagree, follow these rules and tell me.
 ```
 
 **② Prompt (content)**
 ```text
-Please read AGENTS.md in this folder and follow all its rules. Then use the cloudflare-workers-d1-en skill to build and deploy my Week 11 Pragmatics Branching Cards with this content:
+Please read AGENTS.md in this folder and follow all its rules. Then use the cloudflare-workers-d1-en skill to build and deploy my Week 11 English app with this content:
 - My nickname: [lowercase, e.g., alice]
-- Scenario topic: [e.g., Emailing a professor to request a 3-day essay extension / Politely declining a coworker's last-minute weekend request / Disagreeing politely in an international team meeting]
+- Learner & problem: [e.g., First-year university students (B1) whose emails to professors sound too direct]
+- App idea: [e.g., An app that helps students ask a professor for more time politely]
+- Practice items: [one per line, in the format for your app type]
 ```
 
 ---

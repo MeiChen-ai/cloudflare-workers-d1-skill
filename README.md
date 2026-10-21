@@ -108,6 +108,7 @@ Week10_App/          👈 在這個資料夾打開 OpenCode
 ## 3. D1 & Deployment
 - 不要叫我寫 SQL、建表或貼任何金鑰。
 - 在 migrations/0001_init.sql 建立 items（預塞我 Prompt 裡的練習題）與 practice_logs（nickname、app_type、score、hints_used、details、created_at），套用遠端 migrations 並部署。
+- details 依我的 App 類型存：Branching conversation＝選擇路徑與重選次數；Put it in order＝第一次答對題數（滿分 5）與提示次數；Listen and type＝聽對字數／總字數與重播次數；Sort into groups＝第一次檢查放錯組的卡片數與檢查次數；Flip and recall＝Got it / Not sure / Missed it 各幾張與下次要複習的卡片。
 ## 4. Content
 - 內容來自我的 Prompt。Prompt 與本檔規則衝突時，以本檔為準並告訴我。
 ```
@@ -120,6 +121,16 @@ Week10_App/          👈 在這個資料夾打開 OpenCode
 - App 點子：【例如：幫學生有禮貌地向教授多要幾天時間的 App】
 - 練習題：【依 App 類型的格式，一行一題】
 ```
+
+**③ 練習題格式（依你選的 App 類型）**
+
+| App 類型 | 練習題格式（一行一題） | 題數 | `details` 要存什麼 |
+| :--- | :--- | :--- | :--- |
+| Branching conversation | `對方的話 \| *最佳回應 \| 較弱回應 \| 較弱回應`（最佳回應前加 `*`） | 3 | 選擇路徑（例如 `T1:weak->T1:best->T2:best->T3:best`）與重選次數 |
+| Put it in order | 正確的句子（App 會自己打亂字的順序） | 5 | 第一次就答對的題數（滿分 5）與用了幾次提示 |
+| Listen and type | 學習者要聽的句子 | 5 | 聽對的字數／總字數，與重播次數 |
+| Sort into groups | `字或片語 \| 組名`（共 2 或 3 組） | 8 | 第一次檢查時放錯組的卡片數，與檢查次數 |
+| Flip and recall | `正面（提示） \| 背面（答案）` | 6 | Got it / Not sure / Missed it 各幾張，以及下次要複習哪幾張 |
 
 ---
 
@@ -238,6 +249,7 @@ Please read AGENTS.md in this folder and follow all its rules. Then use the clou
 ## 3. D1 & Deployment
 - Do NOT ask me to write SQL, create tables, or copy any key or token.
 - In migrations/0001_init.sql, create items (pre-filled with the practice items in my prompt) and practice_logs (nickname, app_type, score, hints_used, details, created_at), apply remote migrations, and deploy.
+- In details, save by my app type: Branching conversation = the path chosen and the number of retries; Put it in order = first-try score out of 5 and hints used; Listen and type = words correct out of the total and replays; Sort into groups = cards in the wrong group on the first check and the number of checks; Flip and recall = how many cards were Got it / Not sure / Missed it and which to review next time.
 ## 4. Content
 - The content comes from my prompt. If my prompt and these rules disagree, follow these rules and tell me.
 ```
@@ -250,6 +262,16 @@ Please read AGENTS.md in this folder and follow all its rules. Then use the clou
 - App idea: [e.g., An app that helps students ask a professor for more time politely]
 - Practice items: [one per line, in the format for your app type]
 ```
+
+**③ Practice item formats (for the app type you picked)**
+
+| App type | Practice item format (one per line) | Items | What `details` saves |
+| :--- | :--- | :--- | :--- |
+| Branching conversation | `other person's line \| *best reply \| weaker reply \| weaker reply` (put `*` before the best reply) | 3 | the path chosen (e.g. `T1:weak->T1:best->T2:best->T3:best`) and the number of retries |
+| Put it in order | the correct sentence (the app mixes up the words) | 5 | first-try score out of 5 and the number of hints used |
+| Listen and type | the sentence the learner will hear | 5 | words correct out of the total and the number of replays |
+| Sort into groups | `word or phrase \| group name` (2 or 3 groups) | 8 | the number of cards in the wrong group on the first check and the number of checks |
+| Flip and recall | `front (clue) \| back (answer)` | 6 | how many cards were Got it / Not sure / Missed it, and which cards to review next time |
 
 ---
 

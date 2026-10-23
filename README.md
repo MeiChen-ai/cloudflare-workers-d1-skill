@@ -3,6 +3,10 @@
 
 > 🌐 **[中文版課堂講義請往下捲動](#-第一部分中文版學生實作講義-traditional-chinese)** ｜ **[Click Here for English Classroom Handout](#-part-2-english-student-handout-for-non-chinese-environments)**
 
+> 📌 **來源致謝與改編說明 (Credits & Attribution)**
+> * **中文說明**：本技能與課堂講義改編並參考自 **[mathruffian-dot/agent-connect-lazy-pack](https://github.com/mathruffian-dot/agent-connect-lazy-pack)**（原作者：三師爸 `mathruffian-dot`）。在此基礎上，專為 **OpenCode** 與「生成式 AI 與語言學習」課程（第 10–11 週）重構為免 MCP、免 API Key 的 **Cloudflare Workers + D1（SQLite 雲端資料庫）** 雙語技能，並內建 `AGENTS.md`（教學規則）＋ Prompt（教材內容）雙層架構與同儕測試紀錄即時看板。
+> * **English**: Adapted from and based on **[mathruffian-dot/agent-connect-lazy-pack](https://github.com/mathruffian-dot/agent-connect-lazy-pack)** by `mathruffian-dot`. Tailored into a bilingual (Traditional Chinese & English) **OpenCode** skill for the *GenAI and Language Learning* course (Weeks 10–11), featuring a zero-key, zero-MCP **Cloudflare Workers + D1 (SQLite)** workflow, a two-layer `AGENTS.md` (teaching rules) + Prompt (learning content) architecture, and a live peer-test log viewer.
+
 ---
 
 ## 🇹🇼 第一部分：中文版學生實作講義 (Traditional Chinese)

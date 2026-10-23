@@ -20,16 +20,29 @@
 
 ---
 
-### 二、 Step 1：把技能安裝進你的 OpenCode（只需做一次）
+### 二、 Step 1：如何安裝？（只需做一次，支援 Antigravity / OpenCode / Claude Code / Codex）
 
-打開 **OpenCode**，直接複製以下**整段話**貼進對話框送出（OpenCode 會自動幫你建立全域技能資料夾並下載技能，完全不用自己去檔案總管找路徑）：
+你**完全不需要自己開終端機找資料夾路徑**！只要打開你正在使用的 AI Agent（**OpenCode** 或 **Google Antigravity**），複製下方對應的一段話貼進對話框，AI 就會自動幫你把技能全部安裝好。
 
-#### 💬 複製貼給 OpenCode 的安裝指令（中文版）：
+#### 💬 複製貼給 AI Agent 自動安裝
+
+##### 選項 1：通用一鍵安裝指令（同時安裝技能到 Antigravity / OpenCode / Claude Code / Codex）
+直接複製以下**整段話**貼給你的 **Antigravity** 或 **OpenCode**：
+```text
+請幫我把 https://github.com/MeiChen-ai/cloudflare-workers-d1-skill.git 完整 clone 到暫存資料夾，並執行裡面的安裝腳本（或將 skills/ 底下的 cloudflare-workers-d1 與 cloudflare-workers-d1-en 完整資料夾複製到 ~/.gemini/config/skills/、~/.config/opencode/skills/、~/.agents/skills/ 與 ~/.claude/skills/，若資料夾不存在請自動建立）。
+```
+
+##### 選項 2：如果你只用 Google Antigravity
+```text
+請幫我從 https://raw.githubusercontent.com/MeiChen-ai/cloudflare-workers-d1-skill/main/skills/cloudflare-workers-d1/SKILL.md 下載技能檔，並儲存到我的 ~/.gemini/config/skills/cloudflare-workers-d1/SKILL.md（若資料夾不存在請自動建立）。
+```
+
+##### 選項 3：如果你只用 OpenCode
 ```text
 請幫我從 https://raw.githubusercontent.com/MeiChen-ai/cloudflare-workers-d1-skill/main/skills/cloudflare-workers-d1/SKILL.md 下載技能檔，並同時儲存到我的 ~/.config/opencode/skills/cloudflare-workers-d1/SKILL.md 與 ~/.agents/skills/cloudflare-workers-d1/SKILL.md（若資料夾不存在請自動建立）。
 ```
 
-*(💡 裝完後，之後在任何專案資料夾打開 OpenCode，它都能自動啟用 `cloudflare-workers-d1` 技能！)*
+*(💡 裝完後，之後在任何專案資料夾打開 OpenCode 或 Antigravity，它都能自動啟用 `cloudflare-workers-d1` 技能！)*
 
 ---
 
@@ -161,16 +174,29 @@ With the **`cloudflare-workers-d1-en`** skill and an **`AGENTS.md`** file in you
 
 ---
 
-### 2. Step 1: Install the Skill into OpenCode (One-Time Setup)
+### 2. Step 1: One-Time Installation (Supports Antigravity, OpenCode, Claude Code & Codex)
 
-Open **OpenCode**, copy the entire block below, and paste it directly into the prompt box (the AI will automatically create the folders and install the English skill for you):
+You do **not** need to manually hunt for hidden skill folders! Simply open your AI Agent (**OpenCode** or **Google Antigravity**), copy one of the blocks below, and paste it directly into the chat box.
 
-#### 💬 Copy & Paste This Install Prompt into OpenCode (English Edition):
+#### 💬 Copy & Paste One Prompt to Your AI Agent
+
+##### Option 1: Universal Install Prompt (Installs the Skill to Antigravity, OpenCode, Claude Code & Codex)
+Copy and paste this entire block into **Antigravity** or **OpenCode**:
+```text
+Please clone https://github.com/MeiChen-ai/cloudflare-workers-d1-skill.git into a temporary folder and run its installer script (or copy `cloudflare-workers-d1` and `cloudflare-workers-d1-en` from `skills/` into `~/.gemini/config/skills/`, `~/.config/opencode/skills/`, `~/.agents/skills/`, and `~/.claude/skills/`, creating the directories if they do not exist).
+```
+
+##### Option 2: Google Antigravity Only
+```text
+Please download the skill file from https://raw.githubusercontent.com/MeiChen-ai/cloudflare-workers-d1-skill/main/skills/cloudflare-workers-d1-en/SKILL.md and save it as my global AntiGravity skill at ~/.gemini/config/skills/cloudflare-workers-d1-en/SKILL.md (automatically create the directories if they do not exist).
+```
+
+##### Option 3: OpenCode Only
 ```text
 Please download the skill file from https://raw.githubusercontent.com/MeiChen-ai/cloudflare-workers-d1-skill/main/skills/cloudflare-workers-d1-en/SKILL.md and save it to both ~/.config/opencode/skills/cloudflare-workers-d1-en/SKILL.md and ~/.agents/skills/cloudflare-workers-d1-en/SKILL.md (automatically create the directories if they do not exist).
 ```
 
-*(💡 Once installed, OpenCode will automatically recognize the `cloudflare-workers-d1-en` skill in any project folder!)*
+*(💡 Once installed, OpenCode or Antigravity will automatically recognize the `cloudflare-workers-d1-en` skill in any project folder!)*
 
 ---
 

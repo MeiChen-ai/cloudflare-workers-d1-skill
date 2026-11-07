@@ -4,8 +4,8 @@
 > 🌐 **[中文版課堂講義請往下捲動](#-第一部分中文版學生實作講義-traditional-chinese)** ｜ **[Click Here for English Classroom Handout](#-part-2-english-student-handout-for-non-chinese-environments)**
 
 > 📌 **來源致謝與改編說明 (Credits & Attribution)**
-> * **中文說明**：本技能與課堂講義改編並參考自 **[mathruffian-dot/agent-connect-lazy-pack](https://github.com/mathruffian-dot/agent-connect-lazy-pack)**（原作者：三師爸 `mathruffian-dot`）。在此基礎上，專為 **OpenCode** 與「生成式 AI 與語言學習」課程（第 10–11 週）重構為免 MCP、免 API Key 的 **Cloudflare Workers + D1（SQLite 雲端資料庫）** 雙語技能，並內建 `AGENTS.md`（教學規則）＋ Prompt（教材內容）雙層架構與同儕測試紀錄即時看板。
-> * **English**: Adapted from and based on **[mathruffian-dot/agent-connect-lazy-pack](https://github.com/mathruffian-dot/agent-connect-lazy-pack)** by `mathruffian-dot`. Tailored into a bilingual (Traditional Chinese & English) **OpenCode** skill for the *GenAI and Language Learning* course (Weeks 10–11), featuring a zero-key, zero-MCP **Cloudflare Workers + D1 (SQLite)** workflow, a two-layer `AGENTS.md` (teaching rules) + Prompt (learning content) architecture, and a live peer-test log viewer.
+> * **中文說明**：本技能與課堂講義改編並參考自 **[mathruffian-dot/agent-connect-lazy-pack](https://github.com/mathruffian-dot/agent-connect-lazy-pack)**（原作者：三師爸 `mathruffian-dot`）。在此基礎上，專為 **OpenCode** 與「生成式 AI 與語言學習」課程（第 10–11 週）重構為免 MCP、免 API Key 的 **Cloudflare Workers + D1（SQLite 雲端資料庫）** 雙語技能，並內建「一份 Prompt＝教學規則＋教材內容」的設計與同儕測試紀錄即時看板。
+> * **English**: Adapted from and based on **[mathruffian-dot/agent-connect-lazy-pack](https://github.com/mathruffian-dot/agent-connect-lazy-pack)** by `mathruffian-dot`. Tailored into a bilingual (Traditional Chinese & English) **OpenCode** skill for the *GenAI and Language Learning* course (Weeks 10–11), featuring a zero-key, zero-MCP **Cloudflare Workers + D1 (SQLite)** workflow, a one-prompt design (teaching rules + learning content), and a live peer-test log viewer.
 
 ---
 
@@ -13,11 +13,10 @@
 
 ### 一、 這套方法有什麼超強優點？
 在 **OpenCode** 中搭配 **`cloudflare-workers-d1`** 技能與 Cockpit 設計卡產生的指令，你的 AI Agent 會幫你把「**前端互動網頁＋後端 API＋D1 雲端資料庫**」一次部署在同一個 **Cloudflare** 帳號裡：
-* **第 10 週：一份 Prompt 搞定（規則＋內容）**：設計卡把「怎麼教」的規則和「教什麼」的內容合成**一份 Prompt**，打開專案資料夾後直接貼進 OpenCode 就好，不需要任何檔案。
-* **第 11 週：`AGENTS.md`（規則）＋ Prompt（內容）**：設計卡 Part A 產生 `AGENTS.md`，**直接放進你的專案資料夾**（不要放進裡面的其他資料夾）；Part B 產生 Prompt，貼進 OpenCode 對話框。
+* **一份 Prompt 搞定（規則＋內容）**：第 10、11 週的設計卡都把「怎麼教」的規則和「教什麼」的內容合成**一份 Prompt**，打開專案資料夾後直接貼進 OpenCode 就好，不需要任何檔案。
 * **完全免裝 MCP、免複製任何 API Key 或 Token**：你不需要貼任何密碼或權杖給 AI！
 * **前後端同源（零跨域問題）＋ 雲端資料庫全自動建立**：D1 資料表與初始教材皆由 OpenCode 自動建好並寫入，網頁最下方還會內建「**📊 Cloud D1 Peer-Test Logs（雲端同儕測試紀錄即時看板）**」，任何電腦或手機點開網址就能直接測試！
-* **你的任務**：寫程式、寫 SQL 與打指令全部交給 OpenCode AI，你只需要做 **「1 句安裝技能指令 ＋ 在 OpenCode 打開專案資料夾 ＋ 貼上 Prompt ＋ 在瀏覽器按一次 Allow」**（第 11 週另外把 `AGENTS.md` 放進資料夾）！
+* **你的任務**：寫程式、寫 SQL 與打指令全部交給 OpenCode AI，你只需要做 **「1 句安裝技能指令 ＋ 在 OpenCode 打開專案資料夾 ＋ 貼上 Prompt ＋ 在瀏覽器按一次 Allow」**！
 
 ---
 
@@ -57,14 +56,14 @@
 
 ### 四、 Step 3：在 OpenCode 打開專案資料夾，貼上 Prompt
 
-1. 在桌面建立一個新的空資料夾（名稱自取，例如 `Week10_App`），這就是你的**專案資料夾**。
+1. 在桌面建立一個新的空資料夾（名稱自取，例如 `Week10_App`；第 11 週請另建一個新資料夾，例如 `Week11_App`），這就是你的**專案資料夾**。
 2. 打開 **OpenCode 桌面 app**，在開始畫面按 **New Project（新增專案）**，選你的專案資料夾，確認視窗上顯示的是這個資料夾的名稱。
 3. 貼上設計卡產生的 Prompt（按 **Copy Prompt for OpenCode and Padlet** 複製），同一份也貼到 Padlet。
 
-| | 第 10 週 | 第 11 週 |
+| Prompt 的兩部分 | 第 10 週 | 第 11 週 |
 | :--- | :--- | :--- |
-| 放進專案資料夾 | 不用放任何檔案 | `AGENTS.md`（規則：App 類型、回饋規則、開始與結束畫面、D1 資料表與部署） |
-| 貼進 OpenCode | **一份 Prompt**：規則（分級規則、first-click clue（點第 1 下的提示）、語音、理解題、D1 資料表與部署）＋內容（暱稱、文章、5 個關鍵字、2 題理解題） | Prompt（內容：暱稱、學習者與問題、App 點子、練習題） |
+| 規則（怎麼教） | 分級規則、first-click clue（點第 1 下的提示）、語音、理解題、D1 資料表與部署 | App 類型、回饋規則、開始與結束畫面、D1 資料表與部署 |
+| 內容（教什麼） | 暱稱、文章、5 個關鍵字、2 題理解題 | 暱稱、學習者與問題、App 點子、練習題 |
 
 *(沒有用 Cockpit 的話，也可以照下方範本自己寫：)*
 
@@ -91,39 +90,27 @@
   Q2：【題目】（正確答案：【答案】）
 ```
 
-#### 💬 第 11 週範本：「我自己設計的英文 App＋雲端練習紀錄表」
+#### 💬 第 11 週範本：「我自己設計的英文 App＋雲端練習紀錄表」（一份 Prompt）
 
-**① `AGENTS.md`（規則）**
-```markdown
-# AGENTS.md — Week 11 My Own English App (OpenCode + Cloudflare D1)
-## 1. Tools
-- 使用 cloudflare-workers-d1 技能，部署到 Cloudflare Workers + D1。
-- 網站名 <暱稱>-w11-app，資料庫名 <暱稱>-w11-app-db（暱稱見我的 Prompt）。
-- 第 10 週已登入 Cloudflare：先跑 npx.cmd -y wrangler whoami，需要時才 wrangler login。
-## 2. Teaching Rules
-1. App 類型（5 選 1）：Branching conversation（3 關對話，選 1 個回應）／ Put it in order（把打亂的字排回句子）／ Listen and type（聽句子打字）／ Sort into groups（把字卡分組）／ Flip and recall（翻卡回想並自評）。
+```text
+請用 cloudflare-workers-d1 技能，把我的第 11 週英文 App 部署到 Cloudflare Workers + D1。網站名 【暱稱】-w11-app，資料庫名 【暱稱】-w11-app-db。第 10 週已登入 Cloudflare：先跑 npx.cmd -y wrangler whoami，需要時才 wrangler login。
+
+## 規則（App 怎麼運作）
+1. App 類型：【5 選 1：Branching conversation（3 關對話，選 1 個回應）／ Put it in order（把打亂的字排回句子）／ Listen and type（聽句子打字）／ Sort into groups（把字卡分組）／ Flip and recall（翻卡回想並自評）】
 2. 開始畫面：輸入暱稱（不用真名），一次練習 2–8 分鐘。
 3. 回饋規則：【例如：第 1 次答錯給提示、第 2 次答錯才顯示答案】學習者至少試過一次之前，不顯示答案。
 4. 結束：顯示簡短總結，並把這次練習存進 D1。
 5. 網頁最下方可展開的「📊 Cloud D1 Peer-Test Logs」看板。
-## 3. D1 & Deployment
-- 不要叫我寫 SQL、建表或貼任何金鑰。
-- 在 migrations/0001_init.sql 建立 items（預塞我 Prompt 裡的練習題）與 practice_logs（nickname、app_type、score、hints_used、details、created_at），套用遠端 migrations 並部署。
-- details 依我的 App 類型存：Branching conversation＝選擇路徑與重選次數；Put it in order＝第一次答對題數（滿分 5）與提示次數；Listen and type＝聽對字數／總字數與重播次數；Sort into groups＝第一次檢查放錯組的卡片數與檢查次數；Flip and recall＝Got it / Not sure / Missed it 各幾張與下次要複習的卡片。
-## 4. Content
-- 內容來自我的 Prompt。Prompt 與本檔規則衝突時，以本檔為準並告訴我。
-```
+6. 全部幫我做好：不要叫我寫 SQL、建表或貼任何金鑰。建立 items（預塞我下面的練習題）與 practice_logs（nickname、app_type、score、hints_used、details、created_at），details 依下表存；套用遠端 migrations、部署，最後給我 workers.dev 網址。
 
-**② Prompt（內容）**
-```text
-請讀取資料夾裡的 AGENTS.md 並遵守所有規則，然後用 cloudflare-workers-d1 技能，依以下內容建立並部署我的第 11 週英文 App：
+## 內容（練什麼）
 - 我的暱稱：【小寫英文，例如 alice】
 - 學習者與問題：【例如：英文寫信給教授時語氣太直接的大一學生（B1）】
 - App 點子：【例如：幫學生有禮貌地向教授多要幾天時間的 App】
 - 練習題：【依 App 類型的格式，一行一題】
 ```
 
-**③ 練習題格式（依你選的 App 類型）**
+**練習題格式與 `details`（依你選的 App 類型）**
 
 | App 類型 | 練習題格式（一行一題） | 題數 | `details` 要存什麼 |
 | :--- | :--- | :--- | :--- |
@@ -151,11 +138,10 @@
 
 ### 1. Why Use This Workflow in OpenCode?
 With the **`cloudflare-workers-d1-en`** skill and the instructions from your Cockpit design card in **OpenCode**, your AI Agent deploys your **Frontend Web App + Backend API + Cloud SQL Database (D1)** all together under a single **Cloudflare** account:
-* **Week 10: One Prompt (Rules + Content)**: The design card joins the rules (*how* the app teaches) and the content (*what* it teaches) into **one prompt**. Open your project folder in OpenCode and paste it. No file needed.
-* **Week 11: `AGENTS.md` (Rules) + a Prompt (Content)**: Part A of the design card gives you `AGENTS.md`, which goes **straight into your project folder**, not into a folder inside it. Part B gives you a prompt to paste into OpenCode.
+* **One Prompt (Rules + Content)**: In both Week 10 and Week 11, the design card joins the rules (*how* the app teaches) and the content (*what* it teaches) into **one prompt**. Open your project folder in OpenCode and paste it. No file needed.
 * **Zero MCP Setup, Zero API Keys or Tokens**: You never have to copy or paste any secret tokens!
 * **Auto-Created Cloud Database + Live Log Viewer**: OpenCode automatically creates the D1 SQLite tables, seeds your reading passages or practice items, and adds a collapsible **"📊 Cloud D1 Peer-Test Logs"** viewer at the bottom of your webpage!
-* **Your Job**: Let the OpenCode AI run all commands, write all SQL, and build all code—you only need **1 install prompt + opening your project folder in OpenCode + pasting your prompt + 1 click on "Allow" in your browser** (in Week 11, also put `AGENTS.md` into the folder)!
+* **Your Job**: Let the OpenCode AI run all commands, write all SQL, and build all code—you only need **1 install prompt + opening your project folder in OpenCode + pasting your prompt + 1 click on "Allow" in your browser**!
 
 ---
 
@@ -195,14 +181,14 @@ Please download the skill file from https://raw.githubusercontent.com/MeiChen-ai
 
 ### 4. Step 3: Open Your Project Folder in OpenCode, Then Paste Your Prompt
 
-1. Make a new empty folder on your Desktop. Any name is fine, e.g. `Week10_App`. This is your **project folder**.
+1. Make a new empty folder on your Desktop. Any name is fine, e.g. `Week10_App`. In Week 11, make another new one, e.g. `Week11_App`. This is your **project folder**.
 2. Open the **OpenCode desktop app**, click **New Project（新增專案）** on the start screen, choose your project folder, and check that the window shows its name.
 3. Paste the prompt from your design card (press **Copy Prompt for OpenCode and Padlet**). Post the same prompt on Padlet.
 
-| | Week 10 | Week 11 |
+| The two parts of the prompt | Week 10 | Week 11 |
 | :--- | :--- | :--- |
-| Put in your project folder | nothing | `AGENTS.md` (rules: app type, feedback rule, start & finish screens, D1 tables & deployment) |
-| Paste into OpenCode | **one prompt**: rules (level rules, first-click clue, audio, check questions, D1 tables & deployment) + content (nickname, article, 5 key words, 2 check questions) | a prompt (content: nickname, learner & problem, app idea, practice items) |
+| Rules (how it teaches) | level rules, first-click clue, audio, check questions, D1 tables & deployment | app type, feedback rule, start & finish screens, D1 tables & deployment |
+| Content (what it teaches) | nickname, article, 5 key words, 2 check questions | nickname, learner & problem, app idea, practice items |
 
 *(No Cockpit? Write your own from the templates below.)*
 
@@ -229,39 +215,27 @@ Use the cloudflare-workers-d1-en skill to build and deploy my Week 10 Reading & 
   Q2: [question] (Right answer: [answer])
 ```
 
-#### 💬 Week 11 Template: My Own English App + Cloud Practice Logs
+#### 💬 Week 11 Template: My Own English App + Cloud Practice Logs (one prompt)
 
-**① `AGENTS.md` (rules)**
-```markdown
-# AGENTS.md — Week 11 My Own English App (OpenCode + Cloudflare D1)
-## 1. Tools
-- Use the cloudflare-workers-d1-en skill to deploy on Cloudflare Workers + D1.
-- Name the Worker <nickname>-w11-app and the database <nickname>-w11-app-db (nickname is in my prompt).
-- I logged in to Cloudflare in Week 10. Check with npx.cmd -y wrangler whoami first and only run wrangler login if needed.
-## 2. Teaching Rules
-1. App type (pick 1 of 5): Branching conversation (3 turns, pick 1 of 3 replies) / Put it in order (tap mixed-up words back into a sentence) / Listen and type (hear a sentence, type it) / Sort into groups (drag word cards into groups) / Flip and recall (flip a card, rate yourself).
+```text
+Use the cloudflare-workers-d1-en skill to build and deploy my Week 11 English app on Cloudflare Workers + D1. Name the Worker [nickname]-w11-app and the database [nickname]-w11-app-db. I logged in to Cloudflare in Week 10: check with npx.cmd -y wrangler whoami first and only run wrangler login if needed.
+
+## Rules (how my app works)
+1. App type: [pick 1 of 5: Branching conversation (3 turns, pick 1 of 3 replies) / Put it in order (tap mixed-up words back into a sentence) / Listen and type (hear a sentence, type it) / Sort into groups (drag word cards into groups) / Flip and recall (flip a card, rate yourself)]
 2. Start screen: ask for a nickname (no real names). One session should take 2-8 minutes.
 3. Feedback rule: [e.g., 1st wrong try: a hint; 2nd wrong try: show the answer] Never show the answer before the learner has tried at least once.
 4. Finish: show a short summary, then save the session to D1.
 5. A collapsible "📊 Cloud D1 Peer-Test Logs" viewer at the bottom.
-## 3. D1 & Deployment
-- Do NOT ask me to write SQL, create tables, or copy any key or token.
-- In migrations/0001_init.sql, create items (pre-filled with the practice items in my prompt) and practice_logs (nickname, app_type, score, hints_used, details, created_at), apply remote migrations, and deploy.
-- In details, save by my app type: Branching conversation = the path chosen and the number of retries; Put it in order = first-try score out of 5 and hints used; Listen and type = words correct out of the total and replays; Sort into groups = cards in the wrong group on the first check and the number of checks; Flip and recall = how many cards were Got it / Not sure / Missed it and which to review next time.
-## 4. Content
-- The content comes from my prompt. If my prompt and these rules disagree, follow these rules and tell me.
-```
+6. Do it all for me: do NOT ask me to write SQL, create tables, or copy any key or token. Create items (pre-filled with my practice items below) and practice_logs (nickname, app_type, score, hints_used, details, created_at), saving details as in the table below; apply remote migrations, deploy, and give me the workers.dev address.
 
-**② Prompt (content)**
-```text
-Please read AGENTS.md in this folder and follow all its rules. Then use the cloudflare-workers-d1-en skill to build and deploy my Week 11 English app with this content:
+## Content (what it practises)
 - My nickname: [lowercase, e.g., alice]
 - Learner & problem: [e.g., First-year university students (B1) whose emails to professors sound too direct]
 - App idea: [e.g., An app that helps students ask a professor for more time politely]
 - Practice items: [one per line, in the format for your app type]
 ```
 
-**③ Practice item formats (for the app type you picked)**
+**Practice item formats (for the app type you picked)**
 
 | App type | Practice item format (one per line) | Items | What `details` saves |
 | :--- | :--- | :--- | :--- |

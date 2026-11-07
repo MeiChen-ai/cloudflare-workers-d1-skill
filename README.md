@@ -126,9 +126,7 @@
 
 1. **🔑【瀏覽器按 Allow 授權】**：
    * 當 OpenCode 啟動登入並跳出瀏覽器（或給你一串 `https://dash.cloudflare.com/oauth2/auth?...` 連結）時，登入你的 Cloudflare 帳號並點擊 **`Allow（允許）`**（整台電腦只需在第 10 週做這一次，第 11 週免重新登入！）。
-2. **🔑【新帳號首次部署：設定子網域】**（若 AI 有提示才需做）：
-   * 若是全新 Cloudflare 帳號第一次發佈，AI 會請你打開 [https://dash.cloudflare.com/](https://dash.cloudflare.com/) ➔ 點左側選單 **`Workers & Pages`** ➔ 自取一個英文子網域名稱並儲存，然後跟 AI 說「好了」。
-3. **🎉【完成驗收與同儕互測】**：
+2. **🎉【完成驗收與同儕互測】**：
    * OpenCode 會自動幫你建好 D1 資料庫、寫入教材、部署上線並完成測試，最後給你一張「**🎉 部署完成卡**」與公開網址 `https://xxx.workers.dev`，直接貼上 Padlet 讓同學進行 Peer Testing！
 
 ---
@@ -251,8 +249,6 @@ Use the cloudflare-workers-d1-en skill to build and deploy my Week 11 English ap
 
 1. **🔑 [Click "Allow" in Browser]**:
    * When OpenCode runs `wrangler login` and opens your browser (or gives you a `https://dash.cloudflare.com/oauth2/auth?...` link), sign in to Cloudflare and click **`Allow`** (only needed once in Week 10—Week 11 skips login automatically!).
-2. **🔑 [First-Time Account Subdomain Setup]** *(only if prompted)*:
-   * If this is a brand-new Cloudflare account, the AI may ask you to open [https://dash.cloudflare.com/](https://dash.cloudflare.com/) ➔ Click **`Workers & Pages`** in the left sidebar ➔ Pick a custom `workers.dev` subdomain name and save it, then reply **"Done"**.
-3. **🎉 [Peer Test & Inspect Cloud D1 Logs!]**:
+2. **🎉 [Peer Test & Inspect Cloud D1 Logs!]**:
    * OpenCode will automatically create your D1 database, seed your content, deploy your site, verify the API, and hand you your live `https://xxx.workers.dev` URL ready for Peer Testing!
 

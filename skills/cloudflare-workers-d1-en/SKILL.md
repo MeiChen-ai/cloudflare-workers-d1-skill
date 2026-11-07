@@ -1,23 +1,23 @@
 ---
 name: cloudflare-workers-d1-en
-description: OpenCode Edition: Automated Cloudflare Workers (frontend + backend API) + Cloudflare D1 (SQLite cloud database) zero-key, zero-MCP closed-loop web system guide. Designed for OpenCode with two layers of instructions: a project-root AGENTS.md (teaching rules) plus the prompt the student pastes (learning content), featuring built-in schemas for Week 10 (A2/B1/B2 Scaffolded Reading & Listening Web App) and Week 11 (My Own English App, 5 app types). Activate automatically in OpenCode when the user says "connect Cloudflare", "setup Cloudflare", "deploy to Cloudflare", "Cloudflare D1", "wrangler login", or "follow AGENTS.md to deploy to Cloudflare".
+description: OpenCode Edition: Automated Cloudflare Workers (frontend + backend API) + Cloudflare D1 (SQLite cloud database) zero-key, zero-MCP closed-loop web system guide. Designed for OpenCode: in Week 10 the student pastes one prompt with both the teaching rules and the learning content; in Week 11 the rules come from a project-root AGENTS.md and the content from a pasted prompt, featuring built-in schemas for Week 10 (A2/B1/B2 Scaffolded Reading & Listening Web App) and Week 11 (My Own English App, 5 app types). Activate automatically in OpenCode when the user says "connect Cloudflare", "setup Cloudflare", "deploy to Cloudflare", "Cloudflare D1", "wrangler login", or "follow AGENTS.md to deploy to Cloudflare".
 ---
 
 # OpenCode × Cloudflare Workers + D1 Zero-Key Closed-Loop System (English Student Edition)
 
 > Adapted from [agent-connect-lazy-pack](https://github.com/mathruffian-dot/agent-connect-lazy-pack)  
-> Target Environment: **OpenCode** (reads the rules in the project-root `AGENTS.md`, then takes the content from the student's pasted prompt; also compatible with other AI coding agents)  
-> Core Philosophy: **"Zero MCP setup, zero API keys or tokens to copy-paste! OpenCode reads the rules in `AGENTS.md` (root folder) and the content in the student's prompt, then deploys Frontend static site (Workers Assets) + Backend API (Worker) + Cloud SQL Database (D1) under one Cloudflare account. The student only clicks 'Allow' once in the browser."**
+> Target Environment: **OpenCode** (Week 10: rules and content both come from the student's pasted prompt; Week 11: rules also come from the project-root `AGENTS.md`; also compatible with other AI coding agents)  
+> Core Philosophy: **"Zero MCP setup, zero API keys or tokens to copy-paste! OpenCode follows the student's pasted prompt (plus `AGENTS.md` in the folder in Week 11), then deploys Frontend static site (Workers Assets) + Backend API (Worker) + Cloud SQL Database (D1) under one Cloudflare account. The student only clicks 'Allow' once in the browser."**
 
 ---
 
 ## 🎯 Your Role as the OpenCode Agent & Division of Labor (Mandatory)
 
-Your user is an **English-major student or educator without a backend engineering background**, working inside **OpenCode** with two layers of instructions: a project-root `AGENTS.md` (teaching rules to follow every time) plus a pasted prompt (this app's content):
+Your user is an **English-major student or educator without a backend engineering background**, working inside **OpenCode**. In Week 10 they paste one prompt with the rules and the content; in Week 11 they also put an `AGENTS.md` (the rules) in the project folder:
 
 | The Student Only Does (3 Simple Actions) | The OpenCode Agent Handles Everything Else |
 | :--- | :--- |
-| ① Sign up for Cloudflare if needed (enter Email + password and click the verification link in their inbox)<br>② Click **Allow** on the Cloudflare OAuth screen in the browser<br>③ Pick a `workers.dev` subdomain in the Cloudflare dashboard if prompted on first deploy | Automatically reading the rules in root `AGENTS.md` and the content in the student's prompt, environment checks, installing Node.js if missing, running all `npx.cmd -y wrangler` CLI commands, scaffolding frontend & backend files, auto-creating the D1 database & tables, writing and applying SQL migrations (with pre-seeded learning content), deploying the Worker, verifying the live API, and printing the Completion Card |
+| ① Sign up for Cloudflare if needed (enter Email + password and click the verification link in their inbox)<br>② Click **Allow** on the Cloudflare OAuth screen in the browser<br>③ Pick a `workers.dev` subdomain in the Cloudflare dashboard if prompted on first deploy | Automatically reading the student's prompt (plus root `AGENTS.md` in Week 11), environment checks, installing Node.js if missing, running all `npx.cmd -y wrangler` CLI commands, scaffolding frontend & backend files, auto-creating the D1 database & tables, writing and applying SQL migrations (with pre-seeded learning content), deploying the Worker, verifying the live API, and printing the Completion Card |
 
 1. **Pure English & Zero Manual Database Setup**:
    - Communicate 100% in clear, encouraging, jargon-free **English**.
@@ -44,12 +44,11 @@ Your user is an **English-major student or educator without a backend engineerin
 
 This workflow is **idempotent (resumable)**: always check current state first and skip any steps that are already completed.
 
-### Step 0: Read `AGENTS.md` (Rules) + the Student's Prompt (Content) & Confirm the Nickname
-1. First, check the current project root folder for `AGENTS.md` and read its **teaching rules**: the target week (**Week 10: A2/B1/B2 Scaffolded Reading & Listening Web App** or **Week 11: My Own English App**), the level/clue rules or the app type and feedback rule, and the database and deployment requirements.
-   - **The learning content comes from the student's pasted prompt**: Week 10 = nickname, article, 5 key words, 2 check questions; Week 11 = nickname, learner & problem, app idea, practice items.
-   - **Two layers**: `AGENTS.md` says *how* to teach; the prompt says *what* to teach. If the prompt conflicts with a rule in `AGENTS.md`, **follow `AGENTS.md`** and tell the student in one sentence what did not match.
-   - Prompt but no `AGENTS.md`: remind the student to download `AGENTS.md` from the Cockpit design card and put it in the project root. Only if they decline, continue with the prompt content and this skill's default rules.
-   - `AGENTS.md` but no content yet: ask the student to paste the prompt from the design card. Do not invent an article or practice items.
+### Step 0: Read the Student's Prompt (Rules + Content), Plus `AGENTS.md` If There Is One, & Confirm the Nickname
+1. Where the rules and content come from depends on the week:
+   - **Week 10 (one prompt)**: the pasted prompt holds both "## Rules" (level rules, first-click clue, audio, check questions, tables and deployment) and "## Content" (nickname, article, 5 key words, 2 check questions). **No `AGENTS.md` in the folder is normal. Do not ask the student to download or create one.**
+   - **Week 11 (`AGENTS.md` + prompt)**: first read `AGENTS.md` in the project root (app type, feedback rule, tables and deployment), then take the content from the prompt (nickname, learner & problem, app idea, practice items). If the prompt conflicts with a rule in `AGENTS.md`, **follow `AGENTS.md`** and tell the student in one sentence what did not match. If a Week 11 student has no `AGENTS.md`, remind them once to download it from the Cockpit design card; if they don't, continue with the prompt and this skill's default rules.
+   - No content yet (no article or practice items): ask the student to paste the prompt from the design card. Do not invent an article or practice items.
 2. If the prompt has no nickname, ask:
    > "Please give me a short **English nickname** (lowercase letters and numbers only, e.g., `alice` or `sean01`) so I can name your live Cloudflare website and D1 cloud database in OpenCode!"
    *(Automatically convert any uppercase letters to lowercase).*
@@ -92,13 +91,13 @@ Ask the student: *"Do you already have a Cloudflare account (with your email ver
 
 ---
 
-### Step 4: Create Project Structure & D1 Cloud Database from the `AGENTS.md` Rules and the Prompt Content (Week 10 Reading/Listening or Week 11 Own English App)
+### Step 4: Create Project Structure & D1 Cloud Database from the Rules and the Prompt Content (Week 10 Reading/Listening or Week 11 Own English App)
 
-In the project folder where the student launched OpenCode, create the unified full-stack directory structure (`AGENTS.md` sits in the root folder):
+In the project folder where the student launched OpenCode, create the unified full-stack directory structure (in Week 11, `AGENTS.md` sits in the root folder; Week 10 has no such file):
 
 ```text
 <project-folder>/
-├── AGENTS.md                      ← [Read by OpenCode] Teaching & deployment rules from Part A of the Cockpit design card (content is in the prompt)
+├── AGENTS.md                      ← [Week 11 only] Teaching & deployment rules from Part A of the Cockpit design card (Week 10 puts the rules in the prompt)
 ├── wrangler.jsonc                 ← Cloudflare Workers + D1 + Static Assets config
 ├── worker.js                      ← Backend API router (/api/* queries env.DB)
 ├── migrations/
@@ -133,7 +132,7 @@ npx.cmd -y wrangler d1 create <nickname>-<project>-db --binding DB --update-conf
 ---
 
 #### 3A. [Week 10 Example] A2/B1/B2 Scaffolded Reading & Listening Web App (`migrations/0001_init.sql` Template)
-Following the level and clue rules in `AGENTS.md`, OpenCode takes the article, 5 key words and 2 questions from the student's prompt, automatically adapts the passage into CEFR `A2`, `B1`, and `B2` versions, generates two-click vocabulary glosses (`glosses_json`: 1st click = context clue; 2nd click = English definition), creates comprehension questions (`questions_json`), and sets up the `reading_logs` table:
+Following the level and clue rules in the "Rules" part of the student's prompt, OpenCode takes the article, 5 key words and 2 questions from its "Content" part, automatically adapts the passage into CEFR `A2`, `B1`, and `B2` versions, generates two-click vocabulary glosses (`glosses_json`: 1st click = context clue; 2nd click = English definition), creates comprehension questions (`questions_json`), and sets up the `reading_logs` table:
 
 ```sql
 CREATE TABLE IF NOT EXISTS passages (
@@ -283,7 +282,7 @@ npx.cmd -y wrangler deploy
    🎉 **OpenCode × Cloudflare Full-Stack Web App + D1 Database Deployed!**
    - 🌐 **Live Public Website**: https://<worker-name>.<subdomain>.workers.dev
    - 🗄️ **Cloud D1 Database**: `<db-name>` (Tables initialized, content seeded & live log viewer active ✅)
-   - 📄 **Rules & Content**: Built from the root `AGENTS.md` teaching rules and the content in your prompt
+   - 📄 **Rules & Content**: Built from your teaching rules (in the prompt for Week 10, in `AGENTS.md` for Week 11) and the content in your prompt
    - 🔒 **Security & Compatibility**: Zero API keys exposed, same-origin API (no CORS issues, ready for Peer Testing on desktop or mobile!)
    ```
 

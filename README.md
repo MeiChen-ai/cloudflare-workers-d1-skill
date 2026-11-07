@@ -12,11 +12,12 @@
 ## 🇹🇼 第一部分：中文版學生實作講義 (Traditional Chinese)
 
 ### 一、 這套方法有什麼超強優點？
-在 **OpenCode** 中搭配 **`cloudflare-workers-d1`** 技能與專案資料夾裡的 **`AGENTS.md`**，你的 AI Agent 會幫你把「**前端互動網頁＋後端 API＋D1 雲端資料庫**」一次部署在同一個 **Cloudflare** 帳號裡：
-* **兩層指令：`AGENTS.md` 管規則、Prompt 管內容**：Cockpit 設計卡的 Part A 產生 `AGENTS.md`（每次都要遵守的教學規則），**直接放進你的專案資料夾**（不要放進裡面的其他資料夾）；Part B 產生 Prompt（這次的文章、單字、題目或練習題），貼進 OpenCode 對話框。想改「怎麼教」就改 `AGENTS.md`，想改「教什麼」就改 Prompt！
+在 **OpenCode** 中搭配 **`cloudflare-workers-d1`** 技能與 Cockpit 設計卡產生的指令，你的 AI Agent 會幫你把「**前端互動網頁＋後端 API＋D1 雲端資料庫**」一次部署在同一個 **Cloudflare** 帳號裡：
+* **第 10 週：一份 Prompt 搞定（規則＋內容）**：設計卡把「怎麼教」的規則和「教什麼」的內容合成**一份 Prompt**，打開專案資料夾後直接貼進 OpenCode 就好，不需要任何檔案。
+* **第 11 週：`AGENTS.md`（規則）＋ Prompt（內容）**：設計卡 Part A 產生 `AGENTS.md`，**直接放進你的專案資料夾**（不要放進裡面的其他資料夾）；Part B 產生 Prompt，貼進 OpenCode 對話框。
 * **完全免裝 MCP、免複製任何 API Key 或 Token**：你不需要貼任何密碼或權杖給 AI！
 * **前後端同源（零跨域問題）＋ 雲端資料庫全自動建立**：D1 資料表與初始教材皆由 OpenCode 自動建好並寫入，網頁最下方還會內建「**📊 Cloud D1 Peer-Test Logs（雲端同儕測試紀錄即時看板）**」，任何電腦或手機點開網址就能直接測試！
-* **你的任務**：寫程式、寫 SQL 與打指令全部交給 OpenCode AI，你只需要做 **「1 句安裝技能指令 ＋ 把 `AGENTS.md` 直接放進專案資料夾 ＋ 貼上 Prompt ＋ 在瀏覽器按一次 Allow」**！
+* **你的任務**：寫程式、寫 SQL 與打指令全部交給 OpenCode AI，你只需要做 **「1 句安裝技能指令 ＋ 在 OpenCode 打開專案資料夾 ＋ 貼上 Prompt ＋ 在瀏覽器按一次 Allow」**（第 11 週另外把 `AGENTS.md` 放進資料夾）！
 
 ---
 
@@ -54,50 +55,33 @@
 
 ---
 
-### 四、 Step 3：放好 `AGENTS.md`（規則），再貼上 Prompt（內容）
+### 四、 Step 3：在 OpenCode 打開專案資料夾，貼上 Prompt
 
-在桌面上建立你的專案資料夾（例如第 10 週 `Week10_App` 或第 11 週 `Week11_App`），把從課堂 Cockpit 設計卡 **Part A** 下載的 **`AGENTS.md`** **直接放進這個資料夾**，不要放進裡面的其他資料夾：
+1. 在桌面建立一個新的空資料夾（名稱自取，例如 `Week10_App`），這就是你的**專案資料夾**。
+2. 打開 **OpenCode 桌面 app**，在開始畫面按 **New Project（新增專案）**，選你的專案資料夾，確認視窗上顯示的是這個資料夾的名稱。
+3. 貼上設計卡產生的 Prompt（按 **Copy Prompt for OpenCode and Padlet** 複製），同一份也貼到 Padlet。
+
+| | 第 10 週 | 第 11 週 |
+| :--- | :--- | :--- |
+| 放進專案資料夾 | 不用放任何檔案 | `AGENTS.md`（規則：App 類型、回饋規則、開始與結束畫面、D1 資料表與部署） |
+| 貼進 OpenCode | **一份 Prompt**：規則（分級規則、first-click clue（點第 1 下的提示）、語音、理解題、D1 資料表與部署）＋內容（暱稱、文章、5 個關鍵字、2 題理解題） | Prompt（內容：暱稱、學習者與問題、App 點子、練習題） |
+
+*(沒有用 Cockpit 的話，也可以照下方範本自己寫：)*
+
+#### 📖 第 10 週範本：「A2 / B1 / B2 分級閱讀與聽力鷹架網＋雲端測試紀錄表」（一份 Prompt）
 
 ```text
-Week10_App/          👈 在這個資料夾打開 OpenCode
-└── AGENTS.md        👈 把下載的 AGENTS.md 直接放在這裡（全大寫加 S）！
-```
+請用 cloudflare-workers-d1 技能，把我的第 10 週分級閱讀聽力網部署到 Cloudflare Workers + D1。網站名 【暱稱】-w10-reading，資料庫名 【暱稱】-w10-reading-db。
 
-接著在該資料夾打開 **OpenCode**，貼上設計卡 **Part B** 產生的 Prompt（按 **Copy Prompt for OpenCode and Padlet** 複製），同一份也貼到 Padlet。
-
-| | `AGENTS.md`（放進資料夾） | Prompt（貼進對話框） |
-| :--- | :--- | :--- |
-| 角色 | 每次都要遵守的**規則** | 這一次的**內容** |
-| 第 10 週 | 分級規則、first-click clue（點第 1 下的提示）、語音、理解題形式、D1 資料表與部署 | 暱稱、文章、5 個關鍵字、2 題理解題 |
-| 第 11 週 | App 類型（5 選 1）、回饋規則、開始與結束畫面、D1 資料表與部署 | 暱稱、學習者與問題、App 點子、練習題 |
-| 想修改時 | 改「怎麼教」 | 改「教什麼」 |
-
-*(沒有用 Cockpit 的話，也可以照下方範本自己建一個 `AGENTS.md`，再貼上 Prompt：)*
-
-#### 📖 第 10 週範本：「A2 / B1 / B2 分級閱讀與聽力鷹架網＋雲端測試紀錄表」
-
-**① `AGENTS.md`（規則）**
-```markdown
-# AGENTS.md — Week 10 Scaffolded Reading & Listening App
-## 1. Tools
-- 使用 cloudflare-workers-d1 技能，部署到 Cloudflare Workers + D1。
-- 網站名 <暱稱>-w10-reading，資料庫名 <暱稱>-w10-reading-db（暱稱見我的 Prompt）。
-## 2. Teaching Rules
+## 規則（怎麼教）
 1. 分級切換：把我的文章改寫成 A2 / B1 / B2 三個分頁，三級講同一個故事。分級規則：【A2：每句 12 字以內、基礎字彙；B1：中長句、保留 5 個關鍵字；B2：保留原文】
 2. 聽力朗讀列：瀏覽器語音朗讀，Play/Pause 與 1.0x / 0.85x。
 3. 兩段式單字提示：每一級都標出我的 5 個關鍵字。點第 1 下：【一個幫我猜意思的語境問句】，不可顯示定義；點第 2 下才顯示英英釋義與例句。
 4. 2 題四選一理解題（每一級都能作答），測試者先輸入暱稱再送出、看分數。
 5. 網頁最下方可展開的「📊 Cloud D1 Peer-Test Logs」看板。
-## 3. D1 & Deployment
-- 不要叫我寫 SQL、建表或貼任何金鑰。
-- 建立 passages（預塞三級課文、單字提示與題目）與 reading_logs（nickname、selected_level、audio_speed、words_clicked、quiz_score、created_at），套用遠端 migrations 並部署。
-## 4. Content
-- 內容來自我的 Prompt。Prompt 與本檔規則衝突時，以本檔為準並告訴我。
-```
+6. 全部幫我做好：不要叫我寫 SQL、建表或貼任何金鑰。建立 passages（預塞三級課文、單字提示與題目）與 reading_logs（nickname、selected_level、audio_speed、words_clicked、quiz_score、created_at），套用遠端 migrations、部署，最後給我 workers.dev 網址。
 
-**② Prompt（內容）**
-```text
-請讀取資料夾裡的 AGENTS.md 並遵守所有規則，然後用 cloudflare-workers-d1 技能，依以下內容建立並部署我的第 10 週分級閱讀聽力網：
+## 內容（教什麼）
 - 我的暱稱：【小寫英文，例如 alice】
 - 文章標題：【標題】
 - 文章：【150–200 字英文短文】
@@ -166,11 +150,12 @@ Week10_App/          👈 在這個資料夾打開 OpenCode
 ## 🌍 Part 2: English Student Handout (For Non-Chinese Environments)
 
 ### 1. Why Use This Workflow in OpenCode?
-With the **`cloudflare-workers-d1-en`** skill and an **`AGENTS.md`** file in your project folder in **OpenCode**, your AI Agent deploys your **Frontend Web App + Backend API + Cloud SQL Database (D1)** all together under a single **Cloudflare** account:
-* **Two Layers: `AGENTS.md` for Rules, a Prompt for Content**: Part A of the Cockpit design card gives you `AGENTS.md` (the teaching rules OpenCode follows every time), which goes **straight into your project folder**, not into a folder inside it. Part B gives you a prompt (this app's article, words, questions or practice items), which you paste into OpenCode. Change *how* it teaches in `AGENTS.md`; change *what* it teaches in the prompt!
+With the **`cloudflare-workers-d1-en`** skill and the instructions from your Cockpit design card in **OpenCode**, your AI Agent deploys your **Frontend Web App + Backend API + Cloud SQL Database (D1)** all together under a single **Cloudflare** account:
+* **Week 10: One Prompt (Rules + Content)**: The design card joins the rules (*how* the app teaches) and the content (*what* it teaches) into **one prompt**. Open your project folder in OpenCode and paste it. No file needed.
+* **Week 11: `AGENTS.md` (Rules) + a Prompt (Content)**: Part A of the design card gives you `AGENTS.md`, which goes **straight into your project folder**, not into a folder inside it. Part B gives you a prompt to paste into OpenCode.
 * **Zero MCP Setup, Zero API Keys or Tokens**: You never have to copy or paste any secret tokens!
 * **Auto-Created Cloud Database + Live Log Viewer**: OpenCode automatically creates the D1 SQLite tables, seeds your reading passages or practice items, and adds a collapsible **"📊 Cloud D1 Peer-Test Logs"** viewer at the bottom of your webpage!
-* **Your Job**: Let the OpenCode AI run all commands, write all SQL, and build all code—you only need **1 install prompt + putting `AGENTS.md` straight into your project folder + pasting your prompt + 1 click on "Allow" in your browser**!
+* **Your Job**: Let the OpenCode AI run all commands, write all SQL, and build all code—you only need **1 install prompt + opening your project folder in OpenCode + pasting your prompt + 1 click on "Allow" in your browser** (in Week 11, also put `AGENTS.md` into the folder)!
 
 ---
 
@@ -208,50 +193,33 @@ Please download the skill file from https://raw.githubusercontent.com/MeiChen-ai
 
 ---
 
-### 4. Step 3: Place `AGENTS.md` (Rules), Then Paste Your Prompt (Content)
+### 4. Step 3: Open Your Project Folder in OpenCode, Then Paste Your Prompt
 
-Create your weekly project folder on your Desktop (e.g., `Week10_App` or `Week11_App`) and place the **`AGENTS.md`** file from **Part A** of your course Cockpit design card **straight into that folder**, not into a folder inside it:
+1. Make a new empty folder on your Desktop. Any name is fine, e.g. `Week10_App`. This is your **project folder**.
+2. Open the **OpenCode desktop app**, click **New Project（新增專案）** on the start screen, choose your project folder, and check that the window shows its name.
+3. Paste the prompt from your design card (press **Copy Prompt for OpenCode and Padlet**). Post the same prompt on Padlet.
+
+| | Week 10 | Week 11 |
+| :--- | :--- | :--- |
+| Put in your project folder | nothing | `AGENTS.md` (rules: app type, feedback rule, start & finish screens, D1 tables & deployment) |
+| Paste into OpenCode | **one prompt**: rules (level rules, first-click clue, audio, check questions, D1 tables & deployment) + content (nickname, article, 5 key words, 2 check questions) | a prompt (content: nickname, learner & problem, app idea, practice items) |
+
+*(No Cockpit? Write your own from the templates below.)*
+
+#### 📖 Week 10 Template: CEFR A2 / B1 / B2 Scaffolded Reading & Listening Web App + Cloud Logs (one prompt)
 
 ```text
-Week10_App/          👈 Open OpenCode in this folder
-└── AGENTS.md        👈 Place your downloaded AGENTS.md right here (ALL CAPS + S)!
-```
+Use the cloudflare-workers-d1-en skill to build and deploy my Week 10 Reading & Listening App on Cloudflare Workers + D1. Name the Worker [nickname]-w10-reading and the database [nickname]-w10-reading-db.
 
-Then launch **OpenCode** inside that folder and paste the prompt from **Part B** of the design card (press **Copy Prompt for OpenCode and Padlet**). Post the same prompt on Padlet.
-
-| | `AGENTS.md` (in your folder) | Prompt (pasted into OpenCode) |
-| :--- | :--- | :--- |
-| Job | the **rules**, followed every time | this app's **content** |
-| Week 10 | level rules, first-click clue, audio, question format, D1 tables & deployment | nickname, article, 5 key words, 2 check questions |
-| Week 11 | app type (1 of 5), feedback rule, start & finish screens, D1 tables & deployment | nickname, learner & problem, app idea, practice items |
-| To change | *how* it teaches | *what* it teaches |
-
-*(No Cockpit? Build your own `AGENTS.md` and prompt from the templates below.)*
-
-#### 📖 Week 10 Template: CEFR A2 / B1 / B2 Scaffolded Reading & Listening Web App + Cloud Logs
-
-**① `AGENTS.md` (rules)**
-```markdown
-# AGENTS.md — Week 10 Scaffolded Reading & Listening App
-## 1. Tools
-- Use the cloudflare-workers-d1-en skill to deploy on Cloudflare Workers + D1.
-- Name the Worker <nickname>-w10-reading and the database <nickname>-w10-reading-db (nickname is in my prompt).
-## 2. Teaching Rules
+## Rules (how it teaches)
 1. Level switcher: rewrite my article into A2 / B1 / B2 tabs that tell the same story. Level rules: [A2: 12 words or fewer per sentence, everyday words; B1: medium sentences, keep the 5 key words; B2: keep the original]
 2. Listening bar: browser text-to-speech with Play/Pause and 1.0x / 0.85x.
-3. Two-click word help: underline my 5 key words in every level. Click 1: [a short question about the sentence that helps me guess the meaning]; never show the definition on click 1. Click 2: English definition and one example.
+3. Two-click word help: underline my 5 key words in every level. First click: [a short question about the sentence that helps me guess the meaning]; never show the definition on the first click. Second click: English definition and one example.
 4. My 2 check questions as multiple choice (4 options), answerable at every level. The tester types a nickname before submitting, then sees the score.
 5. A collapsible "📊 Cloud D1 Peer-Test Logs" table at the bottom.
-## 3. D1 & Deployment
-- Do NOT ask me to write SQL, create tables, or copy any key or token.
-- Create passages (pre-filled with the three levels, word clues and questions) and reading_logs (nickname, selected_level, audio_speed, words_clicked, quiz_score, created_at), apply remote migrations, and deploy.
-## 4. Content
-- The content comes from my prompt. If my prompt and these rules disagree, follow these rules and tell me.
-```
+6. Do it all for me: do NOT ask me to write SQL, create tables, or copy any key or token. Create passages (pre-filled with the three levels, word clues and questions) and reading_logs (nickname, selected_level, audio_speed, words_clicked, quiz_score, created_at), apply remote migrations, deploy, and give me the workers.dev address.
 
-**② Prompt (content)**
-```text
-Please read AGENTS.md in this folder and follow all its rules. Then use the cloudflare-workers-d1-en skill to build and deploy my Week 10 Reading & Listening App with this content:
+## Content (what it teaches)
 - My nickname: [lowercase, e.g., alice]
 - Article title: [title]
 - Article: [150–200 words of English]

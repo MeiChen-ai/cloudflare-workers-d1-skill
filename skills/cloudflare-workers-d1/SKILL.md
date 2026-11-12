@@ -1,6 +1,6 @@
 ---
 name: cloudflare-workers-d1
-description: OpenCode 專用：Cloudflare Workers（前端網站＋後端 API）＋ Cloudflare D1（SQLite 雲端資料庫）免金鑰、免 MCP 零複製全自動閉環部署指南。第 10、11 週學生都只貼上一份 Prompt（規則＋內容），不需要 AGENTS.md，內建第 10 週「A2/B1/B2 分級閱讀與聽力鷹架網」與第 11 週「我自己設計的英文 App」（5 種 App 類型）標準範本。當使用者在 OpenCode 提到「連接 Cloudflare」「設定 Cloudflare」「用 Cloudflare 部署」「Cloudflare D1」「Wrangler 登入」「照這份 Prompt 部署到 Cloudflare」時自動啟用。
+description: OpenCode 專用：Cloudflare Workers（前端網站＋後端 API）＋ Cloudflare D1（SQLite 雲端資料庫）免金鑰、免 MCP 零複製全自動閉環部署指南。第 10、11 週學生都只貼上一份 Prompt（規則＋內容），不需要 AGENTS.md，內建第 10 週「A2/B1/B2 分級閱讀與聽力鷹架網」與第 11 週「我自己設計的英文遊戲」（4 種遊戲類型）標準範本。當使用者在 OpenCode 提到「連接 Cloudflare」「設定 Cloudflare」「用 Cloudflare 部署」「Cloudflare D1」「Wrangler 登入」「照這份 Prompt 部署到 Cloudflare」時自動啟用。
 ---
 
 # OpenCode × Cloudflare Workers + D1 零金鑰全自動閉環系統（教學與自動化實作指南）
@@ -43,8 +43,8 @@ description: OpenCode 專用：Cloudflare Workers（前端網站＋後端 API）
 
 ### 第 0 步：讀取學生的 Prompt（規則＋內容）並確認英文暱稱
 1. 第 10、11 週學生都只貼上**一份 Prompt**，裡面有兩段：
-   - **「## 規則／## Rules」**：第 10 週為分級規則、first-click clue、語音、理解題、資料表與部署；第 11 週為 App 類型、回饋規則、開始與結束畫面、資料表與部署。
-   - **「## 內容／## Content」**：第 10 週為暱稱、文章、5 個關鍵字、2 題理解題；第 11 週為暱稱、學習者與問題、App 點子、練習題。
+   - **「## 規則／## Rules」**：第 10 週為分級規則、first-click clue、語音、理解題、資料表與部署；第 11 週為遊戲類型、輸贏與計分、英文就是玩法、先提示、只做一個循環、先給計畫、資料表與部署。
+   - **「## 內容／## Content」**：第 10 週為暱稱、文章、5 個關鍵字、2 題理解題；第 11 週為暱稱、玩家與問題、目標英文、遊戲點子、遊戲內容。
    - **不需要 `AGENTS.md`，不要請學生下載或建立。** 若資料夾裡剛好有舊的 `AGENTS.md`，以學生這次貼上的 Prompt 為準。
    - 若還沒有內容（沒有文章或練習題）：請學生貼上設計卡產生的 Prompt，不要自行編造文章或練習題。
 2. 若 Prompt 裡沒有英文暱稱，先問一句：
@@ -52,7 +52,7 @@ description: OpenCode 專用：Cloudflare Workers（前端網站＋後端 API）
    *(若學生給大寫，自動幫他轉小寫)*。
 3. 決定命名：
    - **第 10 週（分級閱讀與聽力鷹架網）**：網站名為 `<暱稱>-w10-reading`，資料庫名為 `<暱稱>-w10-reading-db`。
-   - **第 11 週（我自己設計的英文 App）**：網站名為 `<暱稱>-w11-app`，資料庫名為 `<暱稱>-w11-app-db`。
+   - **第 11 週（我自己設計的英文遊戲）**：網站名為 `<暱稱>-w11-app`，資料庫名為 `<暱稱>-w11-app-db`。
 
 ---
 
@@ -155,23 +155,23 @@ CREATE TABLE IF NOT EXISTS reading_logs (
 
 ---
 
-#### 3B. 【第 11 週範例】我自己設計的英文 App（`migrations/0001_init.sql` 範本）
-學生在 Cockpit 設計卡自選 1 種 App 類型：**Branching conversation**（3 關對話，選 1 個回應）、**Put it in order**（把打亂的字排回句子）、**Listen and type**（聽句子打字）、**Sort into groups**（把字卡分組）或 **Flip and recall**（翻卡回想並自評）。OpenCode 依學生 Prompt「規則」段的 App 類型、回饋規則與資料表要求，把學生 Prompt 裡的練習題（一行一題，格式依 App 類型而定）預塞進 `items`，並建立記錄每次練習的 `practice_logs` 表：
+#### 3B. 【第 11 週範例】我自己設計的英文遊戲（`migrations/0001_init.sql` 範本）
+學生在 Cockpit 設計卡自選 1 種遊戲類型：**Detective Clues**（一個案件、4 條線索，讀線索後猜答案）、**Escape Room**（3 個房間，輸入答案開下一間）、**Social Survival**（3 個場景，選回應維持「好感度」）或 **Word-Building Race**（限時把打亂的字排成句子）。OpenCode 依學生 Prompt「規則」段的遊戲類型、輸贏與計分、先提示與資料表要求，把學生 Prompt 裡的遊戲內容（一行一筆，格式依遊戲類型而定）預塞進 `items`，並建立記錄每回合的 `practice_logs` 表（沿用此表名，後端 `/api/log` 不必改）。玩家要先答錯一次才給提示，同一題錯兩次才顯示答案；**只做一個遊戲循環**，不要加關卡、商店等額外功能；動手前先給學生一份簡短計畫，等學生說 OK：
 
 ```sql
 CREATE TABLE IF NOT EXISTS items (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   position INTEGER NOT NULL,         -- 題目順序 1, 2, 3...
-  content_json TEXT NOT NULL         -- 依 App 類型而定，例如 Branching conversation：{"line":"Professor: Hi, what can I do for you?","best":"Could I possibly have three more days?","weaker":["I need three more days.","Um, something happened."]}
+  content_json TEXT NOT NULL         -- 依遊戲類型而定，例如 Social Survival：{"situation":"Teacher: Can you stay after class?","best":"Of course. Could I take the quiz again, please?","weaker":["No, I'm busy.","Why do I need to?"]}；Escape Room：{"note":"...","answer":"chair","hint":"..."}
 );
 
 CREATE TABLE IF NOT EXISTS practice_logs (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   nickname TEXT NOT NULL,
-  app_type TEXT NOT NULL,            -- 例如 'Put it in order'
+  app_type TEXT NOT NULL,            -- 遊戲類型，例如 'Social Survival'
   score INTEGER NOT NULL DEFAULT 0,
   hints_used INTEGER NOT NULL DEFAULT 0,
-  details TEXT DEFAULT '',           -- 依 Prompt 規則段的規定，例如選擇路徑 'T1:weak->T1:best->T2:best->T3:best' 或重播次數
+  details TEXT DEFAULT '',           -- 以 win 或 lose 開頭，再依 Prompt 規則段存，例如 'win; S1:weak->S1:best->S2:best' 或 'lose; 3 wrong guesses'
   created_at TEXT DEFAULT CURRENT_TIMESTAMP
 );
 ```

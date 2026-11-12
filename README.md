@@ -62,8 +62,8 @@
 
 | Prompt 的兩部分 | 第 10 週 | 第 11 週 |
 | :--- | :--- | :--- |
-| 規則（怎麼教） | 分級規則、first-click clue（點第 1 下的提示）、語音、理解題、D1 資料表與部署 | App 類型、回饋規則、開始與結束畫面、D1 資料表與部署 |
-| 內容（教什麼） | 暱稱、文章、5 個關鍵字、2 題理解題 | 暱稱、學習者與問題、App 點子、練習題 |
+| 規則（怎麼教） | 分級規則、first-click clue（點第 1 下的提示）、語音、理解題、D1 資料表與部署 | 遊戲類型、輸贏與計分、英文就是玩法、先提示、只做一個循環、先給計畫、D1 資料表與部署 |
+| 內容（教什麼） | 暱稱、文章、5 個關鍵字、2 題理解題 | 暱稱、玩家與問題、目標英文、遊戲點子、遊戲內容 |
 
 *(沒有用 Cockpit 的話，也可以照下方範本自己寫：)*
 
@@ -90,35 +90,37 @@
   Q2：【題目】（正確答案：【答案】）
 ```
 
-#### 💬 第 11 週範本：「我自己設計的英文 App＋雲端練習紀錄表」（一份 Prompt）
+#### 💬 第 11 週範本：「我自己設計的英文遊戲＋雲端遊玩紀錄表」（一份 Prompt）
 
 ```text
-請用 cloudflare-workers-d1 技能，把我的第 11 週英文 App 部署到 Cloudflare Workers + D1。網站名 【暱稱】-w11-app，資料庫名 【暱稱】-w11-app-db。第 10 週已登入 Cloudflare：先跑 npx.cmd -y wrangler whoami，需要時才 wrangler login。
+請用 cloudflare-workers-d1 技能，把我的第 11 週英文遊戲部署到 Cloudflare Workers + D1。網站名 【暱稱】-w11-app，資料庫名 【暱稱】-w11-app-db。第 10 週已登入 Cloudflare：先跑 npx.cmd -y wrangler whoami，需要時才 wrangler login。
 
-## 規則（App 怎麼運作）
-1. App 類型：【5 選 1：Branching conversation（3 關對話，選 1 個回應）／ Put it in order（把打亂的字排回句子）／ Listen and type（聽句子打字）／ Sort into groups（把字卡分組）／ Flip and recall（翻卡回想並自評）】
-2. 開始畫面：輸入暱稱（不用真名），一次練習 2–8 分鐘。
-3. 回饋規則：【例如：第 1 次答錯給提示、第 2 次答錯才顯示答案】學習者至少試過一次之前，不顯示答案。
-4. 結束：顯示簡短總結，並把這次練習存進 D1。
-5. 網頁最下方可展開的「📊 Cloud D1 Peer-Test Logs」看板。
-6. 全部幫我做好：不要叫我寫 SQL、建表或貼任何金鑰。建立 items（預塞我下面的練習題）與 practice_logs（nickname、app_type、score、hints_used、details、created_at），details 依下表存；套用遠端 migrations、部署，最後給我 workers.dev 網址。
+## 規則（遊戲怎麼運作）
+1. 遊戲類型：【4 選 1：Detective Clues（一個案件、4 條線索，讀線索後猜答案）／ Escape Room（3 個房間，輸入答案開下一間）／ Social Survival（3 個場景，選回應維持「好感度」）／ Word-Building Race（限時把打亂的字排成句子）】
+2. 輸贏與計分：【贏的條件、輸的條件、怎麼算分，各一句】
+3. 英文就是玩法：玩家不注意或不使用這個英文就不能贏：【目標英文】。不要加不靠它也能得到的分數、生命或獎勵。
+4. 先提示：某一題第一次答錯，給一個指向「看哪裡／改什麼」的提示（我有寫提示就用我的）；同一題沒有錯滿兩次之前，不顯示答案；之後顯示答案與一句理由。
+5. 只做一個循環：只做上面這個循環，不要加關卡、商店、地圖或多餘畫面。一回合約 3 分鐘。先輸入暱稱（不用真名）；結束顯示輸贏、分數與 Play again 按鈕，並把這回合存進 D1。
+6. 先給計畫：動手前先給我一份簡短計畫（玩家做什麼、怎麼輸贏、D1 表放什麼），等我說 OK 才開始做。
+7. 網頁最下方可展開的「📊 Cloud D1 Peer-Test Logs」看板。
+8. 全部幫我做好：不要叫我寫 SQL、建表或貼任何金鑰。建立 items（預塞我下面的遊戲內容）與 practice_logs（nickname、app_type、score、hints_used、details、created_at）；app_type 存遊戲類型；details 以 win 或 lose 開頭，再依下表存；套用遠端 migrations、部署，最後給我 workers.dev 網址。
 
-## 內容（練什麼）
+## 內容（誰玩、練什麼英文）
 - 我的暱稱：【小寫英文，例如 alice】
-- 學習者與問題：【例如：英文寫信給教授時語氣太直接的大一學生（B1）】
-- App 點子：【例如：幫學生有禮貌地向教授多要幾天時間的 App】
-- 練習題：【依 App 類型的格式，一行一題】
+- 玩家與問題：【例如：英文訊息寫給老師時語氣太直接的大一學生（B1）】
+- 目標英文：【玩家必須注意或使用的英文，例如：用 could 的禮貌請求】
+- 遊戲點子：【例如：玩家要在請老師幫忙時，讓老師的好感度保持高的生存遊戲】
+- 遊戲內容：【依遊戲類型的格式，一行一筆】
 ```
 
-**練習題格式與 `details`（依你選的 App 類型）**
+**遊戲內容格式與 `details`（依你選的遊戲類型）**
 
-| App 類型 | 練習題格式（一行一題） | 題數 | `details` 要存什麼 |
+| 遊戲類型 | 遊戲內容格式 | 行數 | `details` 要存什麼（開頭先寫 `win` 或 `lose`） |
 | :--- | :--- | :--- | :--- |
-| Branching conversation | `對方的話 \| *最佳回應 \| 較弱回應 \| 較弱回應`（最佳回應前加 `*`） | 3 | 選擇路徑（例如 `T1:weak->T1:best->T2:best->T3:best`）與重選次數 |
-| Put it in order | 正確的句子（App 會自己打亂字的順序） | 5 | 第一次就答對的題數（滿分 5）與用了幾次提示 |
-| Listen and type | 學習者要聽的句子 | 5 | 聽對的字數／總字數，與重播次數 |
-| Sort into groups | `字或片語 \| 組名`（共 2 或 3 組） | 8 | 第一次檢查時放錯組的卡片數，與檢查次數 |
-| Flip and recall | `正面（提示） \| 背面（答案）` | 6 | Got it / Not sure / Missed it 各幾張，以及下次要複習哪幾張 |
+| Detective Clues | 第 1 行：`問題 \| *正確答案 \| 錯誤答案 \| 錯誤答案`（正確答案前加 `*`）；第 2–5 行：各一條線索 | 5 | 最後猜答案前讀了幾條線索，與猜錯次數 |
+| Escape Room | `房間的提示 \| 要輸入的答案 \| 提示` | 3 | 走到第幾間房，與每間房答錯幾次 |
+| Social Survival | `情境 \| *最佳回應 \| 較弱回應 \| 較弱回應`（最佳回應前加 `*`） | 3 | 每個場景選了哪些回應（例如 `S1:weak->S1:best->S2:best`）與最後的好感度 |
+| Word-Building Race | 正確的句子（遊戲會自己打亂字的順序） | 6 | 答對的句數、用了幾秒、用了幾次提示 |
 
 ---
 
@@ -185,8 +187,8 @@ Please download the skill file from https://raw.githubusercontent.com/MeiChen-ai
 
 | The two parts of the prompt | Week 10 | Week 11 |
 | :--- | :--- | :--- |
-| Rules (how it teaches) | level rules, first-click clue, audio, check questions, D1 tables & deployment | app type, feedback rule, start & finish screens, D1 tables & deployment |
-| Content (what it teaches) | nickname, article, 5 key words, 2 check questions | nickname, learner & problem, app idea, practice items |
+| Rules (how it teaches) | level rules, first-click clue, audio, check questions, D1 tables & deployment | game type, win/lose/score, English is the mechanic, hint first, one loop, plan first, D1 tables & deployment |
+| Content (what it teaches) | nickname, article, 5 key words, 2 check questions | nickname, player & problem, target English, game idea, game content |
 
 *(No Cockpit? Write your own from the templates below.)*
 
@@ -213,35 +215,37 @@ Use the cloudflare-workers-d1-en skill to build and deploy my Week 10 Reading & 
   Q2: [question] (Right answer: [answer])
 ```
 
-#### 💬 Week 11 Template: My Own English App + Cloud Practice Logs (one prompt)
+#### 💬 Week 11 Template: My Own English Game + Cloud Play Logs (one prompt)
 
 ```text
-Use the cloudflare-workers-d1-en skill to build and deploy my Week 11 English app on Cloudflare Workers + D1. Name the Worker [nickname]-w11-app and the database [nickname]-w11-app-db. I logged in to Cloudflare in Week 10: check with npx.cmd -y wrangler whoami first and only run wrangler login if needed.
+Use the cloudflare-workers-d1-en skill to build and deploy my Week 11 English game on Cloudflare Workers + D1. Name the Worker [nickname]-w11-app and the database [nickname]-w11-app-db. I logged in to Cloudflare in Week 10: check with npx.cmd -y wrangler whoami first and only run wrangler login if needed.
 
-## Rules (how my app works)
-1. App type: [pick 1 of 5: Branching conversation (3 turns, pick 1 of 3 replies) / Put it in order (tap mixed-up words back into a sentence) / Listen and type (hear a sentence, type it) / Sort into groups (drag word cards into groups) / Flip and recall (flip a card, rate yourself)]
-2. Start screen: ask for a nickname (no real names). One session should take 2-8 minutes.
-3. Feedback rule: [e.g., 1st wrong try: a hint; 2nd wrong try: show the answer] Never show the answer before the learner has tried at least once.
-4. Finish: show a short summary, then save the session to D1.
-5. A collapsible "📊 Cloud D1 Peer-Test Logs" viewer at the bottom.
-6. Do it all for me: do NOT ask me to write SQL, create tables, or copy any key or token. Create items (pre-filled with my practice items below) and practice_logs (nickname, app_type, score, hints_used, details, created_at), saving details as in the table below; apply remote migrations, deploy, and give me the workers.dev address.
+## Rules (how my game works)
+1. Game type: [pick 1 of 4: Detective Clues (one mystery, 4 clues, read them and guess) / Escape Room (3 rooms, type the answer to open the next one) / Social Survival (3 scenes, pick replies to keep the goodwill up) / Word-Building Race (build sentences from mixed-up words before time runs out)]
+2. Win, lose and score: [how the player wins, how they lose, how the score is counted, one sentence each]
+3. The English is the mechanic: the player cannot win without noticing or using this English: [target English]. Do not add points, lives or bonuses that work without it.
+4. Hint first: after a first miss on an item, show a hint that points to where to look or what to change (use the hint I wrote, if there is one). Never show the answer until the player has missed twice on that item; then show the answer and one short reason.
+5. One loop only: build only the loop above. No levels, shop, story map or extra screens. One round takes about 3 minutes. Ask for a nickname first (no real names). At the end show win or lose, the score, and a Play again button, then save the round to D1.
+6. Plan first: before you build, show me a short plan (what the player does, how they win or lose, what goes in the D1 tables) and wait for me to say OK.
+7. A collapsible "📊 Cloud D1 Peer-Test Logs" viewer at the bottom.
+8. Do it all for me: do NOT ask me to write SQL, create tables, or copy any key or token. Create items (pre-filled with my game content below) and practice_logs (nickname, app_type, score, hints_used, details, created_at). Save the game type in app_type; start details with win or lose, then save what the table below says; apply remote migrations, deploy, and give me the workers.dev address.
 
-## Content (what it practises)
+## Content (who plays and which English)
 - My nickname: [lowercase, e.g., alice]
-- Learner & problem: [e.g., First-year university students (B1) whose emails to professors sound too direct]
-- App idea: [e.g., An app that helps students ask a professor for more time politely]
-- Practice items: [one per line, in the format for your app type]
+- Player & problem: [e.g., First-year university students (B1) whose messages to teachers sound too direct]
+- Target English: [the English the player must notice or use, e.g., polite requests with could]
+- Game idea: [e.g., A survival game where the player keeps the teacher's goodwill high while asking for help]
+- Game content: [one line each, in the format for your game type]
 ```
 
-**Practice item formats (for the app type you picked)**
+**Game content formats (for the game type you picked)**
 
-| App type | Practice item format (one per line) | Items | What `details` saves |
+| Game type | Game content format | Lines | What `details` saves (start with `win` or `lose`) |
 | :--- | :--- | :--- | :--- |
-| Branching conversation | `other person's line \| *best reply \| weaker reply \| weaker reply` (put `*` before the best reply) | 3 | the path chosen (e.g. `T1:weak->T1:best->T2:best->T3:best`) and the number of retries |
-| Put it in order | the correct sentence (the app mixes up the words) | 5 | first-try score out of 5 and the number of hints used |
-| Listen and type | the sentence the learner will hear | 5 | words correct out of the total and the number of replays |
-| Sort into groups | `word or phrase \| group name` (2 or 3 groups) | 8 | the number of cards in the wrong group on the first check and the number of checks |
-| Flip and recall | `front (clue) \| back (answer)` | 6 | how many cards were Got it / Not sure / Missed it, and which cards to review next time |
+| Detective Clues | Line 1: `question \| *right answer \| wrong answer \| wrong answer` (put `*` before the right answer); lines 2-5: one clue each | 5 | how many clues were read before the final guess, and the number of wrong guesses |
+| Escape Room | `note shown in the room \| answer to type \| hint` | 3 | the room reached and the number of wrong tries in each room |
+| Social Survival | `situation \| *best reply \| weaker reply \| weaker reply` (put `*` before the best reply) | 3 | the replies chosen in each scene (e.g. `S1:weak->S1:best->S2:best`) and the final goodwill |
+| Word-Building Race | the correct sentence (the game mixes up the words) | 6 | sentences correct out of the total, seconds used, and the number of hints used |
 
 ---
 

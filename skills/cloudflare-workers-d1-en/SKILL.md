@@ -1,6 +1,6 @@
 ---
 name: cloudflare-workers-d1-en
-description: OpenCode Edition: Automated Cloudflare Workers (frontend + backend API) + Cloudflare D1 (SQLite cloud database) zero-key, zero-MCP closed-loop web system guide. Designed for OpenCode: in Weeks 10 and 11 the student pastes one prompt with both the teaching rules and the learning content (no AGENTS.md needed), featuring built-in schemas for Week 10 (A2/B1/B2 Scaffolded Reading & Listening Web App) and Week 11 (My Own English App, 5 app types). Activate automatically in OpenCode when the user says "connect Cloudflare", "setup Cloudflare", "deploy to Cloudflare", "Cloudflare D1", "wrangler login", or "follow this prompt to deploy to Cloudflare".
+description: OpenCode Edition: Automated Cloudflare Workers (frontend + backend API) + Cloudflare D1 (SQLite cloud database) zero-key, zero-MCP closed-loop web system guide. Designed for OpenCode: in Weeks 10 and 11 the student pastes one prompt with both the teaching rules and the learning content (no AGENTS.md needed), featuring built-in schemas for Week 10 (A2/B1/B2 Scaffolded Reading & Listening Web App) and Week 11 (My Own English Game, 4 game types). Activate automatically in OpenCode when the user says "connect Cloudflare", "setup Cloudflare", "deploy to Cloudflare", "Cloudflare D1", "wrangler login", or "follow this prompt to deploy to Cloudflare".
 ---
 
 # OpenCode × Cloudflare Workers + D1 Zero-Key Closed-Loop System (English Student Edition)
@@ -46,8 +46,8 @@ This workflow is **idempotent (resumable)**: always check current state first an
 
 ### Step 0: Read the Student's Prompt (Rules + Content) & Confirm the Nickname
 1. In Weeks 10 and 11 the student pastes **one prompt** with two parts:
-   - **"## Rules"**: Week 10 = level rules, first-click clue, audio, check questions, tables and deployment; Week 11 = app type, feedback rule, start & finish screens, tables and deployment.
-   - **"## Content"**: Week 10 = nickname, article, 5 key words, 2 check questions; Week 11 = nickname, learner & problem, app idea, practice items.
+   - **"## Rules"**: Week 10 = level rules, first-click clue, audio, check questions, tables and deployment; Week 11 = game type, win/lose/score, English is the mechanic, hint first, one loop only, plan first, tables and deployment.
+   - **"## Content"**: Week 10 = nickname, article, 5 key words, 2 check questions; Week 11 = nickname, player & problem, target English, game idea, game content.
    - **No `AGENTS.md` is needed. Do not ask the student to download or create one.** If an old `AGENTS.md` happens to be in the folder, follow the prompt the student just pasted.
    - No content yet (no article or practice items): ask the student to paste the prompt from the design card. Do not invent an article or practice items.
 2. If the prompt has no nickname, ask:
@@ -55,7 +55,7 @@ This workflow is **idempotent (resumable)**: always check current state first an
    *(Automatically convert any uppercase letters to lowercase).*
 3. Determine resource names:
    - **Week 10 (Reading & Listening App)**: Worker name `<nickname>-w10-reading`, D1 database `<nickname>-w10-reading-db`.
-   - **Week 11 (My Own English App)**: Worker name `<nickname>-w11-app`, D1 database `<nickname>-w11-app-db`.
+   - **Week 11 (My Own English Game)**: Worker name `<nickname>-w11-app`, D1 database `<nickname>-w11-app-db`.
 
 ---
 
@@ -158,23 +158,23 @@ CREATE TABLE IF NOT EXISTS reading_logs (
 
 ---
 
-#### 3B. [Week 11 Example] My Own English App (`migrations/0001_init.sql` Template)
-On the Cockpit design card, each student picks 1 app type: **Branching conversation** (3 turns, pick 1 of 3 replies), **Put it in order** (tap mixed-up words back into a sentence), **Listen and type** (hear a sentence, type it), **Sort into groups** (drag word cards into groups) or **Flip and recall** (flip a card, rate yourself). Following the app type, feedback rule and table rules in the "Rules" part of the prompt, OpenCode pre-fills `items` with the practice items from the student's prompt (one per line, in the format for that app type) and sets up `practice_logs` to record each session:
+#### 3B. [Week 11 Example] My Own English Game (`migrations/0001_init.sql` Template)
+On the Cockpit design card, each student picks 1 game type: **Detective Clues** (one mystery, 4 clues, read them and guess), **Escape Room** (3 rooms, type the answer to open the next one), **Social Survival** (3 scenes, pick replies to keep the goodwill up) or **Word-Building Race** (build sentences from mixed-up words before time runs out). Following the game type, win/lose/score, hint-first and table rules in the "Rules" part of the prompt, OpenCode pre-fills `items` with the game content from the student's prompt (one line each, in the format for that game type) and sets up `practice_logs` to record each round (keep this table name so the `/api/log` backend needs no change). The player gets a hint after the first miss and the answer only after two misses on the same item. **Build one game loop only**: no levels, shop or other extras. Before building, show the student a short plan and wait for OK:
 
 ```sql
 CREATE TABLE IF NOT EXISTS items (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   position INTEGER NOT NULL,         -- item order 1, 2, 3...
-  content_json TEXT NOT NULL         -- depends on the app type, e.g. Branching conversation: {"line":"Professor: Hi, what can I do for you?","best":"Could I possibly have three more days?","weaker":["I need three more days.","Um, something happened."]}
+  content_json TEXT NOT NULL         -- depends on the game type, e.g. Social Survival: {"situation":"Teacher: Can you stay after class?","best":"Of course. Could I take the quiz again, please?","weaker":["No, I'm busy.","Why do I need to?"]}; Escape Room: {"note":"...","answer":"chair","hint":"..."}
 );
 
 CREATE TABLE IF NOT EXISTS practice_logs (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   nickname TEXT NOT NULL,
-  app_type TEXT NOT NULL,            -- e.g. 'Put it in order'
+  app_type TEXT NOT NULL,            -- the game type, e.g. 'Social Survival'
   score INTEGER NOT NULL DEFAULT 0,
   hints_used INTEGER NOT NULL DEFAULT 0,
-  details TEXT DEFAULT '',           -- what the prompt's rules ask for, e.g. the path 'T1:weak->T1:best->T2:best->T3:best' or the number of replays
+  details TEXT DEFAULT '',           -- starts with win or lose, then what the prompt's rules ask for, e.g. 'win; S1:weak->S1:best->S2:best' or 'lose; 3 wrong guesses'
   created_at TEXT DEFAULT CURRENT_TIMESTAMP
 );
 ```

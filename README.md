@@ -92,7 +92,7 @@
 
 #### 💬 第 11 週：請直接用 Cockpit 的 Design Card
 
-第 11 週的 Prompt 比較長（遊戲類型、輸贏與計分、遊戲內容的格式都要寫對），**請不要自己寫，直接用 Week 11 Cockpit 上的 Design Card 產生**：
+第 11 週的 Prompt 比較長（遊戲類型、輸贏與計分、遊戲內容的格式都要寫對），**請直接用 Week 11 Cockpit 上的 Design Card 產生**：
 
 1. 打開 Week 11 Cockpit：https://ai-lang-learning-cockpit.web.app/week11/
 2. 按左側的 **Open Design Card**，選一種遊戲類型（可按 **Use example** 看完整範例），填完 5 欄。
@@ -195,7 +195,7 @@ Use the cloudflare-workers-d1-en skill to build and deploy my Week 10 Reading & 
 
 #### 💬 Week 11: Use the Design Card on the Cockpit
 
-The Week 11 prompt is longer (game type, win/lose/score, and the format of your game content all have to be right), so **do not write it by hand. Build it with the Design Card on the Week 11 Cockpit:**
+The Week 11 prompt is longer (game type, win/lose/score, and the format of your game content all have to be right), so **build it with the Design Card on the Week 11 Cockpit:**
 
 1. Open the Week 11 Cockpit: https://ai-lang-learning-cockpit.web.app/week11/
 2. Click **Open Design Card** in the side panel, pick a game type (press **Use example** to see a finished card), and fill in the 5 boxes.

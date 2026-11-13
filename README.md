@@ -90,37 +90,15 @@
   Q2：【題目】（正確答案：【答案】）
 ```
 
-#### 💬 第 11 週範本：「我自己設計的英文遊戲＋雲端遊玩紀錄表」（一份 Prompt）
+#### 💬 第 11 週：請直接用 Cockpit 的 Design Card
 
-```text
-請用 cloudflare-workers-d1 技能，把我的第 11 週英文遊戲部署到 Cloudflare Workers + D1。網站名 【暱稱】-w11-app，資料庫名 【暱稱】-w11-app-db。第 10 週已登入 Cloudflare：先跑 npx.cmd -y wrangler whoami，需要時才 wrangler login。
+第 11 週的 Prompt 比較長（遊戲類型、輸贏與計分、遊戲內容的格式都要寫對），**請不要自己寫，直接用 Week 11 Cockpit 上的 Design Card 產生**：
 
-## 規則（遊戲怎麼運作）
-1. 遊戲類型：【4 選 1：Detective Clues（一個案件、4 條線索，讀線索後猜答案）／ Escape Room（3 個房間，輸入答案開下一間）／ Social Survival（3 個場景，選回應維持「好感度」）／ Word-Building Race（限時把打亂的字排成句子）】
-2. 輸贏與計分：【贏的條件、輸的條件、怎麼算分，各一句】
-3. 英文就是玩法：玩家不注意或不使用這個英文就不能贏：【目標英文】。不要加不靠它也能得到的分數、生命或獎勵。
-4. 先提示：某一題第一次答錯，給一個指向「看哪裡／改什麼」的提示（我有寫提示就用我的）；同一題沒有錯滿兩次之前，不顯示答案；之後顯示答案與一句理由。
-5. 只做一個循環：只做上面這個循環，不要加關卡、商店、地圖或多餘畫面。一回合約 3 分鐘。先輸入暱稱（不用真名）；結束顯示輸贏、分數與 Play again 按鈕，並把這回合存進 D1。
-6. 先給計畫：動手前先給我一份簡短計畫（玩家做什麼、怎麼輸贏、D1 表放什麼），等我說 OK 才開始做。
-7. 網頁最下方可展開的「📊 Cloud D1 Peer-Test Logs」看板。
-8. 全部幫我做好：不要叫我寫 SQL、建表或貼任何金鑰。建立 items（預塞我下面的遊戲內容）與 practice_logs（nickname、app_type、score、hints_used、details、created_at）；app_type 存遊戲類型；details 以 win 或 lose 開頭，再依下表存；套用遠端 migrations、部署，最後給我 workers.dev 網址。
+1. 打開 Week 11 Cockpit：https://ai-lang-learning-cockpit.web.app/week11/
+2. 按左側的 **Open Design Card**，選一種遊戲類型（可按 **Use example** 看完整範例），填完 5 欄。
+3. 按 **Copy Prompt for OpenCode and Padlet**，貼進 OpenCode（做法見上方步驟）。
 
-## 內容（誰玩、練什麼英文）
-- 我的暱稱：【小寫英文，例如 alice】
-- 玩家與問題：【例如：英文訊息寫給老師時語氣太直接的大一學生（B1）】
-- 目標英文：【玩家必須注意或使用的英文，例如：用 could 的禮貌請求】
-- 遊戲點子：【例如：玩家要在請老師幫忙時，讓老師的好感度保持高的生存遊戲】
-- 遊戲內容：【依遊戲類型的格式，一行一筆】
-```
-
-**遊戲內容格式與 `details`（依你選的遊戲類型）**
-
-| 遊戲類型 | 遊戲內容格式 | 行數 | `details` 要存什麼（開頭先寫 `win` 或 `lose`） |
-| :--- | :--- | :--- | :--- |
-| Detective Clues | 第 1 行：`問題 \| *正確答案 \| 錯誤答案 \| 錯誤答案`（正確答案前加 `*`）；第 2–5 行：各一條線索 | 5 | 最後猜答案前讀了幾條線索，與猜錯次數 |
-| Escape Room | `房間的提示 \| 要輸入的答案 \| 提示` | 3 | 走到第幾間房，與每間房答錯幾次 |
-| Social Survival | `情境 \| *最佳回應 \| 較弱回應 \| 較弱回應`（最佳回應前加 `*`） | 3 | 每個場景選了哪些回應（例如 `S1:weak->S1:best->S2:best`）與最後的好感度 |
-| Word-Building Race | 正確的句子（遊戲會自己打亂字的順序） | 6 | 答對的句數、用了幾秒、用了幾次提示 |
+設計卡會自動檢查格式，並把規則與內容合成一份 Prompt。
 
 ---
 
@@ -215,37 +193,15 @@ Use the cloudflare-workers-d1-en skill to build and deploy my Week 10 Reading & 
   Q2: [question] (Right answer: [answer])
 ```
 
-#### 💬 Week 11 Template: My Own English Game + Cloud Play Logs (one prompt)
+#### 💬 Week 11: Use the Design Card on the Cockpit
 
-```text
-Use the cloudflare-workers-d1-en skill to build and deploy my Week 11 English game on Cloudflare Workers + D1. Name the Worker [nickname]-w11-app and the database [nickname]-w11-app-db. I logged in to Cloudflare in Week 10: check with npx.cmd -y wrangler whoami first and only run wrangler login if needed.
+The Week 11 prompt is longer (game type, win/lose/score, and the format of your game content all have to be right), so **do not write it by hand. Build it with the Design Card on the Week 11 Cockpit:**
 
-## Rules (how my game works)
-1. Game type: [pick 1 of 4: Detective Clues (one mystery, 4 clues, read them and guess) / Escape Room (3 rooms, type the answer to open the next one) / Social Survival (3 scenes, pick replies to keep the goodwill up) / Word-Building Race (build sentences from mixed-up words before time runs out)]
-2. Win, lose and score: [how the player wins, how they lose, how the score is counted, one sentence each]
-3. The English is the mechanic: the player cannot win without noticing or using this English: [target English]. Do not add points, lives or bonuses that work without it.
-4. Hint first: after a first miss on an item, show a hint that points to where to look or what to change (use the hint I wrote, if there is one). Never show the answer until the player has missed twice on that item; then show the answer and one short reason.
-5. One loop only: build only the loop above. No levels, shop, story map or extra screens. One round takes about 3 minutes. Ask for a nickname first (no real names). At the end show win or lose, the score, and a Play again button, then save the round to D1.
-6. Plan first: before you build, show me a short plan (what the player does, how they win or lose, what goes in the D1 tables) and wait for me to say OK.
-7. A collapsible "📊 Cloud D1 Peer-Test Logs" viewer at the bottom.
-8. Do it all for me: do NOT ask me to write SQL, create tables, or copy any key or token. Create items (pre-filled with my game content below) and practice_logs (nickname, app_type, score, hints_used, details, created_at). Save the game type in app_type; start details with win or lose, then save what the table below says; apply remote migrations, deploy, and give me the workers.dev address.
+1. Open the Week 11 Cockpit: https://ai-lang-learning-cockpit.web.app/week11/
+2. Click **Open Design Card** in the side panel, pick a game type (press **Use example** to see a finished card), and fill in the 5 boxes.
+3. Press **Copy Prompt for OpenCode and Padlet** and paste it into OpenCode (see the steps above).
 
-## Content (who plays and which English)
-- My nickname: [lowercase, e.g., alice]
-- Player & problem: [e.g., First-year university students (B1) whose messages to teachers sound too direct]
-- Target English: [the English the player must notice or use, e.g., polite requests with could]
-- Game idea: [e.g., A survival game where the player keeps the teacher's goodwill high while asking for help]
-- Game content: [one line each, in the format for your game type]
-```
-
-**Game content formats (for the game type you picked)**
-
-| Game type | Game content format | Lines | What `details` saves (start with `win` or `lose`) |
-| :--- | :--- | :--- | :--- |
-| Detective Clues | Line 1: `question \| *right answer \| wrong answer \| wrong answer` (put `*` before the right answer); lines 2-5: one clue each | 5 | how many clues were read before the final guess, and the number of wrong guesses |
-| Escape Room | `note shown in the room \| answer to type \| hint` | 3 | the room reached and the number of wrong tries in each room |
-| Social Survival | `situation \| *best reply \| weaker reply \| weaker reply` (put `*` before the best reply) | 3 | the replies chosen in each scene (e.g. `S1:weak->S1:best->S2:best`) and the final goodwill |
-| Word-Building Race | the correct sentence (the game mixes up the words) | 6 | sentences correct out of the total, seconds used, and the number of hints used |
+The card checks the format for you and joins the rules and content into one prompt.
 
 ---
 
